@@ -150,11 +150,16 @@
     color:var(--text); cursor:pointer;
   }
   .menu-dropdown .menu-item:active{ background:var(--surface-alt); }
-  /* 言語の切り替え(⋮メニューの中) */
-  .menu-dropdown .menu-sep{ height:1px; background:var(--border); margin:4px 0; }
-  .menu-dropdown .menu-label{ padding:8px 14px 2px; font-size:11px; font-weight:700; color:var(--text-muted); }
-  .menu-dropdown .lang-item[aria-current="true"]{ color:var(--primary-strong); }
-  .menu-dropdown .lang-item[aria-current="true"]::after{ content:" ✓"; }
+  /* 言語の切り替え: ⋮メニューのいちばん下の「言語 / Language」を押すと、小窓(言語の一覧)が開く */
+  .lang-list{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .lang-list .lang-item{
+    display:block; width:100%; text-align:left; padding:11px 14px;
+    border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface);
+    font-size:13px; font-weight:700; color:var(--text); cursor:pointer;
+  }
+  .lang-list .lang-item:active{ background:var(--surface-alt); }
+  .lang-list .lang-item[aria-current="true"]{ color:var(--primary-strong); border-color:var(--primary-strong); }
+  .lang-list .lang-item[aria-current="true"]::after{ content:" ✓"; }
   /* 韓国語・中国語では、日本語用のフォントに無い文字が出るため、それぞれの言語に合った書体を使う。
      (使う書体は、画面の言語を切り替えたときに、下の script で Google Fonts から読み込む。
       読み込めなかったとき用に、パソコンやスマホに入っている書体も続けて指定している) */
@@ -630,8 +635,13 @@
   .furn-dex-grid{ display:flex; flex-direction:column; gap:7px; max-height:420px; overflow-y:auto; }
   .dex-group-head{
     font-size:11.5px; font-weight:800; color:var(--primary-strong);
-    padding:0 2px; margin-top:6px;
+    padding:4px 2px; margin-top:2px; margin-bottom:-4px;
     display:flex; align-items:center; justify-content:space-between; gap:8px;
+    /* 一覧をスクロールしたとき、「4匹が好き」などの見出し(と、右端のコピーボタン)が、
+       一覧の枠の上端まで来たところで止まって、固定されるようにする。
+       次の見出しが下から上がってくると、その上に重なって入れかわる。
+       うしろを通る家具の枠がすけて見えないよう、背景は白(パネルと同じ色)にしている。 */
+    position:sticky; top:0; z-index:2; background:var(--surface);
   }
   /* 「4匹が好き」などの見出しの右端にある、家具名のコピーボタン(紙が2枚重なったマーク) */
   .dex-copy-wrap{ display:inline-flex; align-items:center; gap:6px; flex:none; }
@@ -681,7 +691,7 @@
       <button type="button" class="menu-item" id="howMenuItem" data-i18n="使い方">使い方</button>
       <button type="button" class="menu-item" id="newsMenuItem" data-i18n="お知らせ">お知らせ</button>
       <button type="button" class="menu-item" id="qaMenuItem">Q&amp;A</button>
-      <div id="langMenu" hidden></div>
+      <button type="button" class="menu-item" id="langMenuItem" hidden>言語 / Language</button>
     </div>
   </div>
 </header>
@@ -741,7 +751,7 @@
       </div>
       <div class="how-item">
         <div class="how-h">③ <span data-i18n="好きな家具一覧">好きな家具一覧</span></div>
-        <p class="how-p"><span data-i18n="「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。">「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。</span><br><span data-i18n="家具名をコピーすることもできます。">家具名をコピーすることもできます。</span></p>
+        <p class="how-p"><span data-i18n="「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。">「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、家具の名前をコピーできます。">ボタンを押すと、家具の名前をコピーできます。</span></p>
       </div>
     </div>
   </div>
@@ -755,6 +765,15 @@
       <div class="qa-title" data-i18n="お知らせ">お知らせ</div>
       <div id="newsList"></div>
     </div>
+  </div>
+</div>
+
+<!-- 言語の小窓(⋮メニューの「言語 / Language」から開く。中身は LANGS から作る) -->
+<div class="about-overlay" id="langOverlay" hidden>
+  <div class="about-card" role="dialog" aria-modal="true" aria-labelledby="langTitle">
+    <button type="button" class="about-close" id="langCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
+    <div class="qa-title" id="langTitle">言語 / Language</div>
+    <div class="lang-list" id="langList"></div>
   </div>
 </div>
 
@@ -1378,7 +1397,7 @@
         dexGroupNames.push([]);
         const copyLabel = esc(tr('家具名をコピー'));
         htmlParts.push(
-          '<div class="dex-group-head"' + (lastLikeCount === null ? ' style="margin-top:0;"' : '') + '>' +
+          '<div class="dex-group-head"' + (lastLikeCount === null ? ' style="margin-top:-4px;"' : '') + '>' +
             '<span>' + esc(tr('{n}匹が好き', { n: likeCount })) + '</span>' +
             '<span class="dex-copy-wrap"><span class="dex-copy-msg" aria-live="polite"></span>' +
             '<button type="button" class="dex-copy-btn" data-group="' + (dexGroupNames.length - 1) + '" title="' + copyLabel + '" aria-label="' + copyLabel + '">' + COPY_ICON + '</button></span>' +
@@ -1656,6 +1675,9 @@
   const qaMenuItem = document.getElementById("qaMenuItem");
   const qaOverlay = document.getElementById("qaOverlay");
   const qaCloseBtn = document.getElementById("qaCloseBtn");
+  const langMenuItem = document.getElementById("langMenuItem");
+  const langOverlay = document.getElementById("langOverlay");
+  const langCloseBtn = document.getElementById("langCloseBtn");
 
   // ===== お知らせ =====
   // 新しいお知らせは、下の NEWS の「いちばん上」に足します(新しい順に並べる)。
@@ -1751,6 +1773,13 @@
   function closeQa(){
     qaOverlay.hidden = true;
   }
+  function openLang(){
+    closeMenu();
+    langOverlay.hidden = false;
+  }
+  function closeLang(){
+    langOverlay.hidden = true;
+  }
 
   menuBtn.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -1762,6 +1791,7 @@
   howMenuItem.addEventListener("click", openHow);
   newsMenuItem.addEventListener("click", openNews);
   qaMenuItem.addEventListener("click", openQa);
+  langMenuItem.addEventListener("click", openLang);
   document.addEventListener("click", (e) => {
     if (!menuDropdown.hidden && !menuDropdown.contains(e.target) && e.target !== menuBtn) {
       closeMenu();
@@ -1783,27 +1813,34 @@
   qaOverlay.addEventListener("click", (e) => {
     if (e.target === qaOverlay) closeQa();
   });
+  langCloseBtn.addEventListener("click", closeLang);
+  langOverlay.addEventListener("click", (e) => {
+    if (e.target === langOverlay) closeLang();
+  });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") { closeMenu(); closeAbout(); closeHow(); closeNews(); closeQa(); }
+    if (e.key === "Escape") { closeMenu(); closeAbout(); closeHow(); closeNews(); closeQa(); closeLang(); }
   });
 
-  // ===== 言語の切り替え(⋮メニューの中の「言語」) =====
-  const langMenuEl = document.getElementById("langMenu");
+  // ===== 言語の切り替え(⋮メニューのいちばん下の「言語 / Language」→ 言語の小窓) =====
+  const langListEl = document.getElementById("langList");
+  const langTitleEl = document.getElementById("langTitle");
   function buildLangMenu(){
-    if (LANGS.length < 2) { langMenuEl.hidden = true; langMenuEl.innerHTML = ""; return; }
-    langMenuEl.hidden = false;
-    langMenuEl.innerHTML =
-      '<div class="menu-sep"></div>' +
-      '<div class="menu-label">' + esc(tr('言語')) + (currentLang === "en" ? '' : ' / Language') + '</div>' +
-      LANGS.map(l =>
-        '<button type="button" class="menu-item lang-item" data-lang="' + esc(l.code) + '"' +
-        (l.code === currentLang ? ' aria-current="true"' : '') + '>' + esc(l.name) + '</button>'
-      ).join("");
+    // 言語が1つしかないときは、メニューの項目も出さない
+    if (LANGS.length < 2) { langMenuItem.hidden = true; langListEl.innerHTML = ""; return; }
+    // 日本語のまま迷わないよう、英語以外では「/ Language」を添える(英語のときは「Language」だけ)
+    const label = tr('言語') + (currentLang === "en" ? '' : ' / Language');
+    langMenuItem.hidden = false;
+    langMenuItem.textContent = label;
+    langTitleEl.textContent = label;
+    langListEl.innerHTML = LANGS.map(l =>
+      '<button type="button" class="lang-item" data-lang="' + esc(l.code) + '"' +
+      (l.code === currentLang ? ' aria-current="true"' : '') + '>' + esc(l.name) + '</button>'
+    ).join("");
   }
-  langMenuEl.addEventListener("click", (e) => {
+  langListEl.addEventListener("click", (e) => {
     const b = e.target.closest(".lang-item");
     if (!b) return;
-    closeMenu();
+    closeLang();
     setLang(b.dataset.lang);
   });
 

@@ -101,7 +101,6 @@ const LANG = {
     ,{"ja": "住まわせたい1～4匹のポケモンを選択して、「施設を診断する」のボタンを押します。", "en": "Select 1 to 4 Pokémon you want to house, then press the \"Find facilities\" button.", "ko": "살게 하고 싶은 포켓몬을 1~4마리 선택한 뒤 '시설 진단하기' 버튼을 누르세요.", "zhHans": "选择1～4只想让它们居住的宝可梦，然后按下「诊断设施」按钮。", "zhHant": "選擇1～4隻想讓牠們居住的寶可夢，然後按下「診斷設施」按鈕。"}
     ,{"ja": "おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。", "en": "Up to 8 recommended facilities are shown. You can see the details of facilities ranked 4th and below with the \"+ Details\" button.", "ko": "추천 시설이 최대 8개까지 표시됩니다. 4위 이하 시설의 상세 내용은 '+ 상세' 버튼으로 볼 수 있어요.", "zhHans": "最多会显示8个推荐设施。第4名及以后的设施详情，可通过「＋详情」按钮查看。", "zhHant": "最多會顯示8個推薦設施。第4名及之後的設施詳情，可透過「＋詳情」按鈕查看。"}
     ,{"ja": "「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。", "en": "Press the \"View furniture your Pokémon like (+ details)\" button to show the furniture the selected Pokémon like.", "ko": "'선택한 포켓몬이 좋아하는 가구 보기 (+상세)' 버튼을 누르면 선택한 포켓몬이 좋아하는 가구가 표시됩니다.", "zhHans": "按下「查看所选宝可梦喜欢的家具（+详情）」按钮，就会显示所选宝可梦喜欢的家具。", "zhHant": "按下「查看所選寶可夢喜歡的家具（+詳情）」按鈕，就會顯示所選寶可夢喜歡的家具。"}
-    ,{"ja": "家具名をコピーすることもできます。", "en": "You can also copy the furniture names.", "ko": "가구 이름을 복사할 수도 있어요.", "zhHans": "也可以复制家具名称。", "zhHant": "也可以複製家具名稱。"}
     ,{"ja": "お知らせ", "en": "News", "ko": "공지사항", "zhHans": "公告", "zhHant": "公告"}
     ,{"ja": "リリースしました。", "en": "We've released the tool.", "ko": "출시했습니다.", "zhHans": "已正式发布。", "zhHant": "已正式發布。"}
     ,{"ja": "家具属性の検証について", "en": "About furniture attribute verification", "ko": "가구 속성 검증에 대하여", "zhHans": "关于家具属性的验证", "zhHant": "關於家具屬性的驗證"}

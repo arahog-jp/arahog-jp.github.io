@@ -653,6 +653,12 @@
   /* 「4匹が好き」などの見出しの右端にある、家具名のコピーボタン(紙が2枚重なったマーク) */
   .dex-copy-wrap{ display:inline-flex; align-items:center; gap:6px; flex:none; }
   .dex-copy-msg{ font-size:10.5px; font-weight:700; color:var(--accent-strong); }
+  /* 「② 診断結果」の右端の「施設名をコピー」: 文字(ラベル)は、ふだんは落ち着いた色で出しておき、
+     コピーしたときだけ、「コピーしました」に入れかわって、色も変わる。
+     見出しの高さが、ボタンのぶんだけ広がらないよう、上下のマージンを負にしている */
+  .fac-names-copy{ align-self:center; margin:-4px 0; }
+  .dex-copy-msg.fac-copy-label{ color:var(--text-muted); }
+  .dex-copy-msg.fac-copy-label.flash{ color:var(--accent-strong); }
   .dex-copy-btn{
     width:30px; height:26px; padding:0; flex:none;
     display:inline-flex; align-items:center; justify-content:center;
@@ -830,6 +836,7 @@
   <section id="resultSection">
     <div class="section-head">
       <h2>② <span data-i18n="診断結果">診断結果</span></h2>
+      <span class="dex-copy-wrap fac-names-copy" id="facNamesCopyWrap" hidden><span class="dex-copy-msg fac-copy-label" aria-live="polite" data-i18n="施設名をコピー">施設名をコピー</span><button type="button" class="dex-copy-btn" id="facNamesCopyBtn" data-i18n-aria="施設名をコピー" data-i18n-title="施設名をコピー" aria-label="施設名をコピー" title="施設名をコピー"></button></span>
     </div>
     <div id="resultBody"></div>
   </section>
@@ -1031,8 +1038,12 @@
   const KYUKEI_SIZES = [4, 2, 1]; // ボタンを表示する順番
   let lastFurnScored = [];
   let dexGroupNames = []; // 「好きな家具一覧」の見出しごとの家具名(コピーボタン用)
+  const facNamesCopyWrap = document.getElementById("facNamesCopyWrap");
+  const facNamesCopyBtn = document.getElementById("facNamesCopyBtn");
+  let facNamesForCopy = [];  // 「② 診断結果」の右端の「施設名をコピー」でコピーする、8件(以下)の施設名
   let facCopyNames = [];  // 診断結果の施設カードごとの家具名(コピーボタン用。診断のたびに作り直す)
   const COPY_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>';
+  facNamesCopyBtn.innerHTML = COPY_ICON;
   const CHECK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7"/></svg>';
   let dexTab = DEX_CATS[0];
   let dexRecipeFilter = "all"; // "all"=すべて表示 / "yes"=レシピありの家具だけ / "no"=レシピなしの家具だけ
@@ -1462,17 +1473,20 @@
     if (!names || !names.length) return;
     copyText(names.join("\n")).then(ok => {
       const msg = btn.parentNode.querySelector(".dex-copy-msg");
-      if (msg) msg.textContent = ok ? tr('コピーしました') : tr('コピーできませんでした');
+      if (msg) { msg.textContent = ok ? tr('コピーしました') : tr('コピーできませんでした'); msg.classList.add("flash"); }
       if (ok) { btn.classList.add("copied"); btn.innerHTML = CHECK_ICON; }
       clearTimeout(btn._copyTimer);
       btn._copyTimer = setTimeout(() => {
         if (!btn.isConnected) return;
         btn.classList.remove("copied");
         btn.innerHTML = COPY_ICON;
-        if (msg) msg.textContent = "";
+        // 「施設名をコピー」のように、ふだんから文字を出しているところは、その文字に戻す。
+        if (msg) { msg.textContent = msg.dataset.i18n ? tr(msg.dataset.i18n) : ""; msg.classList.remove("flash"); }
       }, 1600);
     });
   }
+  // 「② 診断結果」の右端の「施設名をコピー」(画面に出ている施設の名前を、1行に1つずつコピーする)
+  facNamesCopyBtn.addEventListener("click", () => copyNamesWithFeedback(facNamesCopyBtn, facNamesForCopy));
   dexGridEl.addEventListener("click", (e) => {
     const btn = e.target.closest(".dex-copy-btn[data-group]");
     if (!btn) return;
@@ -1495,6 +1509,8 @@
     const picks = selected.filter(Boolean);
     if (picks.length === 0) {
       resultBody.innerHTML = '<div class="empty-state">' + esc(tr('まずはポケモンを1匹以上選んでください 🐾')) + '</div>';
+      facNamesForCopy = [];
+      facNamesCopyWrap.hidden = true;
       lastFurnScored = [];
       renderDex();
       return;
@@ -1509,6 +1525,9 @@
     const TOP_N_DETAIL = 3;
     const coTop = facScored.slice(0, Math.min(TOP_N_DETAIL, facScored.length));
     const rest = facScored.slice(coTop.length, coTop.length + 5);
+    // 「② 診断結果」の右端の「施設名をコピー」でコピーする、画面に出ている施設(1〜3位の詳細+4位以降の一覧、最大8件)の名前。
+    facNamesForCopy = coTop.concat(rest).map(r => facName(r.facility.name));
+    facNamesCopyWrap.hidden = facNamesForCopy.length === 0;
 
     // isLower: 4位以降の詳細カード用(🏆のうす絵柄を出さないための目印)
     function buildTopPickCardHtml(r, badgeText, isLower){
@@ -1861,6 +1880,9 @@
     });
     document.querySelectorAll("[data-i18n-aria]").forEach(el => {
       el.setAttribute("aria-label", tr(el.getAttribute("data-i18n-aria")));
+    });
+    document.querySelectorAll("[data-i18n-title]").forEach(el => {
+      el.setAttribute("title", tr(el.getAttribute("data-i18n-title")));
     });
     document.querySelectorAll(".colon").forEach(el => { el.textContent = colon(); });
     document.querySelectorAll("[data-only-ja]").forEach(el => { el.hidden = currentLang !== "ja"; });

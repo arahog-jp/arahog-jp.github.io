@@ -109,6 +109,7 @@ const LANG = {
     ,{"ja": "コピーしました", "en": "Copied", "ko": "복사했어요", "zhHans": "已复制", "zhHant": "已複製"}
     ,{"ja": "コピーできませんでした", "en": "Couldn't copy", "ko": "복사하지 못했어요", "zhHans": "复制失败", "zhHant": "複製失敗"}
     ,{"ja": "ボタンを押すと、家具の名前をコピーできます。", "en": "Press this button to copy the furniture names.", "ko": "버튼을 누르면 가구 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制家具名称。", "zhHant": "按下此按鈕即可複製家具名稱。"}
+    ,{"ja": "施設名をコピー", "en": "Copy facility names", "ko": "시설 이름 복사", "zhHans": "复制设施名称", "zhHant": "複製設施名稱"}
   ],
   "attrs": [
     {"ja": "あそびば", "en": "Play spaces", "ko": "놀이 공간", "zhHans": "游乐区", "zhHant": "遊樂區"},

@@ -77,6 +77,52 @@
     --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -12px rgba(0,0,0,0.55);
   }
 
+  /* ---------- 「家具からポケモン診断」の配色(イエロー×ダークブルー) ----------
+     施設診断(オレンジ×モスグリーン)と見分けやすいよう、家具からポケモン診断の
+     画面を表示しているあいだだけ、body に "mode-furniture" というクラスを付けて、
+     --primary(いつもは緑)と --accent(いつもはオレンジ)を、ここで上書きする。
+     昼間(ライトモード)は、背景(--bg)・パネルの境目の色(--border)・うすい塗りつぶし
+     (--surface-alt)も、画面全体がごく淡いダークブルーに見えるよう、ここで上書きする
+     (カードの中の白色 --surface は、施設診断と同じ白のまま)。
+     夜間(ダークモード。スマホなどが「ダーク」設定のとき)は、--bg などは上書きせず、
+     施設診断と同じ黒に近い配色に戻す(下の @media と [data-theme="dark"] のブロックで、
+     ライトモード用の淡い色を、施設診断と同じ黒っぽい色に戻している)。 */
+  body.mode-furniture{
+    --bg:#EAF0FA;
+    --surface-alt:#E1E9F6;
+    --border:#D2DFEF;
+    --primary:#1E3A5F;
+    --primary-strong:#14283F;
+    --primary-soft:#DEE7F2;
+    --accent:#D9A404;
+    --accent-strong:#A67D08;
+    --accent-soft:#FBEEC3;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) body.mode-furniture{
+      --bg:#12172A;
+      --surface-alt:#242C4C;
+      --border:#333C63;
+      --primary:#8FB4E3;
+      --primary-strong:#B7D0EF;
+      --primary-soft:#1F3350;
+      --accent:#F2C94C;
+      --accent-strong:#F7DA85;
+      --accent-soft:#3A311A;
+    }
+  }
+  :root[data-theme="dark"] body.mode-furniture{
+    --bg:#12172A;
+    --surface-alt:#242C4C;
+    --border:#333C63;
+    --primary:#8FB4E3;
+    --primary-strong:#B7D0EF;
+    --primary-soft:#1F3350;
+    --accent:#F2C94C;
+    --accent-strong:#F7DA85;
+    --accent-soft:#3A311A;
+  }
+
   *{box-sizing:border-box;}
   body{
     background:var(--bg);
@@ -590,6 +636,8 @@
   .legend-row .tags{ margin-top:4px; display:flex; flex-wrap:wrap; gap:4px; }
   .legend-row .tags span{ font-size:10px; padding:2px 7px; border-radius:999px; background:var(--primary-soft); color:var(--primary-strong); font-weight:700; }
   .legend-row .tags span.dislike{ background:var(--accent-soft); color:var(--accent-strong); }
+  /* 「家具からポケモン診断」の結果の見出し文(「以下のポケモンが住みたがっています：」) */
+  .result-lead{ font-size:13.5px; font-weight:800; color:var(--text); margin:0 0 12px; }
 
   .empty-state{
     text-align:center; padding:30px 16px; color:var(--text-faint); font-size:13px;
@@ -694,12 +742,14 @@
   <!-- ホーム画面のアイコンと同じ画像。もし画像が読み込めないとき(アップロード漏れなど)は、これまでの絵文字に戻す。 -->
   <div class="mark"><img src="画像保管庫/home-icon.png" alt="" onerror="this.parentNode.textContent='🏕️'"></div>
   <div>
-    <div class="title" data-i18n="ぽこあ施設診断">ぽこあ施設診断</div>
-    <div class="sub" data-i18n="えらんだポケモンから、つくるべき施設をおすすめ">えらんだポケモンから、つくるべき施設をおすすめ</div>
+    <div class="title" id="headerTitle" data-i18n="ぽこあ施設診断">ぽこあ施設診断</div>
+    <div class="sub" id="headerSub" data-i18n="えらんだポケモンから、つくるべき施設をおすすめ">えらんだポケモンから、つくるべき施設をおすすめ</div>
   </div>
   <div class="header-menu-wrap">
     <button type="button" class="menu-btn" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-label="メニュー" data-i18n-aria="メニュー">⋮</button>
     <div class="menu-dropdown" id="menuDropdown" hidden>
+      <button type="button" class="menu-item" id="switchToFurnitureMenuItem" data-i18n="家具からポケモン診断に切り替え">家具からポケモン診断に切り替え</button>
+      <button type="button" class="menu-item" id="switchToFacilityMenuItem" data-i18n="施設診断に切り替え" hidden>施設診断に切り替え</button>
       <button type="button" class="menu-item" id="aboutMenuItem" data-i18n="このツールについて">このツールについて</button>
       <button type="button" class="menu-item" id="howMenuItem" data-i18n="使い方">使い方</button>
       <button type="button" class="menu-item" id="newsMenuItem" data-i18n="お知らせ">お知らせ</button>
@@ -809,6 +859,7 @@
 </div>
 
 <main>
+<div id="facilityView">
   <div class="hero">
     <h1><span data-i18n="ポケモンの「好物」と「苦手」から、">ポケモンの「好物」と「苦手」から、</span><br><span data-i18n="おすすめ施設を診断します">おすすめ施設を診断します</span></h1>
     <p data-i18n="1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設をおすすめします。">1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設をおすすめします。</p>
@@ -864,6 +915,40 @@
     </details>
   </section>
 
+</div>
+
+<div id="furnitureView" hidden>
+  <div class="hero">
+    <h1><span data-i18n="置いた家具から、">置いた家具から、</span><br><span data-i18n="住みたがるポケモンを診断します">住みたがるポケモンを診断します</span></h1>
+    <p data-i18n="家具を選ぶと、その家具が好きなポケモンを表示します。">家具を選ぶと、その家具が好きなポケモンを表示します。</p>
+    <div class="scene" aria-hidden="true">
+      <div class="hill"></div><div class="hill2"></div>
+      <div class="tent"></div>
+      <div class="fire"></div>
+      <div class="pika"></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>① <span data-i18n="家具をえらぶ">家具をえらぶ</span></h2>
+      <span class="count" id="furnSelectedCount">0 / 12 個</span>
+    </div>
+    <div class="picker-grid" id="furnPickerGrid"></div>
+    <div class="cta-row">
+      <button class="primary" id="diagnoseFurnBtn">✨ <span data-i18n="ポケモンを診断">ポケモンを診断</span></button>
+      <button class="ghost" id="resetFurnBtn" data-i18n="えらび直す">えらび直す</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>② <span data-i18n="診断結果">診断結果</span></h2>
+    </div>
+    <div id="furnResultBody"></div>
+  </section>
+</div>
+
 </main>
 <script src="data.js"></script>
 <script src="lang.js"></script>
@@ -889,6 +974,8 @@
     facilities: buildMap(HAS_LANG && LANG.facilities)
   };
   let currentLang = "ja";
+  // "facility" = 施設診断、"furniture" = 家具からポケモン診断。⋮メニューの切り替えで変わる。
+  let currentMode = "facility";
   const missingSet = new Set();
   function lookup(kind, ja){
     if (currentLang === "ja") return ja;
@@ -958,6 +1045,14 @@
       if (l.startsWith("en") && codes.includes("en")) return "en";
     }
     return codes.includes("en") ? "en" : "ja";
+  }
+  // 前回選んでいたツール(施設診断/家具からポケモン診断)を、ブラウザに覚えておいて、次に開いたときも同じ方を出す
+  function detectMode(){
+    try {
+      const saved = localStorage.getItem("pokopiaMode");
+      if (saved === "furniture" || saved === "facility") return saved;
+    } catch (e) {}
+    return "facility";
   }
   // data.js のポケモンと家具は「No.順」で入っています。
   // 画面に出すときは、名前の五十音順(ｶﾅ・漢字の読み順)に並べ替えて使います。
@@ -1640,6 +1735,185 @@
     renderDex();
   }
 
+  // ===== 家具からポケモン診断(⋮メニューの「家具からポケモン診断に切り替え」で開く、もう1つのツール) =====
+  // 家具を最大12個選ぶと、選んだ家具についている属性(attrs)を全部集めて、
+  // その属性を好んでいる(likesに含む)ポケモンを探す。得点のつけ方は「施設診断」の
+  // bestLikeMatch(好物1~5のうち、いちばん強く一致したものを採用。レア度も加味する)を
+  // もとにしているが、こちらは「選んだ家具どうしで、同じ属性がどれだけ重なっているか」も
+  // 得点に加える(下のbestLikeMatchWeightedを参照)。苦手な属性が1つでも選んだ家具に
+  // 含まれているポケモンは、住みたがらないと考え、候補から外す
+  // (施設診断のscoreFurnitureで、苦手な家具を0点にするのと同じ考え方)。
+  const FURN_SLOT_COUNT = 12;
+  let selectedFurn = new Array(FURN_SLOT_COUNT).fill(null);
+  const furnPickerGrid = document.getElementById("furnPickerGrid");
+  const furnSelectedCountEl = document.getElementById("furnSelectedCount");
+  const furnResultBody = document.getElementById("furnResultBody");
+
+  function renderFurnSlots(){
+    furnPickerGrid.innerHTML = "";
+    selectedFurn.forEach((f, idx) => {
+      const slot = document.createElement("div");
+      slot.className = "slot" + (f ? " filled" : "");
+
+      if (f) {
+        // 選んだ家具は、長くなりすぎないよう、名前だけを表示する(属性のタグは出さない)
+        slot.innerHTML =
+          '<div class="chip-card">' +
+            '<div class="avatar">' + esc(firstChar(fName(f.name))) + '</div>' +
+            '<div style="min-width:0;flex:1;">' +
+              '<div class="name">' + esc(fName(f.name)) + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<button class="clear-btn" data-idx="' + idx + '" aria-label="' + esc(tr('クリア')) + '">✕</button>';
+      } else {
+        slot.innerHTML =
+          '<span class="slot-num">FURNITURE ' + (idx+1) + '</span>' +
+          '<input class="search" type="text" placeholder="' + esc(tr('家具名で検索') + '…') + '" data-idx="' + idx + '" autocomplete="off">' +
+          '<div class="dropdown" hidden></div>';
+      }
+      furnPickerGrid.appendChild(slot);
+    });
+
+    furnPickerGrid.querySelectorAll(".clear-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedFurn[+btn.dataset.idx] = null;
+        renderFurnSlots();
+      });
+    });
+
+    furnPickerGrid.querySelectorAll("input.search").forEach(input => {
+      const idx = +input.dataset.idx;
+      const dropdown = input.parentElement.querySelector(".dropdown");
+
+      function showResults(q){
+        const query = normSearch(norm(q).trim());
+        const usedNames = new Set(selectedFurn.filter(Boolean).map(f => f.name));
+        let matches;
+        if (!query) {
+          matches = furniture.filter(f => !usedNames.has(f.name));
+        } else {
+          // 画面に出ている言語の名前でも、日本語の名前でも、見つかるようにする
+          matches = furniture.filter(f => !usedNames.has(f.name) &&
+            (normSearch(fName(f.name)).includes(query) || normSearch(f.name).includes(query)));
+        }
+        if (currentLang !== "ja") {
+          const col = getCollator();
+          matches = matches.slice().sort((a, b) => col.compare(fName(a.name), fName(b.name)));
+        }
+        dropdown.innerHTML = "";
+        if (matches.length === 0) {
+          dropdown.innerHTML = '<div class="empty">' + esc(tr('見つかりませんでした')) + '</div>';
+        } else {
+          matches.forEach(f => {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.innerHTML = '<span>' + esc(fName(f.name)) + '</span><small>' + f.attrs.slice(0,2).map(x => esc(aName(x))).join(listSep()) + '</small>';
+            b.addEventListener("mousedown", (e) => {
+              e.preventDefault();
+              selectedFurn[idx] = f;
+              renderFurnSlots();
+            });
+            dropdown.appendChild(b);
+          });
+        }
+        dropdown.hidden = false;
+      }
+
+      dropdown.addEventListener("mousedown", (e) => { e.preventDefault(); });
+      input.addEventListener("focus", () => showResults(input.value));
+      input.addEventListener("input", () => showResults(input.value));
+      input.addEventListener("blur", () => { setTimeout(() => { dropdown.hidden = true; }, 120); });
+    });
+
+    furnSelectedCountEl.textContent = tr('{n} / 12 個', { n: selectedFurn.filter(Boolean).length });
+  }
+
+  // 施設診断のbestLikeMatchと同じ考え方(好物1~5のうち、いちばん強く一致した1つだけを採用。
+  // 好物の優先度(LIKE_WEIGHTS)と、属性のレア度(rarityWeight)を掛け合わせる)に加えて、
+  // 「選んだ家具の中で、その属性を持つ家具が何個あったか(attrCounts)」も掛け合わせる。
+  // 同じ属性を持つ家具を何個も選ぶほど、その属性を好きなポケモンが選ばれやすくなる
+  // (1個だけなら重みは1倍のまま。家具が増えるほど、Math.sqrt(件数)ぶん重みが増える。
+  // 平方根にしているのは、rarityWeightと同じく、増え方がゆるやかになるようにするため)。
+  function bestLikeMatchWeighted(likes, attrCounts){
+    let bestScore = -1;
+    let hits = 0;
+    likes.forEach((a, idx) => {
+      const count = attrCounts[a] || 0;
+      if (count > 0) {
+        hits++;
+        const base = LIKE_WEIGHTS[idx] !== undefined ? LIKE_WEIGHTS[idx] : 1;
+        const score = base * rarityWeight(a) * Math.sqrt(count);
+        if (score > bestScore) bestScore = score;
+      }
+    });
+    return { weight: bestScore === -1 ? 0 : bestScore, hits };
+  }
+
+  function renderFurnResults(){
+    const picks = selectedFurn.filter(Boolean);
+    if (picks.length === 0) {
+      furnResultBody.innerHTML = '<div class="empty-state">' + esc(tr('まずは家具を1つ以上選んでください 🛋️')) + '</div>';
+      return;
+    }
+
+    // 選んだ家具の属性(attrs)ごとに、「何個の家具についていたか」を数える
+    // (例: 3個選んだ家具のうち2個に「いれもの」が付いていたら、attrCounts["いれもの"] は2)
+    const attrCounts = {};
+    picks.forEach(f => f.attrs.forEach(a => { attrCounts[a] = (attrCounts[a] || 0) + 1; }));
+
+    const scored = selectablePokemons.map(p => {
+      // 苦手な属性が、選んだ家具の中に1つでもあれば、住みたがらないと考えて0点にする
+      const dislikeHit = !!(p.dislike && attrCounts[p.dislike] > 0);
+      if (dislikeHit) return { p, score: 0, hits: 0 };
+      const best = bestLikeMatchWeighted(p.likes, attrCounts);
+      return { p, score: best.weight, hits: best.hits };
+    });
+
+    let matched = scored.filter(r => r.score > 0);
+    matched.sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      if (b.hits !== a.hits) return b.hits - a.hits;
+      return currentLang === "ja"
+        ? a.p.name.localeCompare(b.p.name, 'ja')
+        : getCollator().compare(pName(a.p.name), pName(b.p.name));
+    });
+
+    const top = matched.slice(0, 8);
+
+    if (top.length === 0) {
+      furnResultBody.innerHTML = '<div class="empty-state">' + esc(tr('選んだ家具の属性に合うポケモンが見つかりませんでした')) + '</div>';
+      return;
+    }
+
+    // 順位はつけず(ランキング形式にせず)、見つかった上位8匹までを、すべて並列に並べる。
+    // 表示する「好物属性」「苦手属性」は、施設診断でポケモンを選んだときと同じ見た目(緑・オレンジの丸いラベル)。
+    let html = '<p class="result-lead">' + esc(tr('以下のポケモンが住みたがっています：')) + '</p>';
+    html += '<div class="legend-grid">';
+    top.forEach(r => {
+      const p = r.p;
+      html +=
+        '<div class="legend-row">' +
+          '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
+          '<div style="min-width:0;flex:1;">' +
+            '<div class="name">' + esc(pName(p.name)) + '</div>' +
+            '<div class="tags">' +
+              p.likes.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +
+              (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    });
+    html += '</div>';
+    furnResultBody.innerHTML = html;
+  }
+
+  document.getElementById("diagnoseFurnBtn").addEventListener("click", renderFurnResults);
+  document.getElementById("resetFurnBtn").addEventListener("click", () => {
+    selectedFurn = new Array(FURN_SLOT_COUNT).fill(null);
+    renderFurnSlots();
+    renderFurnResults();
+  });
+
   // 診断結果の中の、「＋詳細」ボタン(4位以降)と「ほか○件」ボタンの開閉。
   // 結果は診断のたびに作り直されるため、ボタン1つずつではなく、結果の枠全体で
   // クリックを受け取って、押されたボタンに応じて開閉する。
@@ -1704,6 +1978,12 @@
   const langMenuItem = document.getElementById("langMenuItem");
   const langOverlay = document.getElementById("langOverlay");
   const langCloseBtn = document.getElementById("langCloseBtn");
+  const headerTitleEl = document.getElementById("headerTitle");
+  const headerSubEl = document.getElementById("headerSub");
+  const facilityViewEl = document.getElementById("facilityView");
+  const furnitureViewEl = document.getElementById("furnitureView");
+  const switchToFurnitureMenuItem = document.getElementById("switchToFurnitureMenuItem");
+  const switchToFacilityMenuItem = document.getElementById("switchToFacilityMenuItem");
 
   // ===== お知らせ =====
   // 新しいお知らせは、下の NEWS の「いちばん上」に足します(新しい順に並べる)。
@@ -1807,6 +2087,31 @@
     langOverlay.hidden = true;
   }
 
+  // ===== ツールの切り替え(⋮メニューのいちばん上。「施設診断」⇄「家具からポケモン診断」) =====
+  function setMode(mode){
+    currentMode = (mode === "furniture") ? "furniture" : "facility";
+    try { localStorage.setItem("pokopiaMode", currentMode); } catch (e) {}
+    // 家具からポケモン診断のあいだだけ、body に "mode-furniture" を付けて、配色をイエロー×ダークブルーにする
+    document.body.classList.toggle("mode-furniture", currentMode === "furniture");
+    facilityViewEl.hidden = currentMode !== "facility";
+    furnitureViewEl.hidden = currentMode !== "furniture";
+    switchToFurnitureMenuItem.hidden = currentMode !== "facility";
+    switchToFacilityMenuItem.hidden = currentMode !== "furniture";
+    headerTitleEl.setAttribute("data-i18n", currentMode === "furniture" ? "ぽこあ家具診断" : "ぽこあ施設診断");
+    headerSubEl.setAttribute("data-i18n", currentMode === "furniture" ? "えらんだ家具から、住みたがるポケモンをおすすめ" : "えらんだポケモンから、つくるべき施設をおすすめ");
+    applyStaticText();
+  }
+  switchToFurnitureMenuItem.addEventListener("click", () => {
+    closeMenu();
+    setMode("furniture");
+    window.scrollTo(0, 0);
+  });
+  switchToFacilityMenuItem.addEventListener("click", () => {
+    closeMenu();
+    setMode("facility");
+    window.scrollTo(0, 0);
+  });
+
   menuBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     const willOpen = menuDropdown.hidden;
@@ -1873,7 +2178,7 @@
   // 静かに書きかわらない部分(HTMLに直接書いてある文字)を、いまの言語に置きかえる
   function applyStaticText(){
     document.documentElement.lang = HTML_LANG[currentLang] || currentLang;
-    document.title = tr('ぽこあ施設診断');
+    document.title = tr(headerTitleEl.getAttribute("data-i18n"));
     document.querySelectorAll("[data-i18n]").forEach(el => {
       const ja = el.getAttribute("data-ja");
       el.textContent = tr(el.getAttribute("data-i18n"), null, ja === null ? undefined : ja);
@@ -1900,13 +2205,18 @@
     applyStaticText();
     renderSlots();
     renderResults();
+    renderFurnSlots();
+    renderFurnResults();
   }
 
   currentLang = detectLang();
+  currentMode = detectMode();
   loadLangFont(currentLang);
-  applyStaticText();
   renderSlots();
   renderResults();
+  renderFurnSlots();
+  renderFurnResults();
+  setMode(currentMode);
   updateSampleHint();
 })();
 </script>

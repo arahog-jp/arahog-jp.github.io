@@ -635,13 +635,20 @@
   .furn-dex-grid{ display:flex; flex-direction:column; gap:7px; max-height:420px; overflow-y:auto; }
   .dex-group-head{
     font-size:11.5px; font-weight:800; color:var(--primary-strong);
-    padding:4px 2px; margin-top:2px; margin-bottom:-4px;
+    padding:6px 2px 4px; margin:0 0 -4px;
     display:flex; align-items:center; justify-content:space-between; gap:8px;
     /* 一覧をスクロールしたとき、「4匹が好き」などの見出し(と、右端のコピーボタン)が、
        一覧の枠の上端まで来たところで止まって、固定されるようにする。
        次の見出しが下から上がってくると、その上に重なって入れかわる。
        うしろを通る家具の枠がすけて見えないよう、背景は白(パネルと同じ色)にしている。 */
-    position:sticky; top:0; z-index:2; background:var(--surface);
+    /* 固定したときに、上に「すきま」ができて、うしろの家具が見えてしまわないように、
+       見出しの上には「マージン(外側のあき)」を付けず、あきは中の余白(padding)で取っている。
+       top を -1px にしているのは、スマホで、小数点以下のずれによる1px以下のすきまが出ないようにするため
+       (1px ぶんは枠の外にはみ出るだけで、見た目は変わらない) */
+    position:sticky; top:-1px; z-index:2; background:var(--surface);
+    /* 念のため、見出しの上にも白い帯(5px)を足す。スマホのブラウザが固定位置を1〜数px ずらしても、うしろの家具が見えないようにする。
+       (帯の色は、まわりのパネルと同じ白なので、固定していないときは見えない。一覧の枠の外側は、はみ出しても切り取られる) */
+    box-shadow:0 -5px 0 var(--surface);
   }
   /* 「4匹が好き」などの見出しの右端にある、家具名のコピーボタン(紙が2枚重なったマーク) */
   .dex-copy-wrap{ display:inline-flex; align-items:center; gap:6px; flex:none; }
@@ -1397,7 +1404,7 @@
         dexGroupNames.push([]);
         const copyLabel = esc(tr('家具名をコピー'));
         htmlParts.push(
-          '<div class="dex-group-head"' + (lastLikeCount === null ? ' style="margin-top:-4px;"' : '') + '>' +
+          '<div class="dex-group-head"' + (lastLikeCount === null ? ' style="padding-top:1px;"' : '') + '>' +
             '<span>' + esc(tr('{n}匹が好き', { n: likeCount })) + '</span>' +
             '<span class="dex-copy-wrap"><span class="dex-copy-msg" aria-live="polite"></span>' +
             '<button type="button" class="dex-copy-btn" data-group="' + (dexGroupNames.length - 1) + '" title="' + copyLabel + '" aria-label="' + copyLabel + '">' + COPY_ICON + '</button></span>' +

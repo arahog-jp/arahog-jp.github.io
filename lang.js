@@ -102,9 +102,14 @@ const LANG = {
     ,{"ja": "おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。", "en": "Up to 8 recommended facilities are shown. You can see the details of facilities ranked 4th and below with the \"+ Details\" button.", "ko": "추천 시설이 최대 8개까지 표시됩니다. 4위 이하 시설의 상세 내용은 '+ 상세' 버튼으로 볼 수 있어요.", "zhHans": "最多会显示8个推荐设施。第4名及以后的设施详情，可通过「＋详情」按钮查看。", "zhHant": "最多會顯示8個推薦設施。第4名及之後的設施詳情，可透過「＋詳情」按鈕查看。"}
     ,{"ja": "「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。", "en": "Press the \"View furniture your Pokémon like (+ details)\" button to show the furniture the selected Pokémon like.", "ko": "'선택한 포켓몬이 좋아하는 가구 보기 (+상세)' 버튼을 누르면 선택한 포켓몬이 좋아하는 가구가 표시됩니다.", "zhHans": "按下「查看所选宝可梦喜欢的家具（+详情）」按钮，就会显示所选宝可梦喜欢的家具。", "zhHant": "按下「查看所選寶可夢喜歡的家具（+詳情）」按鈕，就會顯示所選寶可夢喜歡的家具。"}
     ,{"ja": "家具名をコピーすることもできます。", "en": "You can also copy the furniture names.", "ko": "가구 이름을 복사할 수도 있어요.", "zhHans": "也可以复制家具名称。", "zhHant": "也可以複製家具名稱。"}
+    ,{"ja": "お知らせ", "en": "News", "ko": "공지사항", "zhHans": "公告", "zhHant": "公告"}
+    ,{"ja": "リリースしました。", "en": "We've released the tool.", "ko": "출시했습니다.", "zhHans": "已正式发布。", "zhHant": "已正式發布。"}
+    ,{"ja": "家具属性の検証について", "en": "About furniture attribute verification", "ko": "가구 속성 검증에 대하여", "zhHans": "关于家具属性的验证", "zhHant": "關於家具屬性的驗證"}
+    ,{"ja": "検証者", "en": "Verified by", "ko": "검증자", "zhHans": "验证者", "zhHant": "驗證者"}
     ,{"ja": "家具名をコピー", "en": "Copy furniture names", "ko": "가구 이름 복사", "zhHans": "复制家具名称", "zhHant": "複製家具名稱"}
     ,{"ja": "コピーしました", "en": "Copied", "ko": "복사했어요", "zhHans": "已复制", "zhHant": "已複製"}
     ,{"ja": "コピーできませんでした", "en": "Couldn't copy", "ko": "복사하지 못했어요", "zhHans": "复制失败", "zhHant": "複製失敗"}
+    ,{"ja": "ボタンを押すと、家具の名前をコピーできます。", "en": "Press this button to copy the furniture names.", "ko": "버튼을 누르면 가구 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制家具名称。", "zhHant": "按下此按鈕即可複製家具名稱。"}
   ],
   "attrs": [
     {"ja": "あそびば", "en": "Play spaces", "ko": "놀이 공간", "zhHans": "游乐区", "zhHant": "遊樂區"},
@@ -147,7 +152,7 @@ const LANG = {
     {"ja": "難しそうなもの", "en": "Complicated stuff", "ko": "어려워 보이는 것", "zhHans": "看起来很难懂的", "zhHant": "看起來很難懂的"},
     {"ja": "メタリック", "en": "Metal stuff", "ko": "메탈릭", "zhHans": "金属的", "zhHant": "金屬的"},
     {"ja": "木製", "en": "Wooden stuff", "ko": "목제", "zhHans": "木质的", "zhHant": "木質的"},
-    {"ja": "文字がある", "en": "Letters & words", "ko": "문자가 있는 것", "zhHans": "有文字的", "zhHant": "有文字的"},
+    {"ja": "文字がある", "en": "Letters and words", "ko": "문자가 있는 것", "zhHans": "有文字的", "zhHant": "有文字的"},
     {"ja": "やわらかい", "en": "Soft stuff", "ko": "부드러운 것", "zhHans": "柔软的", "zhHant": "柔軟的"},
     {"ja": "ゆれる", "en": "Wobbly stuff", "ko": "흔들리는 것", "zhHans": "摇摇晃晃的", "zhHant": "搖搖晃晃的"}
   ],

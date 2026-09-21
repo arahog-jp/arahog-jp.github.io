@@ -27,6 +27,7 @@
     --accent-soft:#FBDDBF;
     --border:#E4DAC3;
     --gold:#C79A2E;
+    --moss-soft:#E6EBD2; --moss-border:#CDD6B1; --moss-strong:#56682B;
     --danger:#C15B4A;
     --shadow:0 1px 2px rgba(46,42,34,0.06), 0 8px 24px -12px rgba(46,42,34,0.18);
     --radius-lg:20px;
@@ -50,6 +51,7 @@
       --accent-soft:#3A2E1C;
       --border:#333C63;
       --gold:#E6C875;
+      --moss-soft:#2A3320; --moss-border:#3F4B2F; --moss-strong:#B9CC8A;
       --danger:#F0897A;
       --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -12px rgba(0,0,0,0.55);
     }
@@ -70,6 +72,7 @@
     --accent-soft:#3A2E1C;
     --border:#333C63;
     --gold:#E6C875;
+    --moss-soft:#2A3320; --moss-border:#3F4B2F; --moss-strong:#B9CC8A;
     --danger:#F0897A;
     --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -12px rgba(0,0,0,0.55);
   }
@@ -173,14 +176,62 @@
   .about-card p{
     font-size:12.5px; line-height:1.9; color:var(--text); margin:0;
   }
-  /* 2つ目の段落(利用のお願い)は、1つ目との間に1行ぶんのすきまをあける */
-  .about-card p + p{ margin-top:1.9em; }
+  /* 「このツールについて」の3つのまとまりは、間に1行ぶんのすきまをあける
+     (2つ目のまとまりは、中に表を入れるため、pではなく div にしている) */
+  .about-card .about-p{ font-size:12.5px; line-height:1.9; color:var(--text); margin:0; }
+  .about-card p + .about-p, .about-card .about-p + p, .about-card p + p{ margin-top:1.9em; }
+  /* 「家具属性の検証について ＋詳細」のボタンと、開いたときの表 */
+  .about-more{
+    display:inline; padding:0; border:none; background:none; text-align:left;
+    font:inherit; font-weight:inherit; color:inherit; cursor:pointer;
+  }
+  .about-more .about-more-mark{
+    display:inline-block; margin-left:4px; padding:0 8px; border-radius:999px;
+    border:1px solid var(--border); color:var(--text-muted);
+    font-size:11px; font-weight:inherit; line-height:1.6; white-space:nowrap;
+  }
+  .about-more:active .about-more-mark{ background:var(--primary-soft); }
+  .verify-panel{ margin:6px 0 8px; }
+  .verify-table{
+    width:100%; border-collapse:separate; border-spacing:0; font-size:12px; line-height:1.6;
+    border:1px solid var(--border); border-radius:var(--radius-sm); overflow:hidden;
+  }
+  .verify-table th, .verify-table td{ padding:4px 10px; text-align:left; border-bottom:1px solid var(--border); }
+  .verify-table th{ background:var(--surface-alt); font-weight:800; color:var(--text-muted); }
+  .verify-table th:first-child, .verify-table td:first-child{ width:4.5em; border-right:1px solid var(--border); font-variant-numeric:tabular-nums; }
+  .verify-table tr:last-child td{ border-bottom:none; }
+  /* お知らせ: 上部に一時的に出す小さなバナー(×で消すと、以後は出ない) と、お知らせの一覧 */
+  .news-banner{
+    max-width:720px; margin:10px auto 0;
+    display:flex; align-items:center; gap:8px;
+    padding:5px 6px 5px 10px;
+    background:var(--moss-soft); border:1px solid var(--moss-border); border-radius:var(--radius-md);
+    font-size:11.5px; line-height:1.5; color:var(--text);
+  }
+  .news-banner .nb-tag{
+    flex:none; padding:0 7px; border-radius:999px;
+    background:var(--surface); color:var(--moss-strong);
+    font-size:10px; font-weight:800; line-height:1.6;
+  }
+  .news-banner .nb-text{ flex:1; min-width:0; }
+  .news-banner .nb-close{
+    flex:none; width:24px; height:24px; padding:0; border:none; border-radius:50%;
+    background:transparent; color:var(--text-muted); font-size:11px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .news-banner .nb-close:active{ background:var(--moss-border); }
+  .news-item + .news-item{ margin-top:1.1em; }
+  .news-date{ font-size:11px; font-weight:700; color:var(--text-faint); font-variant-numeric:tabular-nums; }
+  .news-text{ font-size:12.5px; line-height:1.9; color:var(--text); }
   /* Q&A の小窓: 文章が長いので、小窓の中だけスクロールできるようにする(✕ボタンは動かさない) */
   .qa-scroll{ max-height:calc(100vh - 96px); max-height:calc(100dvh - 96px); overflow-y:auto; padding-right:2px; }
   /* 使い方の小窓: 見出し(①ポケモンをえらぶ など)と、その説明 */
   .how-item + .how-item{ margin-top:1.3em; }
   .how-h{ font-size:12.5px; font-weight:800; line-height:1.7; color:var(--primary-strong); }
   .how-p{ font-size:12.5px; line-height:1.9; color:var(--text); margin:.15em 0 0; }
+  /* 使い方の中に出す、「家具名をコピー」ボタンと同じ見た目の小さなマーク(押せない、説明用) */
+  .how-ico{ display:inline-flex; align-items:center; justify-content:center; width:26px; height:20px; margin:0 3px; vertical-align:middle; position:relative; top:-1px; border:1px solid var(--border); border-radius:7px; background:var(--surface); color:var(--text-muted); }
+  .how-ico svg{ width:13px; height:13px; display:block; }
   .qa-title{ font-size:13px; font-weight:800; line-height:1.6; margin:0 0 12px; }
   .qa-item + .qa-item{ margin-top:1.7em; }
   .qa-row{ display:flex; gap:.5em; font-size:12.5px; line-height:1.9; color:var(--text); }
@@ -408,7 +459,10 @@
     flex-wrap:wrap; gap:2px 12px;
   }
   .top-pick .top-head h3{ margin-top:0; }
-  .top-pick .top-head .score-line{ margin-top:0; margin-left:auto; flex:none; white-space:nowrap; }
+  .top-pick .top-head .score-line{ margin-top:0; flex:none; white-space:nowrap; }
+  /* 「マッチ度 ○%」と、その右の「家具名をコピー」ボタンを、ひとまとめにして右端に置く */
+  .top-pick .top-head .head-right{ margin-left:auto; flex:none; display:inline-flex; align-items:center; gap:8px; }
+  .top-pick .top-head .dex-copy-btn{ position:relative; top:1px; }
   .reasons{
     margin-top:14px; display:flex; flex-direction:column; gap:7px;
   }
@@ -610,8 +664,6 @@
   .recipe-badge.no{ background:var(--surface-alt); color:var(--text-faint); }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8975014206367755"
-     crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -627,28 +679,49 @@
     <div class="menu-dropdown" id="menuDropdown" hidden>
       <button type="button" class="menu-item" id="aboutMenuItem" data-i18n="このツールについて">このツールについて</button>
       <button type="button" class="menu-item" id="howMenuItem" data-i18n="使い方">使い方</button>
+      <button type="button" class="menu-item" id="newsMenuItem" data-i18n="お知らせ">お知らせ</button>
       <button type="button" class="menu-item" id="qaMenuItem">Q&amp;A</button>
       <div id="langMenu" hidden></div>
     </div>
   </div>
 </header>
 
+<!-- お知らせのバナー(index.html の中の NEWS に新しいお知らせを足すと、ここに一時的に出る。×で消すと、以後は出ない) -->
+<div class="news-banner" id="newsBanner" role="status" hidden>
+  <span class="nb-tag" data-i18n="お知らせ">お知らせ</span>
+  <span class="nb-text" id="newsBannerText"></span>
+  <button type="button" class="nb-close" id="newsBannerClose" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
+</div>
+
 <div class="about-overlay" id="aboutOverlay" hidden>
   <div class="about-card" role="dialog" aria-modal="true" aria-label="このツールについて" data-i18n-aria="このツールについて">
     <button type="button" class="about-close" id="aboutCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
+    <div class="qa-scroll">
     <p>
       <span data-i18n="非公式のファンツール" data-ja="このツールは非公式のファンツールです。">このツールは非公式のファンツールです。</span><br>
       <span data-i18n="作成者">作成者</span><span class="colon">：</span><a href="https://x.com/arahog" target="_blank" rel="noopener noreferrer" title="新乃ほぐす (@arahog) / X">新乃ほぐす(@arahog)</a><br>
       <span data-i18n="改善要望・不具合報告は作成者までお願いします。">改善要望・不具合報告は作成者までお願いします。</span>
     </p>
-    <p>
+    <div class="about-p">
       <span data-i18n="共同検証者" data-ja="家具属性の共同検証者様">家具属性の共同検証者様</span><span class="colon">：</span>ヨシオ(@yoshiosumabura)<span data-only-ja>様</span><br>
+      <button type="button" class="about-more" id="verifyToggle" aria-expanded="false" aria-controls="verifyPanel"><span data-i18n="家具属性の検証について">家具属性の検証について</span><span class="about-more-mark" id="verifyMark">＋詳細</span></button><br>
+      <div class="verify-panel" id="verifyPanel" hidden>
+        <table class="verify-table">
+          <thead><tr><th>Ver.</th><th data-i18n="検証者">検証者</th></tr></thead>
+          <tbody>
+            <tr><td>1.0.0</td><td>ヨシオ<span data-only-ja>様</span></td></tr>
+            <tr><td>1.1.0</td><td>新乃ほぐす<span class="name-sep">、</span>ヨシオ<span data-only-ja>様</span></td></tr>
+            <tr><td>2.0.0</td><td>新乃ほぐす<span class="name-sep">、</span>ヨシオ<span data-only-ja>様</span></td></tr>
+          </tbody>
+        </table>
+      </div>
       <span data-i18n="Special Thanks">Special Thanks</span><span class="colon">：</span>わぞ(@wazogyu)<span data-only-ja>様</span>
-    </p>
+    </div>
     <p>
       <span data-i18n="ツールの診断結果・スクリーンショットは自由にご利用いただけます。">ツールの診断結果・スクリーンショットは自由にご利用いただけます。</span><br>
       <span data-i18n="その際、当ツールを利用した旨を記載していただけると、うれしいです。">その際、当ツールを利用した旨を記載していただけると、うれしいです。</span>
     </p>
+    </div>
   </div>
 </div>
 
@@ -664,12 +737,23 @@
       </div>
       <div class="how-item">
         <div class="how-h">② <span data-i18n="診断結果">診断結果</span></div>
-        <p class="how-p" data-i18n="おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。">おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。</p>
+        <p class="how-p"><span data-i18n="おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。">おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、家具の名前をコピーできます。">ボタンを押すと、家具の名前をコピーできます。</span></p>
       </div>
       <div class="how-item">
         <div class="how-h">③ <span data-i18n="好きな家具一覧">好きな家具一覧</span></div>
         <p class="how-p"><span data-i18n="「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。">「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。</span><br><span data-i18n="家具名をコピーすることもできます。">家具名をコピーすることもできます。</span></p>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- お知らせの小窓(⋮メニューの「お知らせ」から開く。中身は NEWS から作る) -->
+<div class="about-overlay" id="newsOverlay" hidden>
+  <div class="about-card" role="dialog" aria-modal="true" aria-label="お知らせ" data-i18n-aria="お知らせ">
+    <button type="button" class="about-close" id="newsCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
+    <div class="qa-scroll">
+      <div class="qa-title" data-i18n="お知らせ">お知らせ</div>
+      <div id="newsList"></div>
     </div>
   </div>
 </div>
@@ -921,6 +1005,7 @@
   const KYUKEI_SIZES = [4, 2, 1]; // ボタンを表示する順番
   let lastFurnScored = [];
   let dexGroupNames = []; // 「好きな家具一覧」の見出しごとの家具名(コピーボタン用)
+  let facCopyNames = [];  // 診断結果の施設カードごとの家具名(コピーボタン用。診断のたびに作り直す)
   const COPY_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>';
   const CHECK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7"/></svg>';
   let dexTab = DEX_CATS[0];
@@ -1346,10 +1431,8 @@
       return ok;
     } catch (e) { return false; }
   }
-  dexGridEl.addEventListener("click", (e) => {
-    const btn = e.target.closest(".dex-copy-btn");
-    if (!btn) return;
-    const names = dexGroupNames[+btn.dataset.group];
+  // コピーして、ボタンを一時的に「✓」と「コピーしました」に変える(「好きな家具一覧」と施設カードで共通)
+  function copyNamesWithFeedback(btn, names){
     if (!names || !names.length) return;
     copyText(names.join("\n")).then(ok => {
       const msg = btn.parentNode.querySelector(".dex-copy-msg");
@@ -1363,6 +1446,11 @@
         if (msg) msg.textContent = "";
       }, 1600);
     });
+  }
+  dexGridEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".dex-copy-btn[data-group]");
+    if (!btn) return;
+    copyNamesWithFeedback(btn, dexGroupNames[+btn.dataset.group]);
   });
 
   dexRecipeFilterEl.querySelectorAll("button").forEach(btn => {
@@ -1403,9 +1491,23 @@
       h += '<span class="badge">' + esc(badgeText) + '</span>';
       // 施設名と「マッチ度 ○%」を同じ行に並べる(マッチ度は右端)。
       // 「（○点／○点満点、○／○グループが好みに合致）」の部分は、表示しない。
+      // 「マッチ度」の右に、カードに出ている家具(おすすめ理由の4グループ+下の丸いラベルの8グループ、
+      // 「ほか○件」の中身も含む)すべての名前をコピーするボタンを付ける。
+      const copyNames = [];
+      r.matchedGroups.slice(0, 12).forEach(g => g.members.forEach(m => {
+        const n = fName(m.name);
+        if (!copyNames.includes(n)) copyNames.push(n);
+      }));
+      let copyBtnHtml = '';
+      if (copyNames.length) {
+        facCopyNames.push(copyNames);
+        const copyLabel = esc(tr('家具名をコピー'));
+        copyBtnHtml = '<span class="dex-copy-wrap"><span class="dex-copy-msg" aria-live="polite"></span>' +
+          '<button type="button" class="dex-copy-btn" data-fac="' + (facCopyNames.length - 1) + '" title="' + copyLabel + '" aria-label="' + copyLabel + '">' + COPY_ICON + '</button></span>';
+      }
       h += '<div class="top-head">';
       h += '<h3>' + esc(facName(r.facility.name)) + '</h3>';
-      h += '<div class="score-line">' + esc(tr('マッチ度')) + ' <b>' + Math.round(r.ratio * 100) + '%</b></div>';
+      h += '<div class="head-right"><div class="score-line">' + esc(tr('マッチ度')) + ' <b>' + Math.round(r.ratio * 100) + '%</b></div>' + copyBtnHtml + '</div>';
       h += '</div>';
       h += '<div class="reasons">';
       if (r.matchedGroups.length) {
@@ -1459,6 +1561,7 @@
     }
 
     // 1〜3位は、最初から詳しく表示する(「上位○施設を詳しく表示しています。」の一文は、表示しない)。
+    facCopyNames = [];
     let html = "";
     coTop.forEach((r, i) => {
       const badgeText = i === 0 ? '🏆 ' + tr('いちばんのおすすめ施設') : '🏆 ' + tr('おすすめ施設（{n}位）', { n: i + 1 });
@@ -1496,6 +1599,11 @@
   // 結果は診断のたびに作り直されるため、ボタン1つずつではなく、結果の枠全体で
   // クリックを受け取って、押されたボタンに応じて開閉する。
   resultBody.addEventListener("click", (e) => {
+    const copyBtn = e.target.closest(".dex-copy-btn[data-fac]");
+    if (copyBtn) {
+      copyNamesWithFeedback(copyBtn, facCopyNames[+copyBtn.dataset.fac]);
+      return;
+    }
     const detailBtn = e.target.closest(".detail-btn");
     if (detailBtn) {
       const detail = document.getElementById(detailBtn.getAttribute("aria-controls"));
@@ -1542,9 +1650,74 @@
   const howMenuItem = document.getElementById("howMenuItem");
   const howOverlay = document.getElementById("howOverlay");
   const howCloseBtn = document.getElementById("howCloseBtn");
+  const newsMenuItem = document.getElementById("newsMenuItem");
+  const newsOverlay = document.getElementById("newsOverlay");
+  const newsCloseBtn = document.getElementById("newsCloseBtn");
   const qaMenuItem = document.getElementById("qaMenuItem");
   const qaOverlay = document.getElementById("qaOverlay");
   const qaCloseBtn = document.getElementById("qaCloseBtn");
+
+  // ===== お知らせ =====
+  // 新しいお知らせは、下の NEWS の「いちばん上」に足します(新しい順に並べる)。
+  //   id     : ほかと重ならない名前(例: "20260930-fix")。この名前で「読んだ」を覚えるので、あとから変えない。
+  //   date   : 「お知らせ」の一覧に出す日付(例: "2026.9.21")。バナーには日付を出さない。
+  //   text   : 日本語の文。他の言語の翻訳は lang.js の "ui" と、Excelの「言語(その他)」に足す。
+  //   banner : false にすると、バナー(サイト上部の一時的な表示)には出さず、一覧にだけ出す。省略すると出す。
+  // バナーには、まだ「×」で消していないお知らせのうち、いちばん新しい1件だけを出す。
+  const NEWS = [
+    { id:"20260921-release", date:"2026.9.21", text:"リリースしました。", banner:false },
+  ];
+  const NEWS_READ_KEY = "pokopiaNewsRead";
+  let newsReadMemory = []; // ブラウザに記録できないとき用(その間だけ覚えておく)
+  function getNewsRead(){
+    try {
+      const v = JSON.parse(localStorage.getItem(NEWS_READ_KEY) || "[]");
+      if (Array.isArray(v)) return v.concat(newsReadMemory);
+    } catch (e) {}
+    return newsReadMemory.slice();
+  }
+  function markNewsRead(){
+    const ids = NEWS.map(n => n.id);
+    newsReadMemory = ids.slice();
+    try {
+      const old = JSON.parse(localStorage.getItem(NEWS_READ_KEY) || "[]");
+      const merged = Array.from(new Set((Array.isArray(old) ? old : []).concat(ids)));
+      localStorage.setItem(NEWS_READ_KEY, JSON.stringify(merged));
+    } catch (e) {}
+  }
+  const newsBanner = document.getElementById("newsBanner");
+  const newsBannerText = document.getElementById("newsBannerText");
+  const newsListEl = document.getElementById("newsList");
+  function renderNews(){
+    newsListEl.innerHTML = NEWS.map(n =>
+      '<div class="news-item"><div class="news-date">' + esc(n.date) + '</div><div class="news-text">' + esc(tr(n.text)) + '</div></div>'
+    ).join("");
+    const read = getNewsRead();
+    const latest = NEWS.find(n => n.banner !== false && !read.includes(n.id));
+    if (latest) {
+      newsBannerText.textContent = tr(latest.text);
+      newsBanner.hidden = false;
+    } else {
+      newsBanner.hidden = true;
+    }
+  }
+  document.getElementById("newsBannerClose").addEventListener("click", () => {
+    markNewsRead();
+    newsBanner.hidden = true;
+  });
+
+  // 「家具属性の検証について ＋詳細」(「このツールについて」の中)
+  const verifyToggle = document.getElementById("verifyToggle");
+  const verifyPanel = document.getElementById("verifyPanel");
+  const verifyMark = document.getElementById("verifyMark");
+  function updateVerifyMark(){
+    verifyMark.textContent = verifyPanel.hidden ? detailOpenLabel() : detailCloseLabel();
+  }
+  verifyToggle.addEventListener("click", () => {
+    verifyPanel.hidden = !verifyPanel.hidden;
+    verifyToggle.setAttribute("aria-expanded", verifyPanel.hidden ? "false" : "true");
+    updateVerifyMark();
+  });
 
   function closeMenu(){
     menuDropdown.hidden = true;
@@ -1564,6 +1737,13 @@
   function closeHow(){
     howOverlay.hidden = true;
   }
+  function openNews(){
+    closeMenu();
+    newsOverlay.hidden = false;
+  }
+  function closeNews(){
+    newsOverlay.hidden = true;
+  }
   function openQa(){
     closeMenu();
     qaOverlay.hidden = false;
@@ -1580,6 +1760,7 @@
   });
   aboutMenuItem.addEventListener("click", openAbout);
   howMenuItem.addEventListener("click", openHow);
+  newsMenuItem.addEventListener("click", openNews);
   qaMenuItem.addEventListener("click", openQa);
   document.addEventListener("click", (e) => {
     if (!menuDropdown.hidden && !menuDropdown.contains(e.target) && e.target !== menuBtn) {
@@ -1594,12 +1775,16 @@
   howOverlay.addEventListener("click", (e) => {
     if (e.target === howOverlay) closeHow();
   });
+  newsCloseBtn.addEventListener("click", closeNews);
+  newsOverlay.addEventListener("click", (e) => {
+    if (e.target === newsOverlay) closeNews();
+  });
   qaCloseBtn.addEventListener("click", closeQa);
   qaOverlay.addEventListener("click", (e) => {
     if (e.target === qaOverlay) closeQa();
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") { closeMenu(); closeAbout(); closeHow(); closeQa(); }
+    if (e.key === "Escape") { closeMenu(); closeAbout(); closeHow(); closeNews(); closeQa(); }
   });
 
   // ===== 言語の切り替え(⋮メニューの中の「言語」) =====
@@ -1635,6 +1820,10 @@
     });
     document.querySelectorAll(".colon").forEach(el => { el.textContent = colon(); });
     document.querySelectorAll("[data-only-ja]").forEach(el => { el.hidden = currentLang !== "ja"; });
+    // 名前を並べるときの区切り(日本語・中国語は「、」、英語・韓国語は「, 」)
+    document.querySelectorAll(".name-sep").forEach(el => { el.textContent = (currentLang === "en" || currentLang === "ko") ? ", " : "、"; });
+    updateVerifyMark();
+    renderNews();
     buildLangMenu();
   }
   function setLang(code){

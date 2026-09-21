@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ぽこあ施設診断</title>
+<!-- ホーム画面に追加したときのアイコン画像(このHTMLと同じ場所の「画像保管庫」フォルダの「home-icon.png」)。
+     ファイル名は、ウェブのアドレスで文字化けしないよう、半角英数字にしている(中身は「ホームアイコン.png」と同じ画像)。
+     iPhone・iPadは apple-touch-icon、Androidやブラウザのタブは icon を使う。
+     公開するとき(GitHubなど)は、この画像も「画像保管庫」フォルダごと、index.htmlと同じ場所にアップロードすること。 -->
+<link rel="apple-touch-icon" href="画像保管庫/home-icon.png">
+<link rel="icon" type="image/png" href="画像保管庫/home-icon.png">
+<style>
+  :root{
+    --bg:#FAF6EC;
+    --surface:#FFFFFF;
+    --surface-alt:#F1EADA;
+    --surface-raised:#FFFFFF;
+    --text:#2E2A22;
+    --text-muted:#7A7160;
+    --text-faint:#A79E8C;
+    --primary:#3E7C59;
+    --primary-strong:#2C5B40;
+    --primary-soft:#DCEBE0;
+    --accent:#E8793A;
+    --accent-strong:#C7601F;
+    --accent-soft:#FBDDBF;
+    --border:#E4DAC3;
+    --gold:#C79A2E;
+    --danger:#C15B4A;
+    --shadow:0 1px 2px rgba(46,42,34,0.06), 0 8px 24px -12px rgba(46,42,34,0.18);
+    --radius-lg:20px;
+    --radius-md:14px;
+    --radius-sm:10px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12172A;
+      --surface:#1C2340;
+      --surface-alt:#242C4C;
+      --surface-raised:#262E50;
+      --text:#F1EDE0;
+      --text-muted:#B6B2CE;
+      --text-faint:#7D7AA0;
+      --primary:#7FD9A8;
+      --primary-strong:#57C48B;
+      --primary-soft:#233A31;
+      --accent:#F2A65A;
+      --accent-strong:#F7BE81;
+      --accent-soft:#3A2E1C;
+      --border:#333C63;
+      --gold:#E6C875;
+      --danger:#F0897A;
+      --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -12px rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12172A;
+    --surface:#1C2340;
+    --surface-alt:#242C4C;
+    --surface-raised:#262E50;
+    --text:#F1EDE0;
+    --text-muted:#B6B2CE;
+    --text-faint:#7D7AA0;
+    --primary:#7FD9A8;
+    --primary-strong:#57C48B;
+    --primary-soft:#233A31;
+    --accent:#F2A65A;
+    --accent-strong:#F7BE81;
+    --accent-soft:#3A2E1C;
+    --border:#333C63;
+    --gold:#E6C875;
+    --danger:#F0897A;
+    --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -12px rgba(0,0,0,0.55);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","M PLUS Rounded 1c",sans-serif;
+    padding:0 18px;
+    padding-block:0;
+    line-height:1.6;
+  }
+  .display{ font-family:"M PLUS Rounded 1c","Zen Maru Gothic",sans-serif; }
+
+  a{color:var(--primary-strong);}
+  h1,h2,h3{ text-wrap:balance; margin:0; }
+  button{ font-family:inherit; }
+
+  /* ---------- Header ---------- */
+  header.top{
+    /* 画面の上に固定せず、ふつうにスクロールで流れるようにする(以前は position:sticky で固定していた)。
+       「⋮」メニューが他の部分の上に重なって表示されるよう、position:relative と z-index は残している。 */
+    position:relative;
+    z-index:20;
+    margin:0 -18px;
+    padding:14px 18px;
+    padding-top:calc(14px + env(safe-area-inset-top, 0px));
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  header.top .mark{
+    width:38px;height:38px;border-radius:11px;
+    background:linear-gradient(155deg, var(--primary) 0%, var(--primary-strong) 100%);
+    display:flex;align-items:center;justify-content:center;
+    font-size:19px;flex:none;
+    box-shadow:var(--shadow);
+    overflow:hidden; /* 中の画像を、角丸の枠に合わせて切り抜く */
+  }
+  header.top .mark img{ width:100%; height:100%; object-fit:cover; display:block; }
+  header.top .title{
+    font-family:"M PLUS Rounded 1c",sans-serif;
+    font-weight:800;
+    font-size:17px;
+    letter-spacing:.01em;
+  }
+  header.top .sub{
+    font-size:11px;
+    color:var(--text-muted);
+    margin-top:1px;
+  }
+
+  .header-menu-wrap{ margin-left:auto; position:relative; flex:none; }
+  .menu-btn{
+    width:34px; height:34px; border-radius:10px;
+    border:1px solid var(--border); background:var(--surface);
+    display:flex; align-items:center; justify-content:center;
+    font-size:19px; line-height:1; color:var(--text-muted);
+    cursor:pointer; padding:0;
+  }
+  .menu-btn:active{ background:var(--surface-alt); }
+  .menu-dropdown{
+    position:absolute; top:calc(100% + 6px); right:0;
+    background:var(--surface-raised); border:1px solid var(--border);
+    border-radius:var(--radius-md); box-shadow:var(--shadow);
+    min-width:190px; overflow:hidden; z-index:30;
+  }
+  .menu-dropdown .menu-item{
+    display:block; width:100%; text-align:left; padding:11px 14px;
+    border:none; background:none; font-size:12.5px; font-weight:700;
+    color:var(--text); cursor:pointer;
+  }
+  .menu-dropdown .menu-item:active{ background:var(--surface-alt); }
+  /* 言語の切り替え(⋮メニューの中) */
+  .menu-dropdown .menu-sep{ height:1px; background:var(--border); margin:4px 0; }
+  .menu-dropdown .menu-label{ padding:8px 14px 2px; font-size:11px; font-weight:700; color:var(--text-muted); }
+  .menu-dropdown .lang-item[aria-current="true"]{ color:var(--primary-strong); }
+  .menu-dropdown .lang-item[aria-current="true"]::after{ content:" ✓"; }
+  /* 韓国語・中国語では、日本語用のフォントに無い文字が出るため、それぞれの言語に合った書体を使う。
+     (使う書体は、画面の言語を切り替えたときに、下の script で Google Fonts から読み込む。
+      読み込めなかったとき用に、パソコンやスマホに入っている書体も続けて指定している) */
+  html[lang="ko"] body, html[lang="ko"] body *{ font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif !important; }
+  html[lang="zh-Hans"] body, html[lang="zh-Hans"] body *{ font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif !important; }
+  html[lang="zh-Hant"] body, html[lang="zh-Hant"] body *{ font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif !important; }
+
+  .about-overlay{
+    position:fixed; inset:0; background:rgba(20,16,8,.4);
+    display:flex; align-items:center; justify-content:center;
+    z-index:100; padding:24px;
+  }
+  .about-card{
+    position:relative; max-width:320px; width:100%;
+    background:var(--surface-raised); border:1px solid var(--border);
+    border-radius:var(--radius-lg); box-shadow:var(--shadow);
+    padding:24px 18px 18px;
+  }
+  .about-card p{
+    font-size:12.5px; line-height:1.9; color:var(--text); margin:0;
+  }
+  /* 2つ目の段落(利用のお願い)は、1つ目との間に1行ぶんのすきまをあける */
+  .about-card p + p{ margin-top:1.9em; }
+  /* Q&A の小窓: 文章が長いので、小窓の中だけスクロールできるようにする(✕ボタンは動かさない) */
+  .qa-scroll{ max-height:calc(100vh - 96px); max-height:calc(100dvh - 96px); overflow-y:auto; padding-right:2px; }
+  /* 使い方の小窓: 見出し(①ポケモンをえらぶ など)と、その説明 */
+  .how-item + .how-item{ margin-top:1.3em; }
+  .how-h{ font-size:12.5px; font-weight:800; line-height:1.7; color:var(--primary-strong); }
+  .how-p{ font-size:12.5px; line-height:1.9; color:var(--text); margin:.15em 0 0; }
+  .qa-title{ font-size:13px; font-weight:800; line-height:1.6; margin:0 0 12px; }
+  .qa-item + .qa-item{ margin-top:1.7em; }
+  .qa-row{ display:flex; gap:.5em; font-size:12.5px; line-height:1.9; color:var(--text); }
+  .qa-row + .qa-row{ margin-top:.35em; }
+  .qa-mark{ flex:none; font-weight:800; color:var(--primary-strong); }
+  .qa-q .qa-text{ font-weight:700; }
+  .about-close{
+    position:absolute; top:8px; right:8px;
+    width:26px; height:26px; border-radius:50%;
+    border:none; background:var(--surface-alt); color:var(--text-muted);
+    font-size:12px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; padding:0;
+  }
+  .about-close:active{ background:var(--border); }
+
+  main{ max-width:720px; margin:0 auto; padding-bottom:64px; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:22px 0 10px;
+  }
+  .hero .eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:11.5px;font-weight:700;color:var(--primary-strong);
+    background:var(--primary-soft);
+    padding:4px 10px;border-radius:999px;
+    letter-spacing:.03em;
+    margin-bottom:10px;
+  }
+  .hero h1{
+    font-size:23px;
+    font-weight:800;
+    font-family:"M PLUS Rounded 1c",sans-serif;
+  }
+  .hero p{
+    margin-top:8px;
+    color:var(--text-muted);
+    font-size:13.5px;
+    max-width:52ch;
+  }
+
+  /* ---------- Campfire illustration ---------- */
+  .scene{
+    margin-top:16px;
+    height:86px;
+    border-radius:var(--radius-lg);
+    background:linear-gradient(180deg, var(--primary-soft) 0%, var(--surface-alt) 100%);
+    border:1px solid var(--border);
+    position:relative;
+    overflow:hidden;
+  }
+  .scene .hill{
+    position:absolute; left:-10%; bottom:-30px; width:60%; height:70px;
+    background:var(--primary); opacity:.35; border-radius:50%;
+  }
+  .scene .hill2{
+    position:absolute; right:-15%; bottom:-40px; width:70%; height:80px;
+    background:var(--primary); opacity:.22; border-radius:50%;
+  }
+  .scene .tent{
+    position:absolute; left:14%; bottom:10px; width:0;height:0;
+    border-left:26px solid transparent; border-right:26px solid transparent;
+    border-bottom:40px solid var(--accent-strong);
+    filter:drop-shadow(0 2px 0 rgba(0,0,0,0.05));
+  }
+  .scene .tent::after{
+    content:"";position:absolute; left:-3px; bottom:0; width:6px;height:40px;
+    background:var(--accent-soft);
+  }
+  .scene .fire{
+    position:absolute; left:44%; bottom:10px; width:14px; height:20px;
+    background:var(--gold);
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow:0 0 16px 4px color-mix(in srgb, var(--gold) 55%, transparent);
+    animation:flicker 2.4s ease-in-out infinite;
+  }
+  @keyframes flicker{ 0%,100%{ transform:scaleY(1) translateY(0);} 50%{ transform:scaleY(1.12) translateY(-2px);} }
+  .scene .pika{
+    position:absolute; right:18%; bottom:12px; width:22px;height:22px;
+    background:var(--gold); border-radius:50% 50% 45% 45%;
+  }
+  @media (prefers-reduced-motion:reduce){ .scene .fire{ animation:none; } }
+
+  /* ---------- Section ---------- */
+  section{ margin-top:26px; }
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+    margin-bottom:12px;
+  }
+  .section-head h2{
+    font-size:15.5px; font-weight:800;
+    display:flex; align-items:center; gap:7px;
+  }
+  .section-head .count{
+    font-size:11.5px; color:var(--text-faint); font-weight:600;
+  }
+
+  /* ---------- Picker grid ---------- */
+  .picker-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px;
+  }
+  @media (max-width:420px){ .picker-grid{ grid-template-columns:1fr; } }
+
+  .slot{
+    position:relative;
+    border:1.5px dashed var(--border);
+    border-radius:var(--radius-md);
+    background:var(--surface);
+    min-height:64px;
+  }
+  .slot.filled{ border-style:solid; }
+
+  .slot input.search{
+    width:100%; height:64px; border:none; background:transparent;
+    padding:0 40px 0 14px; font-size:14px; color:var(--text);
+    border-radius:var(--radius-md);
+    outline:none;
+  }
+  .slot input.search::placeholder{ color:var(--text-faint); }
+  .slot .slot-num{
+    position:absolute; left:10px; top:8px; font-size:9.5px; font-weight:700;
+    color:var(--text-faint); letter-spacing:.04em;
+  }
+  .slot input.search{ padding-top:14px; }
+
+  .slot .clear-btn{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    width:24px;height:24px;border:none;border-radius:50%;
+    background:var(--surface-alt); color:var(--text-muted);
+    font-size:13px; cursor:pointer; display:none;
+    align-items:center;justify-content:center;
+  }
+  .slot.filled .clear-btn{ display:flex; }
+
+  .chip-card{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 40px 10px 14px;
+    min-height:64px;
+  }
+  .chip-card .avatar{
+    width:38px;height:38px;border-radius:11px;flex:none;
+    background:linear-gradient(155deg, var(--accent-soft), var(--primary-soft));
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px; font-weight:800; color:var(--primary-strong);
+    font-family:"M PLUS Rounded 1c",sans-serif;
+  }
+  .chip-card .name{ font-weight:700; font-size:14px; }
+  .chip-card .tags{
+    margin-top:3px; display:flex; flex-wrap:wrap; gap:4px;
+  }
+  .chip-card .tags span{
+    font-size:10px; padding:2px 6px; border-radius:999px;
+    background:var(--primary-soft); color:var(--primary-strong); font-weight:700;
+  }
+  .chip-card .tags span.dislike{
+    background:var(--accent-soft); color:var(--accent-strong);
+  }
+
+  .dropdown{
+    position:absolute; left:0; right:0; top:calc(100% + 6px);
+    background:var(--surface-raised); border:1px solid var(--border);
+    border-radius:var(--radius-md); box-shadow:var(--shadow);
+    max-height:260px; overflow-y:auto; z-index:30;
+    overscroll-behavior:contain; /* 候補の一番上・一番下まで来たとき、ページ全体まで動いてしまわないようにする */
+    padding:6px;
+  }
+  .dropdown button{
+    display:flex; width:100%; align-items:center; gap:8px;
+    padding:8px 8px; border:none; background:transparent; border-radius:8px;
+    text-align:left; cursor:pointer; color:var(--text); font-size:13.5px;
+  }
+  .dropdown button:hover, .dropdown button.active{ background:var(--primary-soft); }
+  .dropdown .empty{ padding:14px 8px; color:var(--text-faint); font-size:12.5px; text-align:center; }
+  .dropdown small{ color:var(--text-faint); font-size:10.5px; margin-left:auto; flex:none; }
+
+  /* ---------- CTA ---------- */
+  .cta-row{
+    margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  button.primary{
+    background:linear-gradient(155deg, var(--accent) 0%, var(--accent-strong) 100%);
+    color:#fff; border:none; padding:13px 26px; border-radius:999px;
+    font-weight:800; font-size:14.5px; cursor:pointer; box-shadow:var(--shadow);
+    font-family:"M PLUS Rounded 1c",sans-serif;
+    display:flex; align-items:center; gap:8px;
+  }
+  button.primary:active{ transform:translateY(1px); }
+  button.ghost{
+    background:transparent; border:1.5px solid var(--border); color:var(--text-muted);
+    padding:11px 18px; border-radius:999px; font-weight:700; font-size:13px; cursor:pointer;
+  }
+  .hint{ font-size:11.5px; color:var(--text-faint); }
+
+  /* ---------- Result: top pick ---------- */
+  .top-pick{
+    border-radius:var(--radius-lg);
+    background:linear-gradient(160deg, var(--primary-soft) 0%, var(--surface) 55%);
+    border:1.5px solid var(--primary);
+    padding:20px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  .top-pick::before{
+    content:"🏆"; position:absolute; right:14px; top:14px; font-size:34px; opacity:.16;
+  }
+  .top-pick .badge{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:11px; font-weight:800; color:#fff;
+    background:var(--primary-strong); padding:4px 11px; border-radius:999px;
+    letter-spacing:.03em;
+  }
+  .top-pick h3{
+    margin-top:10px; font-size:26px; font-weight:800;
+    font-family:"M PLUS Rounded 1c",sans-serif; color:var(--primary-strong);
+  }
+  .top-pick .score-line{
+    margin-top:4px; font-size:12.5px; color:var(--text-muted); font-weight:600;
+  }
+  .top-pick .score-line b{ font-variant-numeric:tabular-nums; color:var(--text); }
+  /* 施設名(左)と「マッチ度 ○%」(右端)を同じ行に並べる。文字の大きさは、これまでのまま。
+     施設名が長くて入りきらないときは、マッチ度が次の行の右端に回る。 */
+  .top-pick .top-head{
+    margin-top:10px; display:flex; align-items:baseline; justify-content:space-between;
+    flex-wrap:wrap; gap:2px 12px;
+  }
+  .top-pick .top-head h3{ margin-top:0; }
+  .top-pick .top-head .score-line{ margin-top:0; margin-left:auto; flex:none; white-space:nowrap; }
+  .reasons{
+    margin-top:14px; display:flex; flex-direction:column; gap:7px;
+  }
+  .reasons .reason{
+    display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text);
+    background:var(--surface); border:1px solid var(--border);
+    padding:8px 10px; border-radius:var(--radius-sm);
+  }
+  .reasons .reason .n{
+    font-weight:800; color:var(--primary-strong); font-variant-numeric:tabular-nums;
+    flex:none; min-width:20px;
+  }
+  .reasons .reason .reason-text{ flex:1; min-width:0; font-size:13px; line-height:1.7; }
+  .reasons .reason .reason-text .rp{ margin-top:4px; line-height:2; }
+  /* 家具名の右の点数(下の丸いラベルの点数と同じ:11px・うすい文字・ふつうの太さ) */
+  .reasons .reason .reason-text .sc{ font-size:11px; font-weight:400; color:var(--text-muted); }
+  .reasons .reason .reason-text b{ font-weight:800; color:var(--text); font-size:13.5px; }
+  /* ポケモン名の緑の楕円(「好きな家具一覧」の「.who span」と同じ見た目) */
+  .reasons .reason .reason-text .pk{
+    display:inline-block; font-size:10.5px; padding:2px 8px; border-radius:999px;
+    background:var(--primary-soft); color:var(--primary-strong); font-weight:700;
+    line-height:1.5; margin:0 4px 0 0; vertical-align:middle;
+  }
+  /* 「ほか○件」ボタンと、その中身の一覧 */
+  .more-btn{
+    display:inline-block; margin-left:2px; padding:1px 8px;
+    border:1px solid var(--primary); border-radius:999px;
+    background:var(--surface); color:var(--primary-strong);
+    font-size:11px; font-weight:700; cursor:pointer; line-height:1.6;
+  }
+  .more-btn:active{ background:var(--primary-soft); }
+  .more-list{
+    display:block; margin-top:5px; font-size:11.5px; line-height:1.7;
+    color:var(--text-muted);
+  }
+  .furn-preview .more-list{ flex-basis:100%; margin-top:0; padding:0 4px; }
+  .furn-preview{
+    margin-top:14px; display:flex; flex-wrap:wrap; gap:6px;
+  }
+  .furn-preview span{
+    font-size:11px; padding:5px 9px; border-radius:999px;
+    background:var(--surface); border:1px solid var(--border); color:var(--text-muted);
+  }
+  .furn-preview span b{ font-weight:800; color:var(--text); }
+
+  /* 4位以降の詳細カードでは、🏆のうす絵柄は出さない */
+  .top-pick.lower::before{ content:none; }
+
+  /* ---------- Ranking rows ---------- */
+  .rank-list{ display:flex; flex-direction:column; gap:8px; }
+  .rank-item{ display:flex; flex-direction:column; gap:8px; }
+  .detail-btn{
+    flex:none; padding:6px 11px; border-radius:999px;
+    border:1.5px solid var(--primary); background:var(--surface);
+    color:var(--primary-strong); font-size:11.5px; font-weight:700;
+    cursor:pointer; white-space:nowrap;
+  }
+  .detail-btn:active{ background:var(--primary-soft); }
+  .rank-row{
+    display:flex; align-items:center; gap:12px;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    padding:11px 14px;
+  }
+  .rank-row .rank-no{
+    font-family:"M PLUS Rounded 1c",sans-serif; font-weight:800; font-size:15px;
+    color:var(--text-faint); width:22px; flex:none; text-align:center;
+  }
+  .rank-row .rank-body{ flex:1; min-width:0; }
+  .rank-row .rank-name{ font-weight:700; font-size:13.5px; }
+  .rank-row .bar-track{
+    margin-top:6px; height:6px; border-radius:999px; background:var(--surface-alt); overflow:hidden;
+  }
+  .rank-row .bar-fill{
+    height:100%; border-radius:999px; background:linear-gradient(90deg, var(--primary), var(--accent));
+  }
+  .rank-row .rank-score{
+    font-size:12px; font-weight:700; color:var(--text-muted); flex:none;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- Furniture table (collapsible) ---------- */
+  details.furn-details{
+    border:1px solid var(--border); border-radius:var(--radius-md); background:var(--surface);
+    overflow:hidden;
+  }
+  details.furn-details > summary{
+    list-style:none; cursor:pointer; padding:13px 16px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-weight:700; font-size:13.5px;
+  }
+  details.furn-details > summary::-webkit-details-marker{ display:none; }
+  details.furn-details > summary .chev{ transition:transform .2s ease; color:var(--text-faint); }
+  details.furn-details[open] > summary .chev{ transform:rotate(90deg); }
+  .furn-table-wrap{ overflow-x:auto; border-top:1px solid var(--border); }
+  table.furn-table{ width:100%; border-collapse:collapse; font-size:12px; white-space:nowrap; }
+  table.furn-table th, table.furn-table td{
+    padding:8px 10px; text-align:left; border-bottom:1px solid var(--border);
+  }
+  table.furn-table th{
+    font-size:10.5px; color:var(--text-faint); font-weight:700; position:sticky; top:0; background:var(--surface);
+  }
+  table.furn-table td.num, table.furn-table th.num{ text-align:center; font-variant-numeric:tabular-nums; }
+  table.furn-table td.attrs{ white-space:normal; color:var(--text-muted); font-size:11px; max-width:260px; }
+  table.furn-table tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Pokemon legend ---------- */
+  .legend-grid{ display:flex; flex-direction:column; gap:8px; }
+  .legend-row{
+    display:flex; align-items:flex-start; gap:10px;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    padding:10px 12px;
+  }
+  .legend-row .avatar{
+    width:32px;height:32px;border-radius:9px;flex:none;
+    background:var(--primary-soft); color:var(--primary-strong);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;
+    font-family:"M PLUS Rounded 1c",sans-serif;
+  }
+  .legend-row .name{ font-weight:700; font-size:13px; }
+  .legend-row .tags{ margin-top:4px; display:flex; flex-wrap:wrap; gap:4px; }
+  .legend-row .tags span{ font-size:10px; padding:2px 7px; border-radius:999px; background:var(--primary-soft); color:var(--primary-strong); font-weight:700; }
+  .legend-row .tags span.dislike{ background:var(--accent-soft); color:var(--accent-strong); }
+
+  .empty-state{
+    text-align:center; padding:30px 16px; color:var(--text-faint); font-size:13px;
+    border:1.5px dashed var(--border); border-radius:var(--radius-lg);
+  }
+
+  footer{
+    margin-top:34px; padding-top:16px; border-top:1px solid var(--border);
+    font-size:11px; color:var(--text-faint); line-height:1.8;
+    padding-bottom:env(safe-area-inset-bottom, 0px);
+  }
+  footer b{ color:var(--text-muted); }
+
+  [hidden]{ display:none!important; }
+
+  .note-box{
+    margin-top:12px; font-size:11.5px; color:var(--text-muted);
+    background:var(--surface-alt); border:1px solid var(--border);
+    border-radius:var(--radius-sm); padding:10px 12px;
+  }
+
+  /* ---------- Furniture dex (tabs + sort) ---------- */
+  .dex-body{ padding:14px 16px 16px; border-top:1px solid var(--border); }
+  .tabbar{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  .tabbar button{
+    padding:7px 13px; border-radius:999px; border:1.5px solid var(--border);
+    background:var(--surface); font-size:12px; font-weight:700; color:var(--text-muted);
+    cursor:pointer;
+  }
+  .tabbar button.active{ background:var(--primary); color:#fff; border-color:var(--primary); }
+
+  .sort-row{
+    display:flex; align-items:center; gap:8px; margin-bottom:14px;
+    font-size:11.5px; color:var(--text-faint); font-weight:700; flex-wrap:wrap;
+  }
+  .segmented{ display:inline-flex; border:1.5px solid var(--border); border-radius:999px; overflow:hidden; }
+  .segmented button{
+    padding:6px 12px; border:none; background:var(--surface); font-size:11px; font-weight:700;
+    color:var(--text-muted); cursor:pointer;
+  }
+  .segmented button.active{ background:var(--accent); color:#fff; }
+
+  .furn-dex-grid{ display:flex; flex-direction:column; gap:7px; max-height:420px; overflow-y:auto; }
+  .dex-group-head{
+    font-size:11.5px; font-weight:800; color:var(--primary-strong);
+    padding:0 2px; margin-top:6px;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+  }
+  /* 「4匹が好き」などの見出しの右端にある、家具名のコピーボタン(紙が2枚重なったマーク) */
+  .dex-copy-wrap{ display:inline-flex; align-items:center; gap:6px; flex:none; }
+  .dex-copy-msg{ font-size:10.5px; font-weight:700; color:var(--accent-strong); }
+  .dex-copy-btn{
+    width:30px; height:26px; padding:0; flex:none;
+    display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--border); border-radius:8px;
+    background:var(--surface); color:var(--text-muted); cursor:pointer;
+  }
+  .dex-copy-btn:active{ background:var(--surface-alt); }
+  .dex-copy-btn.copied{ color:var(--accent-strong); border-color:var(--accent-strong); }
+  .dex-copy-btn svg{ width:15px; height:15px; display:block; pointer-events:none; }
+  .furn-dex-item{
+    display:flex; align-items:center; gap:10px;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    padding:9px 12px;
+  }
+  .furn-dex-item .fname{ font-weight:700; font-size:12.5px; }
+  .furn-dex-item .who{ display:flex; gap:4px; flex-wrap:wrap; margin-top:4px; }
+  .furn-dex-item .who span{
+    font-size:9.5px; padding:2px 6px; border-radius:999px;
+    background:var(--primary-soft); color:var(--primary-strong); font-weight:700;
+  }
+  .recipe-badge{
+    font-size:10px; font-weight:800; padding:3px 8px; border-radius:999px; flex:none;
+    white-space:nowrap;
+  }
+  .recipe-badge.yes{ background:var(--accent-soft); color:var(--accent-strong); }
+  .recipe-badge.no{ background:var(--surface-alt); color:var(--text-faint); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+</head>
+<body>
+
+<header class="top">
+  <!-- ホーム画面のアイコンと同じ画像。もし画像が読み込めないとき(アップロード漏れなど)は、これまでの絵文字に戻す。 -->
+  <div class="mark"><img src="画像保管庫/home-icon.png" alt="" onerror="this.parentNode.textContent='🏕️'"></div>
+  <div>
+    <div class="title" data-i18n="ぽこあ施設診断">ぽこあ施設診断</div>
+    <div class="sub" data-i18n="えらんだポケモンから、つくるべき施設をおすすめ">えらんだポケモンから、つくるべき施設をおすすめ</div>
+  </div>
+  <div class="header-menu-wrap">
+    <button type="button" class="menu-btn" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-label="メニュー" data-i18n-aria="メニュー">⋮</button>
+    <div class="menu-dropdown" id="menuDropdown" hidden>
+      <button type="button" class="menu-item" id="aboutMenuItem" data-i18n="このツールについて">このツールについて</button>
+      <button type="button" class="menu-item" id="howMenuItem" data-i18n="使い方">使い方</button>
+      <button type="button" class="menu-item" id="qaMenuItem">Q&amp;A</button>
+      <div id="langMenu" hidden></div>
+    </div>
+  </div>
+</header>
+
+<div class="about-overlay" id="aboutOverlay" hidden>
+  <div class="about-card" role="dialog" aria-modal="true" aria-label="このツールについて" data-i18n-aria="このツールについて">
+    <button type="button" class="about-close" id="aboutCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
+    <p>
+      <span data-i18n="非公式のファンツール" data-ja="このツールは非公式のファンツールです。">このツールは非公式のファンツールです。</span><br>
+      <span data-i18n="作成者">作成者</span><span class="colon">：</span><a href="https://x.com/arahog" target="_blank" rel="noopener noreferrer" title="新乃ほぐす (@arahog) / X">新乃ほぐす(@arahog)</a><br>
+      <span data-i18n="改善要望・不具合報告は作成者までお願いします。">改善要望・不具合報告は作成者までお願いします。</span>
+    </p>
+    <p>
+      <span data-i18n="共同検証者" data-ja="家具属性の共同検証者様">家具属性の共同検証者様</span><span class="colon">：</span>ヨシオ(@yoshiosumabura)<span data-only-ja>様</span><br>
+      <span data-i18n="Special Thanks">Special Thanks</span><span class="colon">：</span>わぞ(@wazogyu)<span data-only-ja>様</span>
+    </p>
+    <p>
+      <span data-i18n="ツールの診断結果・スクリーンショットは自由にご利用いただけます。">ツールの診断結果・スクリーンショットは自由にご利用いただけます。</span><br>
+      <span data-i18n="その際、当ツールを利用した旨を記載していただけると、うれしいです。">その際、当ツールを利用した旨を記載していただけると、うれしいです。</span>
+    </p>
+  </div>
+</div>
+
+<!-- 使い方の小窓(⋮メニューの「使い方」から開く) -->
+<div class="about-overlay" id="howOverlay" hidden>
+  <div class="about-card" role="dialog" aria-modal="true" aria-label="使い方" data-i18n-aria="使い方">
+    <button type="button" class="about-close" id="howCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
+    <div class="qa-scroll">
+      <div class="qa-title" data-i18n="使い方">使い方</div>
+      <div class="how-item">
+        <div class="how-h">① <span data-i18n="ポケモンをえらぶ">ポケモンをえらぶ</span></div>
+        <p class="how-p" data-i18n="住まわせたい1～4匹のポケモンを選択して、「施設を診断する」のボタンを押します。">住まわせたい1～4匹のポケモンを選択して、「施設を診断する」のボタンを押します。</p>
+      </div>
+      <div class="how-item">
+        <div class="how-h">② <span data-i18n="診断結果">診断結果</span></div>
+        <p class="how-p" data-i18n="おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。">おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。</p>
+      </div>
+      <div class="how-item">
+        <div class="how-h">③ <span data-i18n="好きな家具一覧">好きな家具一覧</span></div>
+        <p class="how-p"><span data-i18n="「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。">「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。</span><br><span data-i18n="家具名をコピーすることもできます。">家具名をコピーすることもできます。</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Q&A の小窓(⋮メニューの「Q&A」から開く) -->
+<div class="about-overlay" id="qaOverlay" hidden>
+  <div class="about-card" role="dialog" aria-modal="true" aria-label="Q&amp;A">
+    <button type="button" class="about-close" id="qaCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
+    <div class="qa-scroll">
+      <div class="qa-title">Q&amp;A</div>
+      <div class="qa-item">
+        <div class="qa-row qa-q"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="テーブルなどは無いのですか？">テーブルなどは無いのですか？</span></div>
+        <div class="qa-row qa-a"><span class="qa-mark">A.</span><span class="qa-text" data-i18n="ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！">ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！</span></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-row qa-q"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="ここに載っている家具じゃなきゃダメなの？">ここに載っている家具じゃなきゃダメなの？</span></div>
+        <div class="qa-row qa-a"><span class="qa-mark">A.</span><span class="qa-text"><span data-i18n="そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。">そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。</span><br><span data-i18n="このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。">このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。</span></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="hero">
+    <h1><span data-i18n="ポケモンの「好物」と「苦手」から、">ポケモンの「好物」と「苦手」から、</span><br><span data-i18n="おすすめ施設を診断します">おすすめ施設を診断します</span></h1>
+    <p data-i18n="1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設をおすすめします。">1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設をおすすめします。</p>
+    <div class="scene" aria-hidden="true">
+      <div class="hill"></div><div class="hill2"></div>
+      <div class="tent"></div>
+      <div class="fire"></div>
+      <div class="pika"></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>① <span data-i18n="ポケモンをえらぶ">ポケモンをえらぶ</span></h2>
+      <span class="count" id="selectedCount">0 / 4 匹</span>
+    </div>
+    <div class="picker-grid" id="pickerGrid"></div>
+    <div class="cta-row">
+      <button class="primary" id="diagnoseBtn">✨ <span data-i18n="施設を診断する">施設を診断する</span></button>
+      <button class="ghost" id="resetBtn" data-i18n="えらび直す">えらび直す</button>
+      <span class="hint" id="sampleHint" data-i18n="※ サンプルとして4匹を仮選択済みです">※ サンプルとして4匹を仮選択済みです</span>
+    </div>
+  </section>
+
+  <section id="resultSection">
+    <div class="section-head">
+      <h2>② <span data-i18n="診断結果">診断結果</span></h2>
+    </div>
+    <div id="resultBody"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>③ <span data-i18n="好きな家具一覧">好きな家具一覧</span></h2>
+      <span class="count" id="dexCount">0件</span>
+    </div>
+    <details class="furn-details" id="dexDetails">
+      <summary><span data-i18n="えらんだポケモンが好きな家具を見る（+詳細）">えらんだポケモンが好きな家具を見る（+詳細）</span> <span class="chev">›</span></summary>
+      <div class="dex-body">
+        <div class="tabbar" id="dexTabs"></div>
+        <div class="sort-row">
+          <span data-i18n="切り替え">切り替え</span>
+          <div class="segmented" id="dexRecipeFilter">
+            <button type="button" data-recipe="all" class="active" data-i18n="すべて">すべて</button>
+            <button type="button" data-recipe="yes" data-i18n="レシピあり">レシピあり</button>
+            <button type="button" data-recipe="no" data-i18n="レシピなし">レシピなし</button>
+          </div>
+        </div>
+        <div class="sort-row" id="dexSizeFilterRow" style="display:none;"></div>
+        <div class="furn-dex-grid" id="dexGrid"></div>
+      </div>
+    </details>
+  </section>
+
+</main>
+<script src="data.js"></script>
+<script src="lang.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  // ===== 言語切り替え(日本語・英語・韓国語・中国語(簡体字)・中国語(繁体字)) =====
+  // 画面に出す名前・文言の翻訳は lang.js(LANG)に入っています。
+  // ツールの中では、ポケモン・家具・属性・施設は、これまでどおり「日本語の名前」で区別しています(data.js と同じ)。
+  // 画面に出すときだけ、選んだ言語の名前に置きかえます(pName / fName / aName / facName / tr)。
+  // ・lang.js が読み込めなかったとき、または翻訳が見つからないときは、その部分を日本語のまま表示します(止まりません)。
+  // ・翻訳が見つからなかった名前は、ブラウザの「コンソール」(F12キー)に、警告として出ます。
+  const HAS_LANG = (typeof LANG !== "undefined") && LANG && Array.isArray(LANG.languages) && LANG.languages.length > 0;
+  const LANGS = HAS_LANG ? LANG.languages : [{ code: "ja", name: "日本語" }];
+  const nfkc = s => String(s == null ? "" : s).normalize("NFKC");
+  const buildMap = rows => new Map((rows || []).map(r => [nfkc(r.ja), r]));
+  const TR = {
+    ui: buildMap(HAS_LANG && LANG.ui),
+    pokemon: buildMap(HAS_LANG && LANG.pokemon),
+    furniture: buildMap(HAS_LANG && LANG.furniture),
+    attrs: buildMap(HAS_LANG && LANG.attrs),
+    facilities: buildMap(HAS_LANG && LANG.facilities)
+  };
+  let currentLang = "ja";
+  const missingSet = new Set();
+  function lookup(kind, ja){
+    if (currentLang === "ja") return ja;
+    const row = TR[kind].get(nfkc(ja));
+    const v = row && row[currentLang];
+    if (v) return v;
+    const key = kind + "::" + ja;
+    if (!missingSet.has(key)) {
+      missingSet.add(key);
+      console.warn("[lang] 翻訳が見つかりません(日本語のまま表示します): " + kind + " / " + ja + " / " + currentLang);
+    }
+    return ja;
+  }
+  // 画面の文言。{n} などは vars で置きかえる。jaOverride は、日本語のときだけ使う文(見出しの言い回しが違う場合)。
+  function tr(ja, vars, jaOverride){
+    let s = (currentLang === "ja") ? (jaOverride !== undefined ? jaOverride : ja) : lookup("ui", ja);
+    if (vars) s = s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
+    return s;
+  }
+  const pName = n => lookup("pokemon", n);
+  const fName = n => lookup("furniture", n);
+  const aName = n => lookup("attrs", n);
+  const facName = n => lookup("facilities", n);
+  const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const firstChar = s => Array.from(String(s))[0] || "";
+  // 言語ごとの書き方の違い(全角のかっこ・コロン・数字の前の空白など)
+  const isEastAsian = () => currentLang === "ja" || currentLang === "zhHans" || currentLang === "zhHant";
+  const colon = () => isEastAsian() ? "：" : ": ";
+  const sp = () => (currentLang === "en" || currentLang === "ko") ? " " : "";
+  const parenOpen = () => isEastAsian() ? "（" : " (";
+  const parenClose = () => isEastAsian() ? "）" : ")";
+  // 名前を並べるときの区切り(日本語は「・」、中国語は「、」、英語・韓国語は「, 」)
+  const listSep = () => currentLang === "ja" ? "・" : (currentLang === "en" || currentLang === "ko") ? ", " : "、";
+  // 画面に出す言語での並び順(五十音順・ABC順・가나다순・拼音/注音順)
+  const collators = {};
+  const getCollator = () => collators[currentLang] || (collators[currentLang] = new Intl.Collator(COLLATE[currentLang] || "en"));
+  const HTML_LANG = { ja: "ja", en: "en", ko: "ko", zhHans: "zh-Hans", zhHant: "zh-Hant" };
+  const COLLATE = { ja: "ja", en: "en", ko: "ko", zhHans: "zh-Hans-CN", zhHant: "zh-Hant-TW" };
+  const FONT_URLS = {
+    ko: "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap",
+    zhHans: "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&display=swap",
+    zhHant: "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&display=swap"
+  };
+  function loadLangFont(code){
+    const href = FONT_URLS[code];
+    if (!href || document.querySelector('link[data-lang-font="' + code + '"]')) return;
+    const l = document.createElement("link");
+    l.rel = "stylesheet"; l.href = href; l.setAttribute("data-lang-font", code);
+    document.head.appendChild(l);
+  }
+  // 検索用: 全角・半角、ひらがな・カタカナ、英字の大文字・小文字、アクセント記号(é など)の違いを無視して比べる
+  const toKatakana = s => s.replace(/[\u3041-\u3096]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0x60));
+  const normSearch = s => toKatakana(nfkc(s)).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").normalize("NFC");
+  function detectLang(){
+    const codes = LANGS.map(l => l.code);
+    try { const q = new URLSearchParams(location.search).get("lang"); if (q && codes.includes(q)) return q; } catch (e) {}
+    try { const saved = localStorage.getItem("pokopiaLang"); if (saved && codes.includes(saved)) return saved; } catch (e) {}
+    const list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || "ja"];
+    for (const raw of list) {
+      const l = String(raw).toLowerCase();
+      if (l.startsWith("ja") && codes.includes("ja")) return "ja";
+      if (l.startsWith("ko") && codes.includes("ko")) return "ko";
+      if (l.startsWith("zh")) {
+        const c = /(-tw|-hk|-mo|hant)/.test(l) ? "zhHant" : "zhHans";
+        if (codes.includes(c)) return c;
+      }
+      if (l.startsWith("en") && codes.includes("en")) return "en";
+    }
+    return codes.includes("en") ? "en" : "ja";
+  }
+  // data.js のポケモンと家具は「No.順」で入っています。
+  // 画面に出すときは、名前の五十音順(ｶﾅ・漢字の読み順)に並べ替えて使います。
+  // (元のDATAの並びは変えず、並べ替えたコピーを作っています)
+  const byJapaneseName = (a, b) => a.name.localeCompare(b.name, 'ja');
+  const pokemons = DATA.pokemons.slice().sort(byJapaneseName);
+  const furniture = DATA.furniture.slice().sort(byJapaneseName);
+  const facilities = DATA.facilities;
+  // 「居住可否」が × のポケモン(data.js で "livable": false)は、空き家に住めないため、
+  // ポケモン選択の候補には出しません。(データとしては残してあります)
+  const selectablePokemons = pokemons.filter(p => p.livable !== false);
+  const furnByName = new Map(furniture.map(f => [f.name, f]));
+
+  // tunable weights -- placeholder scoring logic
+  // 好物1(そのポケモンが最も好きな属性)~好物5(サブ的に好きな属性)に、優先度に応じた重みをつける。
+  // 好物1が一致した場合は5点、好物2は4点…好物5は1点、というように、一致した好物の中で
+  // いちばん優先度の高いもの1つだけを、その家具の得点として採用する(複数一致しても加算はしない)。
+  const LIKE_WEIGHTS = [5, 4, 3, 2, 1];
+  // 苦手な属性が1つでも一致した家具は、好物との一致に関わらず0点にするため、
+  // 減点の重みはもう使っていない(scoreFurniture関数を参照)。
+
+  // 属性の「レア度」による重みづけ。
+  // 「トレーニングできる」のように、ごく一部の家具にしか付いていない属性は、
+  // その施設らしさを強く示す特別な一致だと考え、得点を大きくする。
+  // 逆に「みんなで使う」「布仕立て」のように、ほとんどの施設にありふれている属性は、
+  // 一致してもその施設の個性を示す力が弱いと考え、得点を小さくする。
+  // ・ATTR_FREQ: その属性が家具リスト442件のうち何件についているかの件数
+  // ・RARITY_BASELINE: だいたいこの件数の属性を「重み1.0(標準)」とする基準値
+  // ・RARITY_MIN/MAX: 重みが極端になりすぎないようにする下限・上限
+  const ATTR_FREQ = {};
+  furniture.forEach(f => f.attrs.forEach(a => { ATTR_FREQ[a] = (ATTR_FREQ[a] || 0) + 1; }));
+  const RARITY_BASELINE = 30;
+  const RARITY_MIN = 0.4;
+  const RARITY_MAX = 4;
+  function rarityWeight(attr){
+    const count = ATTR_FREQ[attr] || furniture.length;
+    const w = Math.sqrt(furniture.length / count) / Math.sqrt(furniture.length / RARITY_BASELINE);
+    return Math.max(RARITY_MIN, Math.min(RARITY_MAX, w));
+  }
+
+  // 特定のタイプのポケモンは、特定の家具を特に好む、という追加ルール。
+  // 「ひこう」タイプのポケモンは、とまり木・木のすばこを好みやすいと考える。
+  // ・すでに好物との一致がある場合は、その得点をmultiplier倍する(まずは2倍)。
+  // ・好物との一致が全く無い(0点)場合でも、タイプが合っていればfloorの点数を保証する
+  //   (「一致が無くてもタイプが合えば最低限のボーナス点を与える」という方式)。
+  // ※苦手属性と一致している場合は、このボーナスより前の時点で0点が確定しており、
+  //   ボーナスは適用されない(苦手の判定を上書きしない)。
+  const TYPE_BONUS = {
+    "とまり木": { type: "ひこう", multiplier: 2, floor: 2 },
+    "木のすばこ": { type: "ひこう", multiplier: 2, floor: 2 }
+  };
+
+  const DEFAULT_PICK = ["デカヌチャン","パピモッチ","バウッツェル","ピカチュウ"];
+  let selected = [null, null, null, null];
+  DEFAULT_PICK.forEach((n, i) => {
+    const p = selectablePokemons.find(x => x.name === n);
+    if (p) selected[i] = p;
+  });
+  // 「※ サンプルとして4匹を仮選択済みです」の表示・非表示を管理するフラグ。
+  // 最初は表示しておき、「えらび直す」ボタンが押されたとき、または
+  // 4枠のうち1匹でも「✕」ボタンでポケモンが解除されたときに、非表示にする。
+  let showSampleHint = true;
+  function updateSampleHint(){
+    const hintEl = document.getElementById("sampleHint");
+    if (hintEl) hintEl.hidden = !showSampleHint;
+  }
+
+  const pickerGrid = document.getElementById("pickerGrid");
+  const selectedCount = document.getElementById("selectedCount");
+  const resultBody = document.getElementById("resultBody");
+  const dexTabsEl = document.getElementById("dexTabs");
+  const dexGridEl = document.getElementById("dexGrid");
+  const dexCountEl = document.getElementById("dexCount");
+  const dexRecipeFilterEl = document.getElementById("dexRecipeFilter");
+  const dexSizeFilterEl = document.getElementById("dexSizeFilterRow");
+
+  const DEX_CATS = ["おもちゃ","かざりつけ","きゅうけい"];
+  const KYUKEI_SIZES = [4, 2, 1]; // ボタンを表示する順番
+  let lastFurnScored = [];
+  let dexGroupNames = []; // 「好きな家具一覧」の見出しごとの家具名(コピーボタン用)
+  const COPY_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>';
+  const CHECK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7"/></svg>';
+  let dexTab = DEX_CATS[0];
+  let dexRecipeFilter = "all"; // "all"=すべて表示 / "yes"=レシピありの家具だけ / "no"=レシピなしの家具だけ
+  let dexSizeFilter = null; // 「きゅうけい」タブでのｻｲｽﾞ絞り込み(nullなら絞り込みなし)
+
+  function norm(s){ return (s||"").toString(); }
+
+  // 「苦手:」の表示(日本語は今までどおり)
+  function dislikeLabel(){
+    if (currentLang === "ja") return "苦手:";
+    return tr('苦手') + ((currentLang === "zhHans" || currentLang === "zhHant") ? "：" : ": ");
+  }
+
+  function renderSlots(){
+    pickerGrid.innerHTML = "";
+    selected.forEach((p, idx) => {
+      const slot = document.createElement("div");
+      slot.className = "slot" + (p ? " filled" : "");
+
+      if (p) {
+        slot.innerHTML =
+          '<div class="chip-card">' +
+            '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
+            '<div style="min-width:0;flex:1;">' +
+              '<div class="name">' + esc(pName(p.name)) + '</div>' +
+              '<div class="tags">' +
+                p.likes.map(t => '<span>' + esc(aName(t)) + '</span>').join("") +
+                (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<button class="clear-btn" data-idx="' + idx + '" aria-label="' + esc(tr('クリア')) + '">✕</button>';
+      } else {
+        slot.innerHTML =
+          '<span class="slot-num">POKÉMON ' + (idx+1) + '</span>' +
+          '<input class="search" type="text" placeholder="' + esc(tr('ポケモン名で検索') + '…') + '" data-idx="' + idx + '" autocomplete="off">' +
+          '<div class="dropdown" hidden></div>';
+      }
+      pickerGrid.appendChild(slot);
+    });
+
+    pickerGrid.querySelectorAll(".clear-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selected[+btn.dataset.idx] = null;
+        showSampleHint = false;
+        updateSampleHint();
+        renderSlots();
+      });
+    });
+
+    pickerGrid.querySelectorAll("input.search").forEach(input => {
+      const idx = +input.dataset.idx;
+      const dropdown = input.parentElement.querySelector(".dropdown");
+
+      function showResults(q){
+        const query = normSearch(norm(q).trim());
+        const usedNames = new Set(selected.filter(Boolean).map(p => p.name));
+        // 候補は件数を絞らず、五十音順にすべて出す(候補の枠は高さが決まっていて、はみ出した分はスクロールで見られる)。
+        let matches;
+        if (!query) {
+          matches = selectablePokemons.filter(p => !usedNames.has(p.name));
+        } else {
+          // 画面に出ている言語の名前でも、日本語の名前でも、見つかるようにする
+          matches = selectablePokemons.filter(p => !usedNames.has(p.name) &&
+            (normSearch(pName(p.name)).includes(query) || normSearch(p.name).includes(query)));
+        }
+        // 日本語以外のときは、その言語の名前の並び順(ABC順など)に並べ直す
+        if (currentLang !== "ja") {
+          const col = getCollator();
+          matches = matches.slice().sort((a, b) => col.compare(pName(a.name), pName(b.name)));
+        }
+        dropdown.innerHTML = "";
+        if (matches.length === 0) {
+          dropdown.innerHTML = '<div class="empty">' + esc(tr('見つかりませんでした')) + '</div>';
+        } else {
+          matches.forEach(p => {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.innerHTML = '<span>' + esc(pName(p.name)) + '</span><small>' + p.likes.slice(0,2).map(x => esc(aName(x))).join(listSep()) + '</small>';
+            b.addEventListener("mousedown", (e) => {
+              e.preventDefault();
+              selected[idx] = p;
+              renderSlots();
+            });
+            dropdown.appendChild(b);
+          });
+        }
+        dropdown.hidden = false;
+      }
+
+      // 候補の枠のスクロールバーをつかんでも、入力欄からカーソルが外れて枠が閉じてしまわないようにする
+      dropdown.addEventListener("mousedown", (e) => { e.preventDefault(); });
+      input.addEventListener("focus", () => showResults(input.value));
+      input.addEventListener("input", () => showResults(input.value));
+      input.addEventListener("blur", () => { setTimeout(() => { dropdown.hidden = true; }, 120); });
+    });
+
+    selectedCount.textContent = tr('{n} / 4 匹', { n: selected.filter(Boolean).length });
+  }
+
+  // ポケモンの好物リスト(likes、好物1~好物5の優先度順)の中で、家具の属性と一致するものを探す。
+  // 一致した好物それぞれについて「優先度の重み(LIKE_WEIGHTS)×その属性のレア度(rarityWeight)」を求め、
+  // いちばん score(優先度×レア度)が高いもの1つだけを、その家具の得点として採用する
+  // (複数一致しても加算はしない。また、優先度が高い(数字が小さい)好物であっても、
+  // その属性がありふれたものである場合は、優先度は低いがレアな属性との一致の方が
+  // 採用されることがある=そのポケモンにとって本当に特別な一致を重視するため)。
+  function bestLikeMatch(likes, attrs){
+    let bestScore = -1;
+    let bestRankIdx = -1;
+    let hits = 0;
+    likes.forEach((a, idx) => {
+      if (attrs.includes(a)) {
+        hits++;
+        const base = LIKE_WEIGHTS[idx] !== undefined ? LIKE_WEIGHTS[idx] : 1;
+        const score = base * rarityWeight(a);
+        if (score > bestScore) { bestScore = score; bestRankIdx = idx; }
+      }
+    });
+    if (bestRankIdx === -1) return { weight: 0, hits: 0, rank: null };
+    return { weight: bestScore, hits, rank: bestRankIdx + 1 };
+  }
+
+  function scoreFurniture(f, picks){
+    let total = 0;
+    const bonus = TYPE_BONUS[f.name];
+    const perPokemon = picks.map(p => {
+      const dislikeHits = p.dislike && f.attrs.includes(p.dislike) ? 1 : 0;
+      // 苦手な属性が1つでも含まれている家具は、好物属性が一致していても、そのポケモンにとっては0点にする
+      // (好物と苦手が同時に一致していても、加点も減点もしない)
+      let likeScore = 0, likeHits = 0, likeRank = null;
+      if (!dislikeHits) {
+        const best = bestLikeMatch(p.likes, f.attrs);
+        likeScore = best.weight; likeHits = best.hits; likeRank = best.rank;
+        // タイプによる家具ボーナス(例:ひこうタイプ×とまり木/木のすばこ)。
+        // 好物との一致があればmultiplier倍、一致が無い(0点)場合でもfloorを保証する。
+        if (bonus && p.types && p.types.includes(bonus.type)) {
+          likeScore = Math.max(likeScore * bonus.multiplier, bonus.floor);
+        }
+      }
+      const s = likeScore;
+      total += s;
+      return { name: p.name, size: p.size, score: s, likeHits, likeScore, likeRank, dislikeHits };
+    });
+    return { furniture: f, total, perPokemon };
+  }
+
+  function computeFurnitureScores(picks){
+    return furniture.map(f => scoreFurniture(f, picks)).sort((a,b) => b.total - a.total);
+  }
+
+  // 施設ごとの得点は「必要レベル(配点)の合計のうち、今回選んだポケモンの好みに合う家具が
+  // どれくらいの強さで見つかったか」という割合(ratio、0~1)で比較する。これにより、家具の件数が少ない
+  // 施設と多い施設を公平に比較できる。また、名前は違っても中身がほぼ同じ家具(小分類が同じ家具)は、
+  // 1つのグループとして1回分だけ数える(重複してカウントしない)。
+  // 「一致した/しなかった」の二択ではなく、一致した好物が何番目に強いものだったか(優先度の重み)
+  // も反映するため、グループごとに「マッチ度(0~1)」を求め、必要レベルに掛け合わせて得点にする。
+  // マッチ度は、そのグループの中でいちばん強く一致した家具について、
+  // 「選んだポケモン全員が好物1(最大5点)で一致した場合」を1.0(満点)としたときの割合。
+  //
+  // ratio(割合)だけで比較すると、家具の種類が少なく特定の好みに特化した小さい施設が、
+  // 「ほぼ全部が好みに合う」ことで割合を跳ね上げやすく、実際の獲得点(achieved、絶対値)が
+  // もっと多い大きな施設より上位に来てしまうことがある。これを緩和するため、
+  // 「割合(ratio)」と「獲得点の絶対値を0~1に正規化した値(achievedNorm)」の
+  // 相乗平均(sqrt(ratio × achievedNorm))を「combined」として、最終的な比較・並び順に使う。
+  // achievedNormは、今回の診断対象の中でいちばん獲得点が高かった施設を1.0とした相対値。
+  function computeFacilityScoresV2(furnScoreMap, picks){
+    // ランキングの並び順を決めるための「内部用」のものさし。
+    // レアな属性を重視するぶん、理論上の最大値(全員が好物1で、かつ最大限レアな属性で一致した場合)も
+    // 大きくなる。これは施設どうしの強弱を細かく見分けるためのものさしで、そのままは表示しない。
+    const maxPossibleTotalForRanking = LIKE_WEIGHTS[0] * RARITY_MAX * Math.max(1, picks.length);
+    // 「マッチ度」「一致度」として画面に表示する値のためのものさし。
+    // レア度を導入する前と同じ基準(好物1で一致した場合を100%とする)にしておくことで、
+    // 表示される数字の感覚(良い一致なら5~6割以上伸びる、など)を変えないようにする。
+    const maxPossibleTotalForDisplay = LIKE_WEIGHTS[0] * Math.max(1, picks.length);
+
+    const rawScores = facilities.map(fac => {
+      // 家具を「小分類グループ」ごとにまとめる(小分類が無い家具は、その家具自身だけの
+      // グループとして扱う)
+      const groups = new Map();
+      fac.furniture.forEach(item => {
+        const scored = furnScoreMap.get(item.name);
+        if (!scored) return; // 家具リストに見つからない名前は無視する(データ不備の保険)
+        const gid = scored.furniture.group ? scored.furniture.group : ("単独:" + item.name);
+        if (!groups.has(gid)) groups.set(gid, { level: item.level, members: [] });
+        const g = groups.get(gid);
+        if (item.level > g.level) g.level = item.level; // 同グループ内で必要レベルが割れていた場合は高いほうを採用
+        g.members.push({ name: item.name, scored });
+      });
+
+      let achieved = 0;        // 並び順を決めるための獲得点(内部用、そのままは表示しない)
+      let achievedDisplay = 0; // 画面に表示する「マッチ度」のための獲得点
+      let possible = 0;
+      const matchedGroups = [];
+      // coveragePokemonSet: この施設の家具を1つでも好んでいる(得点>0)ポケモンの名前の集合。
+      // 選んだポケモンのうち何匹がこの施設でカバーされているかを見るためのもの。
+      const coveragePokemonSet = new Set();
+      groups.forEach((g, gid) => {
+        possible += g.level;
+
+        let bestQualityForRanking = 0;
+        let bestQualityForDisplay = 0;
+        g.members.forEach(m => {
+          const qRanking = maxPossibleTotalForRanking > 0 ? m.scored.total / maxPossibleTotalForRanking : 0;
+          if (qRanking > bestQualityForRanking) bestQualityForRanking = qRanking;
+          const qDisplay = maxPossibleTotalForDisplay > 0 ? m.scored.total / maxPossibleTotalForDisplay : 0;
+          if (qDisplay > bestQualityForDisplay) bestQualityForDisplay = qDisplay;
+          m.scored.perPokemon.forEach(pp => { if (pp.score > 0) coveragePokemonSet.add(pp.name); });
+        });
+        bestQualityForRanking = Math.max(0, Math.min(1, bestQualityForRanking));
+        bestQualityForDisplay = Math.max(0, Math.min(1, bestQualityForDisplay));
+
+        // 並び順を決める獲得点には、一致度をそのまま(1乗)ではなく2乗して反映する。
+        // これにより、「そこそこの一致がたくさんある施設」よりも、
+        // 「本当に好きなもの(一致度が高い)にしっかり一致している施設」を重視するようになる。
+        achieved += g.level * Math.pow(bestQualityForRanking, 2);
+        // 画面に表示する獲得点は、直感的な%になるよう、そのまま(2乗しない)使う。
+        achievedDisplay += g.level * bestQualityForDisplay;
+
+        if (bestQualityForDisplay > 0) {
+          const hitMembers = g.members.filter(m => m.scored.total > 0);
+          // 選んだポケモンのうち誰か1匹でも「苦手」な家具は、他の誰かが好きでも
+          // おすすめ欄(reasons・家具プレビュー)には表示しない。
+          // (得点・マッチ度の計算そのものはこれまでと変えず、表示だけを絞り込む)
+          const safeMembers = hitMembers.filter(m =>
+            !picks.some(p => p.dislike && m.scored.furniture.attrs.includes(p.dislike))
+          );
+          if (safeMembers.length > 0) {
+            // 表示用の一致度は、苦手な家具を除いた「安全な」家具の中でのベストな値を使う
+            let safeQuality = 0;
+            safeMembers.forEach(m => {
+              const q = maxPossibleTotalForDisplay > 0 ? m.scored.total / maxPossibleTotalForDisplay : 0;
+              if (q > safeQuality) safeQuality = q;
+            });
+            safeQuality = Math.max(0, Math.min(1, safeQuality));
+            // 「苦手」で0点になったポケモンを除き、実際にこの家具を好んだポケモンだけを表示用に集める
+            const matchedNameSet = new Set();
+            safeMembers.forEach(m => {
+              m.scored.perPokemon.forEach(pp => { if (pp.score > 0) matchedNameSet.add(pp.name); });
+            });
+            matchedGroups.push({ gid, level: g.level, quality: safeQuality, members: safeMembers, matchedNames: Array.from(matchedNameSet) });
+          }
+        }
+      });
+      matchedGroups.sort((a,b) => (b.level*b.quality) - (a.level*a.quality));
+
+      // ratio: 画面に「マッチ度」として表示する割合(直感的な基準のまま)。
+      // ratioForRanking: 並び順を決めるための、内部専用の割合(そのままは表示しない)。
+      const ratio = possible > 0 ? achievedDisplay / possible : 0;
+      const ratioForRanking = possible > 0 ? achieved / possible : 0;
+
+      // coverageRatio: 選んだポケモンのうち、この施設で(苦手を除いて)何匹分の好みに
+      // 一致する家具があったかの割合。1匹だけの好みに強く一致しているだけの施設が、
+      // 全員分バランスよく一致している施設より上に来すぎないようにするための係数。
+      const coverageCount = picks.filter(p => coveragePokemonSet.has(p.name)).length;
+      const coverageRatio = picks.length > 0 ? coverageCount / picks.length : 1;
+
+      return {
+        facility: fac,
+        ratio, ratioForRanking, achieved, achievedDisplay, possible,
+        totalGroups: groups.size,
+        matchedGroupCount: matchedGroups.length,
+        matchedGroups,
+        coverageCount, coverageRatio
+      };
+    });
+
+    // achievedNorm: 今回の対象施設全体の中でいちばん獲得点(achieved、内部用)が高い施設を1.0とした相対値。
+    // combined: ratioForRanking(内部用の割合)とachievedNormの相乗平均に、さらにcoverageRatio
+    // (選んだポケモン全員をどれだけカバーできているか)による重みをかけたもの。並び順はこれで決める。
+    // COVERAGE_POWERを2にしているのは、「1匹だけに強く一致」より「全員にバランスよく一致」を
+    // はっきり優先するため(数値実験の結果、1では効果が弱いケースがあったため2を採用)。
+    const COVERAGE_POWER = 2;
+    const maxAchieved = Math.max(1e-9, ...rawScores.map(r => r.achieved));
+    rawScores.forEach(r => {
+      r.achievedNorm = r.achieved / maxAchieved;
+      const base = Math.sqrt(Math.max(0, r.ratioForRanking) * Math.max(0, r.achievedNorm));
+      r.combined = base * Math.pow(Math.max(0, Math.min(1, r.coverageRatio)), COVERAGE_POWER);
+    });
+
+    return rawScores.sort((a,b) => b.combined - a.combined || b.ratioForRanking - a.ratioForRanking || b.achieved - a.achieved);
+  }
+
+  function renderDex(){
+    const picks = selected.filter(Boolean);
+    function isDisliked(f){
+      return picks.some(p => p.dislike && f.attrs.includes(p.dislike));
+    }
+
+    const counts = {};
+    DEX_CATS.forEach(c => { counts[c] = lastFurnScored.filter(r => r.total > 0 && r.furniture.usage === c && !isDisliked(r.furniture)).length; });
+
+    dexTabsEl.innerHTML = DEX_CATS.map(c =>
+      '<button type="button" data-cat="' + c + '" class="' + (c === dexTab ? "active" : "") + '">' +
+        esc(tr(c)) + parenOpen() + counts[c] + parenClose() +
+      '</button>'
+    ).join("");
+    dexTabsEl.querySelectorAll("button").forEach(b => {
+      b.addEventListener("click", () => {
+        dexTab = b.dataset.cat;
+        dexSizeFilter = null; // タブを切り替えたら、ｻｲｽﾞ絞り込みは一旦リセットする
+        renderDex();
+      });
+    });
+
+    // 「きゅうけい」タブのときだけ、ｻｲｽﾞで絞り込むボタンを表示する
+    if (dexTab === "きゅうけい") {
+      dexSizeFilterEl.style.display = "";
+      dexSizeFilterEl.innerHTML =
+        esc(tr('ｻｲｽﾞで絞り込み')) +
+        '<div class="segmented">' +
+          KYUKEI_SIZES.map(sz =>
+            '<button type="button" data-size="' + sz + '" class="' + (dexSizeFilter === sz ? "active" : "") + '">' + esc(tr('ｻｲｽﾞ')) + sp() + sz + '</button>'
+          ).join("") +
+        '</div>';
+      dexSizeFilterEl.querySelectorAll("button").forEach(b => {
+        b.addEventListener("click", () => {
+          const sz = +b.dataset.size;
+          dexSizeFilter = (dexSizeFilter === sz) ? null : sz; // もう一度押すと絞り込み解除
+          renderDex();
+        });
+      });
+    } else {
+      dexSizeFilterEl.style.display = "none";
+      dexSizeFilterEl.innerHTML = "";
+    }
+
+    let items = lastFurnScored.filter(r => r.total > 0 && r.furniture.usage === dexTab && !isDisliked(r.furniture));
+    // 「切り替え すべて／レシピあり／レシピなし」: マスタデータ(家具リストシートの「ﾚｼﾋﾟ」列)の
+    // レシピ有無をもとに絞り込む。「すべて」のときは絞り込まない。
+    if (dexRecipeFilter !== "all") {
+      items = items.filter(r => dexRecipeFilter === "yes" ? r.furniture.recipe === true : r.furniture.recipe === false);
+    }
+    if (dexTab === "きゅうけい" && dexSizeFilter != null) {
+      items = items.filter(r => r.furniture.size === dexSizeFilter);
+    }
+    items = items.slice().sort((a, b) => {
+      // 1. まず「選んだポケモンのうち何匹がこの家具を好きか」で、多い順(4匹→3匹→2匹→1匹)に並べる
+      const aLikeCount = a.perPokemon.filter(pp => pp.likeHits > 0).length;
+      const bLikeCount = b.perPokemon.filter(pp => pp.likeHits > 0).length;
+      if (aLikeCount !== bLikeCount) return bLikeCount - aLikeCount;
+      // 2. 「きゅうけい」は、同じ匹数どうしなら、家具そのもののｻｲｽﾞが大きいほう(4→2→1)を先に並べる
+      if (dexTab === "きゅうけい") {
+        const aSize = a.furniture.size != null ? a.furniture.size : -1;
+        const bSize = b.furniture.size != null ? b.furniture.size : -1;
+        if (aSize !== bSize) return bSize - aSize;
+      }
+      // 3. 同じ匹数(・同じｻｲｽﾞ)どうしは、家具名の五十音順(ｶﾅ・漢字の読み順)に並べる
+      if (currentLang === "ja") return a.furniture.name.localeCompare(b.furniture.name, 'ja');
+      return getCollator().compare(fName(a.furniture.name), fName(b.furniture.name));
+    });
+
+    dexCountEl.textContent = tr('{n}件', { n: items.length });
+
+    if (items.length === 0) {
+      dexGridEl.innerHTML = '<div class="empty-state" style="padding:18px;">' + esc(tr('この分類には好みに合う家具がありませんでした')) + '</div>';
+      return;
+    }
+
+    const showSize = dexTab === "きゅうけい";
+
+    // 「4匹が好き」「3匹が好き」…の境目に、見出しを差し込む
+    let lastLikeCount = null;
+    const htmlParts = [];
+    dexGroupNames = []; // 見出しごとの家具名(コピーボタンで使う)
+    items.forEach(r => {
+      const whoPokemon = r.perPokemon.filter(pp => pp.likeHits > 0);
+      const likeCount = whoPokemon.length;
+      if (likeCount !== lastLikeCount) {
+        dexGroupNames.push([]);
+        const copyLabel = esc(tr('家具名をコピー'));
+        htmlParts.push(
+          '<div class="dex-group-head"' + (lastLikeCount === null ? ' style="margin-top:0;"' : '') + '>' +
+            '<span>' + esc(tr('{n}匹が好き', { n: likeCount })) + '</span>' +
+            '<span class="dex-copy-wrap"><span class="dex-copy-msg" aria-live="polite"></span>' +
+            '<button type="button" class="dex-copy-btn" data-group="' + (dexGroupNames.length - 1) + '" title="' + copyLabel + '" aria-label="' + copyLabel + '">' + COPY_ICON + '</button></span>' +
+          '</div>'
+        );
+        lastLikeCount = likeCount;
+      }
+      dexGroupNames[dexGroupNames.length - 1].push(fName(r.furniture.name));
+      const hasRecipe = r.furniture.recipe === true;
+      const recipeKnown = r.furniture.recipe !== null;
+      const recipeLabel = recipeKnown ? (hasRecipe ? tr('レシピあり') : tr('レシピなし')) : tr('レシピ不明');
+      const recipeClass = hasRecipe ? "yes" : "no";
+      const fnameLabel = esc(fName(r.furniture.name)) + (showSize ? parenOpen() + esc(tr('サイズ')) + sp() + (r.furniture.size != null ? r.furniture.size : esc(tr('不明'))) + parenClose() : '');
+      const whoHtml = whoPokemon.map(pp => {
+        const tags = [];
+        if (showSize) tags.push(esc(tr('サイズ')) + sp() + (pp.size != null ? pp.size : esc(tr('不明'))));
+        const label = tags.length ? (esc(pName(pp.name)) + parenOpen() + tags.join('・') + parenClose()) : esc(pName(pp.name));
+        return '<span>' + label + '</span>';
+      }).join("");
+      htmlParts.push(
+        '<div class="furn-dex-item">' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div class="fname">' + fnameLabel + '</div>' +
+            '<div class="who">' + whoHtml + '</div>' +
+          '</div>' +
+          '<span class="recipe-badge ' + recipeClass + '">' + recipeLabel + '</span>' +
+        '</div>'
+      );
+    });
+    dexGridEl.innerHTML = htmlParts.join("");
+  }
+
+  // 「家具名をコピー」ボタン: 押した見出し(「4匹が好き」など)の家具名を、1行に1つずつコピーする
+  function copyText(text){
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(() => true, () => fallbackCopy(text));
+    }
+    return Promise.resolve(fallbackCopy(text));
+  }
+  function fallbackCopy(text){
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0;";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  }
+  dexGridEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".dex-copy-btn");
+    if (!btn) return;
+    const names = dexGroupNames[+btn.dataset.group];
+    if (!names || !names.length) return;
+    copyText(names.join("\n")).then(ok => {
+      const msg = btn.parentNode.querySelector(".dex-copy-msg");
+      if (msg) msg.textContent = ok ? tr('コピーしました') : tr('コピーできませんでした');
+      if (ok) { btn.classList.add("copied"); btn.innerHTML = CHECK_ICON; }
+      clearTimeout(btn._copyTimer);
+      btn._copyTimer = setTimeout(() => {
+        if (!btn.isConnected) return;
+        btn.classList.remove("copied");
+        btn.innerHTML = COPY_ICON;
+        if (msg) msg.textContent = "";
+      }, 1600);
+    });
+  });
+
+  dexRecipeFilterEl.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      dexRecipeFilter = btn.dataset.recipe;
+      dexRecipeFilterEl.querySelectorAll("button").forEach(b => b.classList.toggle("active", b === btn));
+      renderDex();
+    });
+  });
+
+  // 「＋詳細」「－閉じる」ボタンの文字(日本語は今までどおり全角の＋と－)
+  const detailOpenLabel = () => (isEastAsian() ? "＋" : "+ ") + tr('詳細');
+  const detailCloseLabel = () => (isEastAsian() ? "－" : "- ") + tr('閉じる');
+
+  function renderResults(){
+    const picks = selected.filter(Boolean);
+    if (picks.length === 0) {
+      resultBody.innerHTML = '<div class="empty-state">' + esc(tr('まずはポケモンを1匹以上選んでください 🐾')) + '</div>';
+      lastFurnScored = [];
+      renderDex();
+      return;
+    }
+
+    const furnScored = computeFurnitureScores(picks);
+    const furnScoreMap = new Map(furnScored.map(r => [r.furniture.name, r]));
+    const facScored = computeFacilityScoresV2(furnScoreMap, picks);
+    lastFurnScored = furnScored;
+
+    // 得点の差にかかわらず、常に上位3件までの施設を詳しく表示する。
+    const TOP_N_DETAIL = 3;
+    const coTop = facScored.slice(0, Math.min(TOP_N_DETAIL, facScored.length));
+    const rest = facScored.slice(coTop.length, coTop.length + 5);
+
+    // isLower: 4位以降の詳細カード用(🏆のうす絵柄を出さないための目印)
+    function buildTopPickCardHtml(r, badgeText, isLower){
+      let h = "";
+      h += '<div class="top-pick' + (isLower ? ' lower' : '') + '">';
+      h += '<span class="badge">' + esc(badgeText) + '</span>';
+      // 施設名と「マッチ度 ○%」を同じ行に並べる(マッチ度は右端)。
+      // 「（○点／○点満点、○／○グループが好みに合致）」の部分は、表示しない。
+      h += '<div class="top-head">';
+      h += '<h3>' + esc(facName(r.facility.name)) + '</h3>';
+      h += '<div class="score-line">' + esc(tr('マッチ度')) + ' <b>' + Math.round(r.ratio * 100) + '%</b></div>';
+      h += '</div>';
+      h += '<div class="reasons">';
+      if (r.matchedGroups.length) {
+        r.matchedGroups.slice(0, 4).forEach(g => {
+          // 「ながれぼしランプ」のように、小分類グループの中で好みに合う家具が何件もあるときは、
+          // 全部を並べると長くなるので、1番目の家具だけを太字で表示し、残りは
+          // 「ほか○件」ボタンを押したときに開く一覧に入れる。
+          const first = g.members[0];
+          const others = g.members.slice(1);
+          // 「必要度×一致度」の数字は表示しない。
+          // 1行目：太字の家具名(と、あれば「ほか○件」ボタン)。
+          // 2行目：好みが合うポケモンの名前を緑の楕円(「好きな家具一覧」と同じ見た目)で並べ、「が好き」と続ける。
+          const pokemonPills = g.matchedNames.map(n => '<span class="pk">' + esc(pName(n)) + '</span>').join("");
+          // 家具名の右に、下の丸いラベルと同じ見た目(小さく・うすい文字)で、その家具の点数を付ける。
+          let text = '<div class="rn"><b>' + esc(fName(first.name)) + '</b> <span class="sc">+' + first.scored.total.toFixed(1) + '</span>';
+          if (others.length > 0) {
+            text += ' <button type="button" class="more-btn" data-count="' + others.length + '" aria-expanded="false">' + esc(tr('ほか{n}件', { n: others.length })) + ' ▾</button>';
+          }
+          text += '</div>';
+          text += '<div class="rp">' + pokemonPills + '<span style="white-space:nowrap;">' + esc(tr('が好き')) + '</span></div>';
+          if (others.length > 0) {
+            text += '<span class="more-list" hidden>' + esc(tr('ほかの候補：')) + (isEastAsian() ? '' : ' ') + others.map(m => esc(fName(m.name))).join(listSep()) + '</span>';
+          }
+          h += '<div class="reason"><div class="reason-text">' + text + '</div></div>';
+        });
+      } else {
+        h += '<div class="reason"><span>' + esc(tr('今回選んだポケモンの好みに合う家具は見つかりませんでしたが、総合スコアが最も高い施設です')) + '</span></div>';
+      }
+      h += '</div>';
+      // 丸いラベルには、上の「おすすめ理由」に出した上位4つのグループは載せない。
+      // 「おすすめ理由」と同じ順位(matchedGroups の並び)の5位以降を、順に最大8つ表示する。
+      // 小分類グループの家具は、1番目の家具だけを丸いラベルで表示し、
+      // 残りは「ほか○件」ボタンを押したときに、ラベルの下に一覧で開く。
+      const previewGroups = r.matchedGroups.slice(4).map(g => ({ first: g.members[0], others: g.members.slice(1) }));
+      if (previewGroups.length > 0) {
+        h += '<div class="furn-preview">';
+        previewGroups.slice(0,8).forEach(pg => {
+          h += '<span><b>' + esc(fName(pg.first.name)) + '</b> +' + pg.first.scored.total.toFixed(1);
+          if (pg.others.length > 0) {
+            h += ' <button type="button" class="more-btn" data-count="' + pg.others.length + '" aria-expanded="false">' + esc(tr('ほか{n}件', { n: pg.others.length })) + ' ▾</button>';
+          }
+          h += '</span>';
+          if (pg.others.length > 0) {
+            h += '<div class="more-list" hidden>' + esc(tr('ほかの候補：')) + (isEastAsian() ? '' : ' ') + pg.others.map(m => esc(fName(m.name))).join(listSep()) + '</div>';
+          }
+        });
+        h += '</div>';
+      }
+      h += '</div>';
+      return h;
+    }
+
+    // 1〜3位は、最初から詳しく表示する(「上位○施設を詳しく表示しています。」の一文は、表示しない)。
+    let html = "";
+    coTop.forEach((r, i) => {
+      const badgeText = i === 0 ? '🏆 ' + tr('いちばんのおすすめ施設') : '🏆 ' + tr('おすすめ施設（{n}位）', { n: i + 1 });
+      html += buildTopPickCardHtml(r, badgeText);
+    });
+
+    // 4位以降は、1行のランキング表示にしておき、「＋詳細」ボタンを押すと、
+    // 1〜3位と同じ詳細(マッチ度・おすすめ理由・家具のプレビュー)が開く。
+    html += '<div class="rank-list" style="margin-top:12px;">';
+    rest.forEach((r, i) => {
+      const rankNo = i + coTop.length + 1;
+      const detailId = "rankDetail" + rankNo;
+      const pct = Math.max(4, Math.min(100, r.ratio * 100));
+      html += '<div class="rank-item">' +
+        '<div class="rank-row">' +
+          '<div class="rank-no">' + rankNo + '</div>' +
+          '<div class="rank-body">' +
+            '<div class="rank-name">' + esc(facName(r.facility.name)) + '</div>' +
+            '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div>' +
+          '</div>' +
+          '<div class="rank-score">' + Math.round(r.ratio * 100) + '%</div>' +
+          '<button type="button" class="detail-btn" aria-expanded="false" aria-controls="' + detailId + '">' + esc(detailOpenLabel()) + '</button>' +
+        '</div>' +
+        '<div id="' + detailId + '" hidden>' + buildTopPickCardHtml(r, tr('おすすめ施設（{n}位）', { n: rankNo }), true) + '</div>' +
+      '</div>';
+    });
+    html += '</div>';
+
+    resultBody.innerHTML = html;
+
+    renderDex();
+  }
+
+  // 診断結果の中の、「＋詳細」ボタン(4位以降)と「ほか○件」ボタンの開閉。
+  // 結果は診断のたびに作り直されるため、ボタン1つずつではなく、結果の枠全体で
+  // クリックを受け取って、押されたボタンに応じて開閉する。
+  resultBody.addEventListener("click", (e) => {
+    const detailBtn = e.target.closest(".detail-btn");
+    if (detailBtn) {
+      const detail = document.getElementById(detailBtn.getAttribute("aria-controls"));
+      if (!detail) return;
+      const willOpen = detail.hidden;
+      detail.hidden = !willOpen;
+      detailBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      detailBtn.textContent = willOpen ? detailCloseLabel() : detailOpenLabel();
+      return;
+    }
+    const moreBtn = e.target.closest(".more-btn");
+    if (moreBtn) {
+      // 「おすすめ理由」では、ボタンと同じ枠の中に一覧がある。
+      // 家具の丸いラベルでは、ラベルのすぐ下(となり)に一覧がある。
+      const reasonBox = moreBtn.closest(".reason-text");
+      let list = (reasonBox || moreBtn.parentElement).querySelector(".more-list");
+      if (!list) {
+        const next = moreBtn.parentElement.nextElementSibling;
+        if (next && next.classList.contains("more-list")) list = next;
+      }
+      if (!list) return;
+      const willOpen = list.hidden;
+      list.hidden = !willOpen;
+      moreBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      moreBtn.textContent = tr('ほか{n}件', { n: moreBtn.dataset.count }) + " " + (willOpen ? "▴" : "▾");
+    }
+  });
+
+  document.getElementById("diagnoseBtn").addEventListener("click", renderResults);
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    selected = [null, null, null, null];
+    showSampleHint = false;
+    updateSampleHint();
+    renderSlots();
+    renderResults();
+  });
+
+  // ヘッダー右上の「⋮」メニューと、「このツールについて」の小窓
+  const menuBtn = document.getElementById("menuBtn");
+  const menuDropdown = document.getElementById("menuDropdown");
+  const aboutMenuItem = document.getElementById("aboutMenuItem");
+  const aboutOverlay = document.getElementById("aboutOverlay");
+  const aboutCloseBtn = document.getElementById("aboutCloseBtn");
+  const howMenuItem = document.getElementById("howMenuItem");
+  const howOverlay = document.getElementById("howOverlay");
+  const howCloseBtn = document.getElementById("howCloseBtn");
+  const qaMenuItem = document.getElementById("qaMenuItem");
+  const qaOverlay = document.getElementById("qaOverlay");
+  const qaCloseBtn = document.getElementById("qaCloseBtn");
+
+  function closeMenu(){
+    menuDropdown.hidden = true;
+    menuBtn.setAttribute("aria-expanded", "false");
+  }
+  function openAbout(){
+    closeMenu();
+    aboutOverlay.hidden = false;
+  }
+  function closeAbout(){
+    aboutOverlay.hidden = true;
+  }
+  function openHow(){
+    closeMenu();
+    howOverlay.hidden = false;
+  }
+  function closeHow(){
+    howOverlay.hidden = true;
+  }
+  function openQa(){
+    closeMenu();
+    qaOverlay.hidden = false;
+  }
+  function closeQa(){
+    qaOverlay.hidden = true;
+  }
+
+  menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const willOpen = menuDropdown.hidden;
+    menuDropdown.hidden = !willOpen;
+    menuBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+  });
+  aboutMenuItem.addEventListener("click", openAbout);
+  howMenuItem.addEventListener("click", openHow);
+  qaMenuItem.addEventListener("click", openQa);
+  document.addEventListener("click", (e) => {
+    if (!menuDropdown.hidden && !menuDropdown.contains(e.target) && e.target !== menuBtn) {
+      closeMenu();
+    }
+  });
+  aboutCloseBtn.addEventListener("click", closeAbout);
+  aboutOverlay.addEventListener("click", (e) => {
+    if (e.target === aboutOverlay) closeAbout();
+  });
+  howCloseBtn.addEventListener("click", closeHow);
+  howOverlay.addEventListener("click", (e) => {
+    if (e.target === howOverlay) closeHow();
+  });
+  qaCloseBtn.addEventListener("click", closeQa);
+  qaOverlay.addEventListener("click", (e) => {
+    if (e.target === qaOverlay) closeQa();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { closeMenu(); closeAbout(); closeHow(); closeQa(); }
+  });
+
+  // ===== 言語の切り替え(⋮メニューの中の「言語」) =====
+  const langMenuEl = document.getElementById("langMenu");
+  function buildLangMenu(){
+    if (LANGS.length < 2) { langMenuEl.hidden = true; langMenuEl.innerHTML = ""; return; }
+    langMenuEl.hidden = false;
+    langMenuEl.innerHTML =
+      '<div class="menu-sep"></div>' +
+      '<div class="menu-label">' + esc(tr('言語')) + (currentLang === "en" ? '' : ' / Language') + '</div>' +
+      LANGS.map(l =>
+        '<button type="button" class="menu-item lang-item" data-lang="' + esc(l.code) + '"' +
+        (l.code === currentLang ? ' aria-current="true"' : '') + '>' + esc(l.name) + '</button>'
+      ).join("");
+  }
+  langMenuEl.addEventListener("click", (e) => {
+    const b = e.target.closest(".lang-item");
+    if (!b) return;
+    closeMenu();
+    setLang(b.dataset.lang);
+  });
+
+  // 静かに書きかわらない部分(HTMLに直接書いてある文字)を、いまの言語に置きかえる
+  function applyStaticText(){
+    document.documentElement.lang = HTML_LANG[currentLang] || currentLang;
+    document.title = tr('ぽこあ施設診断');
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const ja = el.getAttribute("data-ja");
+      el.textContent = tr(el.getAttribute("data-i18n"), null, ja === null ? undefined : ja);
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(el => {
+      el.setAttribute("aria-label", tr(el.getAttribute("data-i18n-aria")));
+    });
+    document.querySelectorAll(".colon").forEach(el => { el.textContent = colon(); });
+    document.querySelectorAll("[data-only-ja]").forEach(el => { el.hidden = currentLang !== "ja"; });
+    buildLangMenu();
+  }
+  function setLang(code){
+    if (!LANGS.some(l => l.code === code)) code = "ja";
+    currentLang = code;
+    try { localStorage.setItem("pokopiaLang", code); } catch (e) {}
+    loadLangFont(code);
+    applyStaticText();
+    renderSlots();
+    renderResults();
+  }
+
+  currentLang = detectLang();
+  loadLangFont(currentLang);
+  applyStaticText();
+  renderSlots();
+  renderResults();
+  updateSampleHint();
+})();
+</script>
+
+</body>
+</html>

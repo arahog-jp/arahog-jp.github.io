@@ -339,28 +339,36 @@
      昼は白っぽい幕、夜は暗い幕を「左(文字のほう)は濃く、右(ポケモンのほう)は透明」に
      グラデーションさせて重ね、文字を読みやすくしつつポケモンがよく見えるようにしている。
      本文(p)はイラストの外に、今までどおりの見た目のまま続く。
-     aspect-ratio:3/1 は、画像(1500×500px = 3:1)そのままの比率で表示するための指定。
-     min-height は、見出しが3行になる画面(家具からポケモン診断)でも文字が窮屈にならない
-     ための最低の高さ。画面の横幅が十分あるときは aspect-ratio が優先されて画像は一切
-     切れず、横幅が極端に狭いときだけ min-height が効いて、その場合は画像の左右が
-     少し切れる(上下＝キャラクターの頭は切れない)。 */
+     display:grid で、画像(picture)・幕(scrim)・見出し(h1)を同じマス目に重ねている。
+     画像は width:100%; height:auto; で、比率(1500×500px=3:1)そのままサイトの横幅に
+     合わせて縮小表示するだけなので、はみ出すことも、上下左右が切れることもない。
+     見出しの行数が多いとき(家具からポケモン診断など)は、画像の高さより見出しに
+     必要な高さのほうが大きければ、その分だけバナー全体が少し縦に伸びる(グリッドが
+     自動でいちばん大きいほうに合わせてくれる)。 */
   .hero-banner{
     position:relative;
-    padding:18px;
+    display:grid;
     border-radius:var(--radius-lg);
     border:1px solid var(--border);
     overflow:hidden;
-    aspect-ratio:3/1;
-    min-height:150px;
+  }
+  .hero-banner picture,
+  .hero-banner .scrim,
+  .hero-banner h1{
+    grid-area:1 / 1;
+  }
+  .hero-banner picture{
+    display:block;
+    width:100%;
   }
   .hero-banner img{
-    position:absolute; inset:0;
-    width:100%; height:100%;
-    object-fit:cover;
     display:block;
+    width:100%;
+    height:auto;
   }
   .hero-banner .scrim{
-    position:absolute; inset:0;
+    width:100%;
+    height:100%;
     background:linear-gradient(to right, rgba(255,255,255,.62) 0%, rgba(255,255,255,.62) 38%, rgba(255,255,255,0) 78%);
   }
   @media (prefers-color-scheme: dark){
@@ -372,8 +380,10 @@
     background:linear-gradient(to right, rgba(13,17,32,.60) 0%, rgba(13,17,32,.60) 38%, rgba(13,17,32,0) 78%);
   }
   .hero-banner h1{
+    align-self:center;
     position:relative; z-index:1;
     margin:0;
+    padding:16px 18px;
   }
 
   /* ---------- Section ---------- */

@@ -639,6 +639,9 @@
   /* 「家具からポケモン診断」の結果の見出し文(「以下のポケモンが住みたがっています：」) */
   .result-lead{ font-size:13.5px; font-weight:800; color:var(--text); margin:0; }
   .result-lead-row{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:0 0 12px; }
+  /* 「家具からポケモン診断」の結果一覧: 「③好きな家具一覧」(.furn-dex-grid)と同じく、
+     1位・2位・3位の見出し(.dex-group-head)を上端に固定したまま、中だけスクロールできるようにする */
+  .furn-result-grid{ display:flex; flex-direction:column; gap:8px; max-height:420px; overflow-y:auto; }
 
   .empty-state{
     text-align:center; padding:30px 16px; color:var(--text-faint); font-size:13px;
@@ -1859,9 +1862,13 @@
   // そこで、1個の家具に好物の属性がいくつ乗っていても、その家具ぶんは1個としてしか
   // 数えないようにし、代わりに「好みが合っている家具の“個数”」そのものをいちばん重視する
   // ことで、選んだ家具をより多く・複合的に好んでいるポケモンほど上位に来るようにした。)
-  // 「属性のレア度(rarityWeight。めずらしい属性ほど高い)」の合計は、家具の個数が同じ
-  // ポケモン同士を並べるときのタイブレーク(2位のものさし)として使う。
-  function bestLikeMatchWeighted(likes, picks){
+  // 家具の個数(coveredCount)が同じポケモン同士を並べるときのタイブレーク(2位のものさし)には、
+  // 「属性のレア度(rarityWeight)」は使わない(全442件の家具の中でのレアさは、この診断では
+  // 意味を持たないため)。代わりに、「一致した好物の属性が、いま選んでいる家具群の中で
+  // どれだけ重複してついているか(attrCounts)」を使う。選んだ家具どうしで共通してよく出て
+  // くる属性を好んでいるポケモンほど、その家具群全体の“らしさ”により合っていると考え、
+  // 上位に来るようにする(重複しすぎている属性が得点を独占しないよう、平方根で伸びをゆるめる)。
+  function bestLikeMatchWeighted(likes, picks, attrCounts){
     const likeSet = new Set(likes);
     const matchedAttrs = new Set();
     let coveredCount = 0; // 好物のいずれかを含む家具の個数(1個の家具は何度好物と一致しても1個ぶんのまま)
@@ -1875,9 +1882,9 @@
       });
       if (matchedHere) coveredCount++;
     });
-    let rarityTotal = 0;
-    matchedAttrs.forEach(a => { rarityTotal += rarityWeight(a); });
-    return { score: coveredCount, weight: rarityTotal, hits: matchedAttrs.size };
+    let dupTotal = 0;
+    matchedAttrs.forEach(a => { dupTotal += Math.sqrt(attrCounts[a] || 0); });
+    return { score: coveredCount, weight: dupTotal, hits: matchedAttrs.size };
   }
 
   function renderFurnResults(){
@@ -1888,7 +1895,7 @@
     }
 
     // 選んだ家具の属性(attrs)ごとに、「何個の家具についていたか」を数える
-    // (苦手判定に使う: 選んだ家具の中に苦手な属性を持つものが1つでもあれば0点にする)
+    // (苦手判定に加えて、タイブレーク用の「属性の重複度」にも使う)
     const attrCounts = {};
     picks.forEach(f => f.attrs.forEach(a => { attrCounts[a] = (attrCounts[a] || 0) + 1; }));
 
@@ -1896,7 +1903,7 @@
       // 苦手な属性が、選んだ家具の中に1つでもあれば、住みたがらないと考えて0点にする
       const dislikeHit = !!(p.dislike && attrCounts[p.dislike] > 0);
       if (dislikeHit) return { p, score: 0, weight: 0, hits: 0 };
-      const best = bestLikeMatchWeighted(p.likes, picks);
+      const best = bestLikeMatchWeighted(p.likes, picks, attrCounts);
       return { p, score: best.score, weight: best.weight, hits: best.hits };
     });
 
@@ -1904,7 +1911,7 @@
     matched.sort((a, b) => {
       // 1. 好みが合っている家具の個数(score)がいちばん多いものを上に
       if (b.score !== a.score) return b.score - a.score;
-      // 2. 個数が同じなら、一致した属性のレア度合計(weight)が高いものを上に
+      // 2. 個数が同じなら、選んだ家具群の中で重複している属性を好んでいる度合い(weight)が高いものを上に
       if (b.weight !== a.weight) return b.weight - a.weight;
       // 3. それも同じなら、一致した属性の種類数(hits)が多いものを上に
       if (b.hits !== a.hits) return b.hits - a.hits;
@@ -1913,43 +1920,60 @@
         : getCollator().compare(pName(a.p.name), pName(b.p.name));
     });
 
-    const top = matched.slice(0, 8);
-
-    if (top.length === 0) {
+    if (matched.length === 0) {
       furnResultBody.innerHTML = '<div class="empty-state">' + esc(tr('選んだ家具の属性に合うポケモンが見つかりませんでした')) + '</div>';
       return;
     }
 
-    // 順位はつけず(ランキング形式にせず)、見つかった上位8匹までを、すべて並列に並べる。
-    // 表示する「好物属性」「苦手属性」は、施設診断でポケモンを選んだときと同じ見た目(緑・オレンジの丸いラベル)。
-    const furnPokemonNamesForCopy = top.map(r => pName(r.p.name));
-    const copyPokemonLabel = esc(tr('ポケモン名をコピー'));
+    // 「好みが合っている家具の個数(score)」が同じものを同じ順位とみなし、1位・2位・3位ぶんの
+    // 順位グループを作る(matchedはすでにscore降順で並んでいるので、値が変わるたびに次の順位に進む)。
+    // 同じ順位の中に何匹いても(同点タイでも)、全員をそのまま表示し、8匹などに絞り込まない。
+    const rankGroups = [];
+    let currentScore = null;
+    for (const r of matched) {
+      if (r.score !== currentScore) {
+        if (rankGroups.length === 3) break; // すでに3位ぶんそろっていたら、4位以降は表示しない
+        rankGroups.push({ rank: rankGroups.length + 1, items: [] });
+        currentScore = r.score;
+      }
+      rankGroups[rankGroups.length - 1].items.push(r);
+    }
+
+    // 「以下のポケモンが住みたがっています：」右端のコピーボタン → 表示中の全員(1〜3位ぶん全部)の名前をコピー
+    const allShownNamesForCopy = [];
+    rankGroups.forEach(g => g.items.forEach(r => allShownNamesForCopy.push(pName(r.p.name))));
+    const copyAllLabel = esc(tr('ポケモン名をすべてコピー'));
     let html = '<div class="result-lead-row">';
     html += '<p class="result-lead">' + esc(tr('以下のポケモンが住みたがっています：')) + '</p>';
     html += '<span class="dex-copy-wrap"><span class="dex-copy-msg" aria-live="polite"></span>' +
-      '<button type="button" class="dex-copy-btn" id="furnNamesCopyBtn" title="' + copyPokemonLabel + '" aria-label="' + copyPokemonLabel + '">' + COPY_ICON + '</button></span>';
+      '<button type="button" class="dex-copy-btn" id="furnNamesCopyBtn" title="' + copyAllLabel + '" aria-label="' + copyAllLabel + '">' + COPY_ICON + '</button></span>';
     html += '</div>';
-    html += '<div class="legend-grid">';
-    top.forEach(r => {
-      const p = r.p;
-      html +=
-        '<div class="legend-row">' +
-          '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
-          '<div style="min-width:0;flex:1;">' +
-            '<div class="name">' + esc(pName(p.name)) + '</div>' +
-            '<div class="tags">' +
-              p.likes.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +
-              (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
+
+    // 「1位」「2位」「3位」のような見出しは付けず、並び順・表示件数(1〜3位ぶん、同点もすべて)は
+    // そのままに、家具の一覧が多いときにそなえて枠の中だけスクロールできるようにしておく。
+    html += '<div class="furn-result-grid" id="furnResultGrid">';
+    rankGroups.forEach(group => {
+      group.items.forEach(r => {
+        const p = r.p;
+        html +=
+          '<div class="legend-row">' +
+            '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
+            '<div style="min-width:0;flex:1;">' +
+              '<div class="name">' + esc(pName(p.name)) + '</div>' +
+              '<div class="tags">' +
+                p.likes.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +
+                (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
+              '</div>' +
             '</div>' +
-          '</div>' +
-        '</div>';
+          '</div>';
+      });
     });
     html += '</div>';
     furnResultBody.innerHTML = html;
 
     const furnNamesCopyBtn = document.getElementById("furnNamesCopyBtn");
     if (furnNamesCopyBtn) {
-      furnNamesCopyBtn.addEventListener("click", () => copyNamesWithFeedback(furnNamesCopyBtn, furnPokemonNamesForCopy));
+      furnNamesCopyBtn.addEventListener("click", () => copyNamesWithFeedback(furnNamesCopyBtn, allShownNamesForCopy));
     }
   }
 

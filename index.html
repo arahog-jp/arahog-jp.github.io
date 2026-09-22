@@ -124,6 +124,9 @@
   }
 
   *{box-sizing:border-box;}
+  /* html にも --bg を敷いておく。PC の大きい画面だと、本文の高さが画面の高さより
+     短くて、body の下に隙間ができることがあるので、その隙間も夜は暗く見えるように。 */
+  html{ background:var(--bg); min-height:100%; }
   body{
     background:var(--bg);
     color:var(--text);
@@ -131,6 +134,8 @@
     padding:0 18px;
     padding-block:0;
     line-height:1.6;
+    min-height:100vh;
+    min-height:100dvh;
   }
   .display{ font-family:"M PLUS Rounded 1c","Zen Maru Gothic",sans-serif; }
 
@@ -327,47 +332,49 @@
     max-width:52ch;
   }
 
-  /* ---------- Campfire illustration ---------- */
-  .scene{
-    margin-top:16px;
-    height:86px;
-    border-radius:var(--radius-lg);
-    background:linear-gradient(180deg, var(--primary-soft) 0%, var(--surface-alt) 100%);
-    border:1px solid var(--border);
+  /* ---------- Hero banner(見出しをイラストの上に乗せる) ----------
+     イラスト(昼は banner-bright.png、夜は banner-dark.png。下の
+     <picture><source media="(prefers-color-scheme: dark)"> で切り替え。画面サイズではなく
+     OS/ブラウザのダークモード設定で切り替わる)を見出し(h1)の背景として使う。
+     昼は白っぽい幕、夜は暗い幕を「左(文字のほう)は濃く、右(ポケモンのほう)は透明」に
+     グラデーションさせて重ね、文字を読みやすくしつつポケモンがよく見えるようにしている。
+     本文(p)はイラストの外に、今までどおりの見た目のまま続く。
+     aspect-ratio:3/1 は、画像(1500×500px = 3:1)そのままの比率で表示するための指定。
+     min-height は、見出しが3行になる画面(家具からポケモン診断)でも文字が窮屈にならない
+     ための最低の高さ。画面の横幅が十分あるときは aspect-ratio が優先されて画像は一切
+     切れず、横幅が極端に狭いときだけ min-height が効いて、その場合は画像の左右が
+     少し切れる(上下＝キャラクターの頭は切れない)。 */
+  .hero-banner{
     position:relative;
+    padding:18px;
+    border-radius:var(--radius-lg);
+    border:1px solid var(--border);
     overflow:hidden;
+    aspect-ratio:3/1;
+    min-height:150px;
   }
-  .scene .hill{
-    position:absolute; left:-10%; bottom:-30px; width:60%; height:70px;
-    background:var(--primary); opacity:.35; border-radius:50%;
+  .hero-banner img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
   }
-  .scene .hill2{
-    position:absolute; right:-15%; bottom:-40px; width:70%; height:80px;
-    background:var(--primary); opacity:.22; border-radius:50%;
+  .hero-banner .scrim{
+    position:absolute; inset:0;
+    background:linear-gradient(to right, rgba(255,255,255,.62) 0%, rgba(255,255,255,.62) 38%, rgba(255,255,255,0) 78%);
   }
-  .scene .tent{
-    position:absolute; left:14%; bottom:10px; width:0;height:0;
-    border-left:26px solid transparent; border-right:26px solid transparent;
-    border-bottom:40px solid var(--accent-strong);
-    filter:drop-shadow(0 2px 0 rgba(0,0,0,0.05));
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .hero-banner .scrim{
+      background:linear-gradient(to right, rgba(13,17,32,.60) 0%, rgba(13,17,32,.60) 38%, rgba(13,17,32,0) 78%);
+    }
   }
-  .scene .tent::after{
-    content:"";position:absolute; left:-3px; bottom:0; width:6px;height:40px;
-    background:var(--accent-soft);
+  :root[data-theme="dark"] .hero-banner .scrim{
+    background:linear-gradient(to right, rgba(13,17,32,.60) 0%, rgba(13,17,32,.60) 38%, rgba(13,17,32,0) 78%);
   }
-  .scene .fire{
-    position:absolute; left:44%; bottom:10px; width:14px; height:20px;
-    background:var(--gold);
-    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
-    box-shadow:0 0 16px 4px color-mix(in srgb, var(--gold) 55%, transparent);
-    animation:flicker 2.4s ease-in-out infinite;
+  .hero-banner h1{
+    position:relative; z-index:1;
+    margin:0;
   }
-  @keyframes flicker{ 0%,100%{ transform:scaleY(1) translateY(0);} 50%{ transform:scaleY(1.12) translateY(-2px);} }
-  .scene .pika{
-    position:absolute; right:18%; bottom:12px; width:22px;height:22px;
-    background:var(--gold); border-radius:50% 50% 45% 45%;
-  }
-  @media (prefers-reduced-motion:reduce){ .scene .fire{ animation:none; } }
 
   /* ---------- Section ---------- */
   section{ margin-top:26px; }
@@ -878,14 +885,15 @@
 <main>
 <div id="facilityView">
   <div class="hero">
-    <h1><span data-i18n="ポケモンの「好物」と「苦手」から、">ポケモンの「好物」と「苦手」から、</span><br><span data-i18n="おすすめ施設を診断します">おすすめ施設を診断します</span></h1>
-    <p data-i18n="1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設をおすすめします。">1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設をおすすめします。</p>
-    <div class="scene" aria-hidden="true">
-      <div class="hill"></div><div class="hill2"></div>
-      <div class="tent"></div>
-      <div class="fire"></div>
-      <div class="pika"></div>
+    <div class="hero-banner">
+      <picture>
+        <source srcset="画像保管庫/banner-dark.png" media="(prefers-color-scheme: dark)">
+        <img src="画像保管庫/banner-bright.png" alt="">
+      </picture>
+      <div class="scrim" aria-hidden="true"></div>
+      <h1><span data-i18n="ポケモンの「好物」と「苦手」から、">ポケモンの「好物」と「苦手」から、</span><br><span data-i18n="おすすめ施設を診断します">おすすめ施設を診断します</span></h1>
     </div>
+    <p data-i18n="1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設をおすすめします。">1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設をおすすめします。</p>
   </div>
 
   <section>
@@ -936,14 +944,15 @@
 
 <div id="furnitureView" hidden>
   <div class="hero">
-    <h1><span data-i18n="置いた家具から、">置いた家具から、</span><br><span data-i18n="住みたがるポケモンを">住みたがるポケモンを</span><br><span data-i18n="診断します">診断します</span></h1>
-    <p data-i18n="家具を選ぶと、その家具が好きなポケモンを表示します。">家具を選ぶと、その家具が好きなポケモンを表示します。</p>
-    <div class="scene" aria-hidden="true">
-      <div class="hill"></div><div class="hill2"></div>
-      <div class="tent"></div>
-      <div class="fire"></div>
-      <div class="pika"></div>
+    <div class="hero-banner">
+      <picture>
+        <source srcset="画像保管庫/banner-dark.png" media="(prefers-color-scheme: dark)">
+        <img src="画像保管庫/banner-bright.png" alt="">
+      </picture>
+      <div class="scrim" aria-hidden="true"></div>
+      <h1><span data-i18n="置いた家具から、">置いた家具から、</span><br><span data-i18n="住みたがるポケモンを">住みたがるポケモンを</span><br><span data-i18n="診断します">診断します</span></h1>
     </div>
+    <p data-i18n="家具を選ぶと、その家具が好きなポケモンを表示します。">家具を選ぶと、その家具が好きなポケモンを表示します。</p>
   </div>
 
   <section>

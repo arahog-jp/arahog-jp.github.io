@@ -110,6 +110,8 @@ const LANG = {
     ,{"ja": "コピーできませんでした", "en": "Couldn't copy", "ko": "복사하지 못했어요", "zhHans": "复制失败", "zhHant": "複製失敗"}
     ,{"ja": "ボタンを押すと、家具の名前をコピーできます。", "en": "Press this button to copy the furniture names.", "ko": "버튼을 누르면 가구 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制家具名称。", "zhHant": "按下此按鈕即可複製家具名稱。"}
     ,{"ja": "施設名をコピー", "en": "Copy facility names", "ko": "시설 이름 복사", "zhHans": "复制设施名称", "zhHant": "複製設施名稱"}
+    ,{"ja": "たたむ", "en": "Collapse", "ko": "접기", "zhHans": "收起", "zhHant": "收合"}
+    ,{"ja": "ひろげる", "en": "Expand", "ko": "펼치기", "zhHans": "展开", "zhHant": "展開"}
     // ↓ ここから下は、「家具からポケモン診断」を追加したときに、Claudeが付けた翻訳案です(要確認)。
     ,{"ja": "ぽこあ家具診断", "en": "Pokopia Furniture Finder", "ko": "포코피아 가구 진단", "zhHans": "Pokopia 家具诊断", "zhHant": "Pokopia 傢俱診斷"}
     ,{"ja": "えらんだ家具から、住みたがるポケモンをおすすめ", "en": "Pokémon recommendations based on the furniture you choose", "ko": "선택한 가구를 바탕으로 살고 싶어하는 포켓몬 추천", "zhHans": "根据所选家具，推荐想居住的宝可梦", "zhHant": "根據所選傢俱，推薦想居住的寶可夢"}

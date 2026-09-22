@@ -570,6 +570,19 @@
     background:var(--primary-strong); padding:4px 11px; border-radius:999px;
     letter-spacing:.03em;
   }
+  /* バッジ(🏆 いちばんのおすすめ施設 など)と、右の「－たたむ」ボタンを、同じ行に並べる。
+     右上のうすいトロフィーの絵柄(.top-pick::before)に重ならないよう、ボタンの右に、
+     絵柄ぶんの余白(44px)をあけている。 */
+  .top-pick .top-head-row{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding-right:44px;
+  }
+  .top-collapse-btn{
+    flex:none; padding:4px 11px; border-radius:999px;
+    border:1.5px solid var(--border); background:var(--surface);
+    font-size:11px; font-weight:700; color:var(--text-muted); cursor:pointer;
+  }
+  .top-collapse-btn:active{ background:var(--surface-alt); }
   .top-pick h3{
     margin-top:10px; font-size:26px; font-weight:800;
     font-family:"M PLUS Rounded 1c",sans-serif; color:var(--primary-strong);
@@ -1693,6 +1706,9 @@
   // 「＋詳細」「－閉じる」ボタンの文字(日本語は今までどおり全角の＋と－)
   const detailOpenLabel = () => (isEastAsian() ? "＋" : "+ ") + tr('詳細');
   const detailCloseLabel = () => (isEastAsian() ? "－" : "- ") + tr('閉じる');
+  // 「② 診断結果」の1〜3位のカードを折りたたむ・ひろげるボタンの文字
+  const collapseLabel = () => (isEastAsian() ? "－" : "- ") + tr('たたむ');
+  const expandLabel = () => (isEastAsian() ? "＋" : "+ ") + tr('ひろげる');
 
   function renderResults(){
     const picks = selected.filter(Boolean);
@@ -1719,10 +1735,15 @@
     facNamesCopyWrap.hidden = facNamesForCopy.length === 0;
 
     // isLower: 4位以降の詳細カード用(🏆のうす絵柄を出さないための目印)
-    function buildTopPickCardHtml(r, badgeText, isLower){
+    function buildTopPickCardHtml(r, badgeText, isLower, collapseId){
       let h = "";
       h += '<div class="top-pick' + (isLower ? ' lower' : '') + '">';
-      h += '<span class="badge">' + esc(badgeText) + '</span>';
+      if (collapseId) {
+        h += '<div class="top-head-row"><span class="badge">' + esc(badgeText) + '</span>' +
+          '<button type="button" class="top-collapse-btn" aria-expanded="true" aria-controls="' + collapseId + '">' + esc(collapseLabel()) + '</button></div>';
+      } else {
+        h += '<span class="badge">' + esc(badgeText) + '</span>';
+      }
       // 施設名と「マッチ度 ○%」を同じ行に並べる(マッチ度は右端)。
       // 「（○点／○点満点、○／○グループが好みに合致）」の部分は、表示しない。
       // 「マッチ度」の右に、カードに出ている家具(おすすめ理由の4グループ+下の丸いラベルの8グループ、
@@ -1743,6 +1764,7 @@
       h += '<h3>' + esc(facName(r.facility.name)) + '</h3>';
       h += '<div class="head-right"><div class="score-line">' + esc(tr('マッチ度')) + ' <b>' + Math.round(r.ratio * 100) + '%</b></div>' + copyBtnHtml + '</div>';
       h += '</div>';
+      if (collapseId) h += '<div class="top-body" id="' + collapseId + '">';
       h += '<div class="reasons">';
       if (r.matchedGroups.length) {
         r.matchedGroups.slice(0, 4).forEach(g => {
@@ -1790,6 +1812,7 @@
         });
         h += '</div>';
       }
+      if (collapseId) h += '</div>';
       h += '</div>';
       return h;
     }
@@ -1799,7 +1822,7 @@
     let html = "";
     coTop.forEach((r, i) => {
       const badgeText = i === 0 ? '🏆 ' + tr('いちばんのおすすめ施設') : '🏆 ' + tr('おすすめ施設（{n}位）', { n: i + 1 });
-      html += buildTopPickCardHtml(r, badgeText);
+      html += buildTopPickCardHtml(r, badgeText, false, "topBody" + i);
     });
 
     // 4位以降は、1行のランキング表示にしておき、「＋詳細」ボタンを押すと、
@@ -2082,6 +2105,17 @@
     const copyBtn = e.target.closest(".dex-copy-btn[data-fac]");
     if (copyBtn) {
       copyNamesWithFeedback(copyBtn, facCopyNames[+copyBtn.dataset.fac]);
+      return;
+    }
+    // 1〜3位のカードの「－たたむ」/「＋ひろげる」(デフォルトはひろげた状態)
+    const topCollapseBtn = e.target.closest(".top-collapse-btn");
+    if (topCollapseBtn) {
+      const body = document.getElementById(topCollapseBtn.getAttribute("aria-controls"));
+      if (!body) return;
+      const willOpen = body.hidden;
+      body.hidden = !willOpen;
+      topCollapseBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      topCollapseBtn.textContent = willOpen ? collapseLabel() : expandLabel();
       return;
     }
     const detailBtn = e.target.closest(".detail-btn");

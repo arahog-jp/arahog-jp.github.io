@@ -15,15 +15,18 @@
 <!-- LINEなどにリンクを貼ったときに出る画像。
      LINEはこの画像を「正方形(縦横1:1)」の形に、真ん中を切り抜いて表示するため、
      あらかじめ banner-bright.png の右側(ポケモンがいる側)だけを、
-     正方形の形に切り抜いた別画像(banner-bright-card.jpg)を用意して指定している。 -->
-<meta property="og:image" content="https://arahog-jp.github.io/%E7%94%BB%E5%83%8F%E4%BF%9D%E7%AE%A1%E5%BA%AB/banner-bright-card.jpg">
+     正方形の形に切り抜いた別画像(banner-bright-card.jpg)を用意して指定している。
+     アドレスを短くするため、この画像だけは「画像保管庫」フォルダの中ではなく、
+     index.htmlと同じ場所(リポジトリの直下)に置くようにしている。 -->
+<meta property="og:image" content="https://arahog-jp.github.io/banner-bright-card.jpg">
 <!-- X(旧Twitter)にリンクを貼ったときに出る、大きいほうのサムネイル画像。
      X はこの画像を「横2:縦1」の形に切り抜いて表示するため、
      あらかじめ banner-dark.png の右側(ポケモンがいる側)だけを、
      2:1の形に切り抜いた別画像(banner-dark-card.png)を用意して指定している。
-     (og:image の指定とは別に、twitter:image を書いておくと、Xはこちらを優先して使う。) -->
+     (og:image の指定とは別に、twitter:image を書いておくと、Xはこちらを優先して使う。)
+     この画像も、アドレスを短くするため、index.htmlと同じ場所(リポジトリの直下)に置いている。 -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://arahog-jp.github.io/%E7%94%BB%E5%83%8F%E4%BF%9D%E7%AE%A1%E5%BA%AB/banner-dark-card.png">
+<meta name="twitter:image" content="https://arahog-jp.github.io/banner-dark-card.png">
 <!-- ホーム画面に追加したときのアイコン画像(このHTMLと同じ場所の「画像保管庫」フォルダの「home-icon.png」)。
      ファイル名は、ウェブのアドレスで文字化けしないよう、半角英数字にしている(中身は「ホームアイコン.png」と同じ画像)。
      iPhone・iPadは apple-touch-icon、Androidやブラウザのタブは icon を使う。

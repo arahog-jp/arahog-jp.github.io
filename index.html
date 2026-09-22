@@ -639,9 +639,9 @@
   /* 「家具からポケモン診断」の結果の見出し文(「以下のポケモンが住みたがっています：」) */
   .result-lead{ font-size:13.5px; font-weight:800; color:var(--text); margin:0; }
   .result-lead-row{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:0 0 12px; }
-  /* 「家具からポケモン診断」の結果一覧: 「③好きな家具一覧」(.furn-dex-grid)と同じく、
-     1位・2位・3位の見出し(.dex-group-head)を上端に固定したまま、中だけスクロールできるようにする */
-  .furn-result-grid{ display:flex; flex-direction:column; gap:8px; max-height:420px; overflow-y:auto; }
+  /* 「家具からポケモン診断」の結果一覧: 中だけスクロールできるようにする。
+     高さは、スマホで見たときに画面のたて8割くらいになるよう、画面の高さ(vh)基準にしている */
+  .furn-result-grid{ display:flex; flex-direction:column; gap:8px; max-height:80vh; overflow-y:auto; }
 
   .empty-state{
     text-align:center; padding:30px 16px; color:var(--text-faint); font-size:13px;

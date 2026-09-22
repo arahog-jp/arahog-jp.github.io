@@ -115,6 +115,8 @@ const LANG = {
     ,{"ja": "えらんだ家具から、住みたがるポケモンをおすすめ", "en": "Pokémon recommendations based on the furniture you choose", "ko": "선택한 가구를 바탕으로 살고 싶어하는 포켓몬 추천", "zhHans": "根据所选家具，推荐想居住的宝可梦", "zhHant": "根據所選傢俱，推薦想居住的寶可夢"}
     ,{"ja": "置いた家具から、", "en": "Based on the furniture you place,", "ko": "배치한 가구를 바탕으로,", "zhHans": "根据摆放的家具，", "zhHant": "根據擺放的傢俱，"}
     ,{"ja": "住みたがるポケモンを診断します", "en": "we'll find the Pokémon who want to live there", "ko": "살고 싶어하는 포켓몬을 진단합니다", "zhHans": "诊断出想居住的宝可梦", "zhHant": "診斷出想居住的寶可夢"}
+    ,{"ja": "住みたがるポケモンを", "en": "we'll find the Pokémon", "ko": "살고 싶어하는 포켓몬을", "zhHans": "诊断出", "zhHant": "診斷出"}
+    ,{"ja": "診断します", "en": "who want to live there", "ko": "진단합니다", "zhHans": "想居住的宝可梦", "zhHant": "想居住的寶可夢"}
     ,{"ja": "家具を選ぶと、その家具が好きなポケモンを表示します。", "en": "Choose furniture, and we'll show the Pokémon who like it.", "ko": "가구를 선택하면, 그 가구를 좋아하는 포켓몬을 표시합니다.", "zhHans": "选择家具后，会显示喜欢该家具的宝可梦。", "zhHant": "選擇傢俱後，會顯示喜歡該傢俱的寶可夢。"}
     ,{"ja": "家具をえらぶ", "en": "Select furniture", "ko": "가구 선택", "zhHans": "选择家具", "zhHant": "選擇傢俱"}
     ,{"ja": "{n} / 12 個", "en": "{n} / 12 items", "ko": "{n} / 12개", "zhHans": "{n} / 12件", "zhHant": "{n} / 12件"}
@@ -127,6 +129,14 @@ const LANG = {
     ,{"ja": "家具からポケモン診断に切り替え", "en": "Switch to Furniture → Pokémon Finder", "ko": "가구로 포켓몬 진단으로 전환", "zhHans": "切换到「从家具诊断宝可梦」", "zhHant": "切換到「從傢俱診斷寶可夢」"}
     ,{"ja": "施設診断に切り替え", "en": "Switch to Facility Finder", "ko": "시설 진단으로 전환", "zhHans": "切换到设施诊断", "zhHant": "切換到設施診斷"}
     ,{"ja": "ポケモン名をコピー", "en": "Copy Pokémon names", "ko": "포켓몬 이름 복사", "zhHans": "复制宝可梦名称", "zhHant": "複製寶可夢名稱"}
+    ,{"ja": "ポケモン名をすべてコピー", "en": "Copy all Pokémon names", "ko": "포켓몬 이름 전체 복사", "zhHans": "复制全部宝可梦名称", "zhHant": "複製全部寶可夢名稱"}
+    ,{"ja": "{n}位", "en": "#{n}", "ko": "{n}위", "zhHans": "第{n}名", "zhHant": "第{n}名"}
+    ,{"ja": "施設診断の使い方", "en": "How to use Facility Finder", "ko": "시설 진단 사용법", "zhHans": "设施诊断使用方法", "zhHant": "設施診斷使用方法"}
+    ,{"ja": "家具からポケモン診断の使い方", "en": "How to use Furniture → Pokémon Finder", "ko": "가구로 포켓몬 진단 사용법", "zhHans": "「从家具诊断宝可梦」使用方法", "zhHant": "「從傢俱診斷寶可夢」使用方法"}
+    ,{"ja": "ボタンを押すと、施設の名前や家具の名前をコピーできます。", "en": "Press this button to copy the facility names or furniture names.", "ko": "버튼을 누르면 시설 이름이나 가구 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制设施名称或家具名称。", "zhHant": "按下此按鈕即可複製設施名稱或家具名稱。"}
+    ,{"ja": "家具を1～12個選択して、「ポケモンを診断する」のボタンを押します。", "en": "Select 1 to 12 pieces of furniture, then press the \"Find Pokémon\" button.", "ko": "가구를 1~12개 선택하고 '포켓몬을 진단한다' 버튼을 누릅니다.", "zhHans": "选择1~12件家具，然后按下「诊断宝可梦」按钮。", "zhHant": "選擇1~12件傢俱，然後按下「診斷寶可夢」按鈕。"}
+    ,{"ja": "選択した家具を好きなポケモンが表示されます。", "en": "The Pokémon who like the furniture you selected will be shown.", "ko": "선택한 가구를 좋아하는 포켓몬이 표시됩니다.", "zhHans": "会显示喜欢所选家具的宝可梦。", "zhHant": "會顯示喜歡所選傢俱的寶可夢。"}
+    ,{"ja": "ボタンを押すと、ポケモンの名前をコピーできます。", "en": "Press this button to copy the Pokémon names.", "ko": "버튼을 누르면 포켓몬 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制宝可梦名称。", "zhHant": "按下此按鈕即可複製寶可夢名稱。"}
   ],
   "attrs": [
     {"ja": "あそびば", "en": "Play spaces", "ko": "놀이 공간", "zhHans": "游乐区", "zhHant": "遊樂區"},

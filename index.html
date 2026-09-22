@@ -276,6 +276,9 @@
   .news-text{ font-size:12.5px; line-height:1.9; color:var(--text); }
   /* Q&A の小窓: 文章が長いので、小窓の中だけスクロールできるようにする(✕ボタンは動かさない) */
   .qa-scroll{ max-height:calc(100vh - 96px); max-height:calc(100dvh - 96px); overflow-y:auto; padding-right:2px; }
+  /* 使い方の小窓: 「施設診断の使い方」「家具からポケモン診断の使い方」のグループ見出し */
+  .how-group-title{ font-size:12.5px; font-weight:800; line-height:1.6; color:var(--text-muted); margin:0 0 10px; }
+  .how-group-title-2nd{ margin-top:1.8em; padding-top:1.4em; border-top:1px solid var(--border); }
   /* 使い方の小窓: 見出し(①ポケモンをえらぶ など)と、その説明 */
   .how-item + .how-item{ margin-top:1.3em; }
   .how-h{ font-size:12.5px; font-weight:800; line-height:1.7; color:var(--primary-strong); }
@@ -808,17 +811,27 @@
     <button type="button" class="about-close" id="howCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
     <div class="qa-scroll">
       <div class="qa-title" data-i18n="使い方">使い方</div>
+      <div class="how-group-title" data-i18n="施設診断の使い方">施設診断の使い方</div>
       <div class="how-item">
         <div class="how-h">① <span data-i18n="ポケモンをえらぶ">ポケモンをえらぶ</span></div>
         <p class="how-p" data-i18n="住まわせたい1～4匹のポケモンを選択して、「施設を診断する」のボタンを押します。">住まわせたい1～4匹のポケモンを選択して、「施設を診断する」のボタンを押します。</p>
       </div>
       <div class="how-item">
         <div class="how-h">② <span data-i18n="診断結果">診断結果</span></div>
-        <p class="how-p"><span data-i18n="おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。">おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、家具の名前をコピーできます。">ボタンを押すと、家具の名前をコピーできます。</span></p>
+        <p class="how-p"><span data-i18n="おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。">おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、施設の名前や家具の名前をコピーできます。">ボタンを押すと、施設の名前や家具の名前をコピーできます。</span></p>
       </div>
       <div class="how-item">
         <div class="how-h">③ <span data-i18n="好きな家具一覧">好きな家具一覧</span></div>
         <p class="how-p"><span data-i18n="「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。">「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、家具の名前をコピーできます。">ボタンを押すと、家具の名前をコピーできます。</span></p>
+      </div>
+      <div class="how-group-title how-group-title-2nd" data-i18n="家具からポケモン診断の使い方">家具からポケモン診断の使い方</div>
+      <div class="how-item">
+        <div class="how-h">① <span data-i18n="家具をえらぶ">家具をえらぶ</span></div>
+        <p class="how-p" data-i18n="家具を1～12個選択して、「ポケモンを診断する」のボタンを押します。">家具を1～12個選択して、「ポケモンを診断する」のボタンを押します。</p>
+      </div>
+      <div class="how-item">
+        <div class="how-h">② <span data-i18n="診断結果">診断結果</span></div>
+        <p class="how-p"><span data-i18n="選択した家具を好きなポケモンが表示されます。">選択した家具を好きなポケモンが表示されます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、ポケモンの名前をコピーできます。">ボタンを押すと、ポケモンの名前をコピーできます。</span></p>
       </div>
     </div>
   </div>

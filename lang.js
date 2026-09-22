@@ -119,12 +119,14 @@ const LANG = {
     ,{"ja": "家具をえらぶ", "en": "Select furniture", "ko": "가구 선택", "zhHans": "选择家具", "zhHant": "選擇傢俱"}
     ,{"ja": "{n} / 12 個", "en": "{n} / 12 items", "ko": "{n} / 12개", "zhHans": "{n} / 12件", "zhHant": "{n} / 12件"}
     ,{"ja": "家具名で検索", "en": "Search by furniture name", "ko": "가구 이름으로 검색", "zhHans": "按家具名称搜索", "zhHant": "依傢俱名稱搜尋"}
-    ,{"ja": "ポケモンを診断", "en": "Find Pokémon", "ko": "포켓몬 진단", "zhHans": "诊断宝可梦", "zhHant": "診斷寶可夢"}
+    ,{"ja": "ポケモンを診断する", "en": "Find Pokémon", "ko": "포켓몬 진단하기", "zhHans": "诊断宝可梦", "zhHant": "診斷寶可夢"}
+    ,{"ja": "※ サンプルとして仮選択済みです", "en": "* Sample furniture is pre-selected", "ko": "※ 샘플로 가구를 미리 선택해 두었습니다", "zhHans": "※ 已预先选择家具作为示例", "zhHant": "※ 已預先選擇傢俱作為範例"}
     ,{"ja": "以下のポケモンが住みたがっています：", "en": "The following Pokémon want to live here:", "ko": "다음 포켓몬들이 여기에 살고 싶어합니다:", "zhHans": "以下宝可梦想住在这里：", "zhHant": "以下寶可夢想住在這裡："}
     ,{"ja": "まずは家具を1つ以上選んでください 🛋️", "en": "Start by selecting at least one piece of furniture 🛋️", "ko": "먼저 가구를 1개 이상 선택해 주세요 🛋️", "zhHans": "请先选择至少1件家具 🛋️", "zhHant": "請先選擇至少1件傢俱 🛋️"}
     ,{"ja": "選んだ家具の属性に合うポケモンが見つかりませんでした", "en": "No Pokémon matched the attributes of the furniture you selected", "ko": "선택한 가구의 속성에 맞는 포켓몬을 찾지 못했습니다", "zhHans": "没有找到符合所选家具属性的宝可梦", "zhHant": "沒有找到符合所選傢俱屬性的寶可夢"}
     ,{"ja": "家具からポケモン診断に切り替え", "en": "Switch to Furniture → Pokémon Finder", "ko": "가구로 포켓몬 진단으로 전환", "zhHans": "切换到「从家具诊断宝可梦」", "zhHant": "切換到「從傢俱診斷寶可夢」"}
     ,{"ja": "施設診断に切り替え", "en": "Switch to Facility Finder", "ko": "시설 진단으로 전환", "zhHans": "切换到设施诊断", "zhHant": "切換到設施診斷"}
+    ,{"ja": "ポケモン名をコピー", "en": "Copy Pokémon names", "ko": "포켓몬 이름 복사", "zhHans": "复制宝可梦名称", "zhHant": "複製寶可夢名稱"}
   ],
   "attrs": [
     {"ja": "あそびば", "en": "Play spaces", "ko": "놀이 공간", "zhHans": "游乐区", "zhHant": "遊樂區"},

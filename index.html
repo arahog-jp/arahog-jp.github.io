@@ -637,7 +637,8 @@
   .legend-row .tags span{ font-size:10px; padding:2px 7px; border-radius:999px; background:var(--primary-soft); color:var(--primary-strong); font-weight:700; }
   .legend-row .tags span.dislike{ background:var(--accent-soft); color:var(--accent-strong); }
   /* 「家具からポケモン診断」の結果の見出し文(「以下のポケモンが住みたがっています：」) */
-  .result-lead{ font-size:13.5px; font-weight:800; color:var(--text); margin:0 0 12px; }
+  .result-lead{ font-size:13.5px; font-weight:800; color:var(--text); margin:0; }
+  .result-lead-row{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:0 0 12px; }
 
   .empty-state{
     text-align:center; padding:30px 16px; color:var(--text-faint); font-size:13px;
@@ -936,8 +937,9 @@
     </div>
     <div class="picker-grid" id="furnPickerGrid"></div>
     <div class="cta-row">
-      <button class="primary" id="diagnoseFurnBtn">✨ <span data-i18n="ポケモンを診断">ポケモンを診断</span></button>
+      <button class="primary" id="diagnoseFurnBtn">✨ <span data-i18n="ポケモンを診断する">ポケモンを診断する</span></button>
       <button class="ghost" id="resetFurnBtn" data-i18n="えらび直す">えらび直す</button>
+      <span class="hint" id="furnSampleHint" data-i18n="※ サンプルとして仮選択済みです">※ サンプルとして仮選択済みです</span>
     </div>
   </section>
 
@@ -1738,13 +1740,29 @@
   // ===== 家具からポケモン診断(⋮メニューの「家具からポケモン診断に切り替え」で開く、もう1つのツール) =====
   // 家具を最大12個選ぶと、選んだ家具についている属性(attrs)を全部集めて、
   // その属性を好んでいる(likesに含む)ポケモンを探す。得点のつけ方は「施設診断」の
-  // bestLikeMatch(好物1~5のうち、いちばん強く一致したものを採用。レア度も加味する)を
-  // もとにしているが、こちらは「選んだ家具どうしで、同じ属性がどれだけ重なっているか」も
-  // 得点に加える(下のbestLikeMatchWeightedを参照)。苦手な属性が1つでも選んだ家具に
-  // 含まれているポケモンは、住みたがらないと考え、候補から外す
-  // (施設診断のscoreFurnitureで、苦手な家具を0点にするのと同じ考え方)。
+  // bestLikeMatch(好物の優先度×属性のレア度)の考え方をもとにしているが、2つの点で変えている。
+  // ①施設診断が「いちばん強く一致した好物1つだけ」を採用するのに対し、こちらは
+  // 「一致した好物、全部ぶんを足し算する」(選んだ家具どうしで、同じ属性がどれだけ
+  // 重なっているかも加味する)。②施設診断にある「好物1~5の優先度(好物1がいちばん強い)」
+  // による重みづけを取りはらい、好物1~5をすべて同じ重み(フラット)であつかう。
+  // くわしくは、下のbestLikeMatchWeightedのコメントを参照。
+  // 苦手な属性が1つでも選んだ家具に含まれているポケモンは、住みたがらないと考え、
+  // 候補から外す(施設診断のscoreFurnitureで、苦手な家具を0点にするのと同じ考え方)。
   const FURN_SLOT_COUNT = 12;
+  const DEFAULT_FURN_PICK = ["たる","イルミネーションライト","カベかけタオル","ガーデンフラワー","シンク","ネジネジうえ木","パーティーカップ","マグカップ","メニューボード","リゾートなこしかけ","リゾートなハンモック","リゾートなライト"];
   let selectedFurn = new Array(FURN_SLOT_COUNT).fill(null);
+  DEFAULT_FURN_PICK.forEach((n, i) => {
+    const f = furniture.find(x => x.name === n);
+    if (f) selectedFurn[i] = f;
+  });
+  // 「※ サンプルとして仮選択済みです」の表示・非表示を管理するフラグ(施設診断のshowSampleHintと同じ仕組み)。
+  // 最初は表示しておき、「えらび直す」ボタンが押されたとき、または
+  // 枠のどれか1つでも「✕」ボタンで家具が解除されたときに、非表示にする。
+  let showFurnSampleHint = true;
+  function updateFurnSampleHint(){
+    const hintEl = document.getElementById("furnSampleHint");
+    if (hintEl) hintEl.hidden = !showFurnSampleHint;
+  }
   const furnPickerGrid = document.getElementById("furnPickerGrid");
   const furnSelectedCountEl = document.getElementById("furnSelectedCount");
   const furnResultBody = document.getElementById("furnResultBody");
@@ -1756,12 +1774,14 @@
       slot.className = "slot" + (f ? " filled" : "");
 
       if (f) {
-        // 選んだ家具は、長くなりすぎないよう、名前だけを表示する(属性のタグは出さない)
         slot.innerHTML =
           '<div class="chip-card">' +
             '<div class="avatar">' + esc(firstChar(fName(f.name))) + '</div>' +
             '<div style="min-width:0;flex:1;">' +
               '<div class="name">' + esc(fName(f.name)) + '</div>' +
+              '<div class="tags">' +
+                f.attrs.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +
+              '</div>' +
             '</div>' +
           '</div>' +
           '<button class="clear-btn" data-idx="' + idx + '" aria-label="' + esc(tr('クリア')) + '">✕</button>';
@@ -1777,6 +1797,8 @@
     furnPickerGrid.querySelectorAll(".clear-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         selectedFurn[+btn.dataset.idx] = null;
+        showFurnSampleHint = false;
+        updateFurnSampleHint();
         renderFurnSlots();
       });
     });
@@ -1828,25 +1850,34 @@
     furnSelectedCountEl.textContent = tr('{n} / 12 個', { n: selectedFurn.filter(Boolean).length });
   }
 
-  // 施設診断のbestLikeMatchと同じ考え方(好物1~5のうち、いちばん強く一致した1つだけを採用。
-  // 好物の優先度(LIKE_WEIGHTS)と、属性のレア度(rarityWeight)を掛け合わせる)に加えて、
-  // 「選んだ家具の中で、その属性を持つ家具が何個あったか(attrCounts)」も掛け合わせる。
-  // 同じ属性を持つ家具を何個も選ぶほど、その属性を好きなポケモンが選ばれやすくなる
-  // (1個だけなら重みは1倍のまま。家具が増えるほど、Math.sqrt(件数)ぶん重みが増える。
-  // 平方根にしているのは、rarityWeightと同じく、増え方がゆるやかになるようにするため)。
-  function bestLikeMatchWeighted(likes, attrCounts){
-    let bestScore = -1;
-    let hits = 0;
-    likes.forEach((a, idx) => {
-      const count = attrCounts[a] || 0;
-      if (count > 0) {
-        hits++;
-        const base = LIKE_WEIGHTS[idx] !== undefined ? LIKE_WEIGHTS[idx] : 1;
-        const score = base * rarityWeight(a) * Math.sqrt(count);
-        if (score > bestScore) bestScore = score;
-      }
+  // 施設診断のbestLikeMatch(好物1~5のうち、いちばん強く一致した1つだけを採用する)とは
+  // あえて変えていて、こちらは「選んだ家具のうち、何個の家具に、このポケモンの好物が
+  // 含まれているか(=家具の個数)」をいちばんの得点にする。
+  // (以前は「一致した好物の属性ぶん、全部を足し算する」方式だったが、それだと1個の家具に
+  // 好物の属性がたくさん乗っているだけで得点が伸びてしまい、「1個の家具と複合的に好み
+  // が合っている」のか「たくさんの家具それぞれと好みが合っている」のかが区別できなかった。
+  // そこで、1個の家具に好物の属性がいくつ乗っていても、その家具ぶんは1個としてしか
+  // 数えないようにし、代わりに「好みが合っている家具の“個数”」そのものをいちばん重視する
+  // ことで、選んだ家具をより多く・複合的に好んでいるポケモンほど上位に来るようにした。)
+  // 「属性のレア度(rarityWeight。めずらしい属性ほど高い)」の合計は、家具の個数が同じ
+  // ポケモン同士を並べるときのタイブレーク(2位のものさし)として使う。
+  function bestLikeMatchWeighted(likes, picks){
+    const likeSet = new Set(likes);
+    const matchedAttrs = new Set();
+    let coveredCount = 0; // 好物のいずれかを含む家具の個数(1個の家具は何度好物と一致しても1個ぶんのまま)
+    picks.forEach(f => {
+      let matchedHere = false;
+      f.attrs.forEach(a => {
+        if (likeSet.has(a)) {
+          matchedHere = true;
+          matchedAttrs.add(a);
+        }
+      });
+      if (matchedHere) coveredCount++;
     });
-    return { weight: bestScore === -1 ? 0 : bestScore, hits };
+    let rarityTotal = 0;
+    matchedAttrs.forEach(a => { rarityTotal += rarityWeight(a); });
+    return { score: coveredCount, weight: rarityTotal, hits: matchedAttrs.size };
   }
 
   function renderFurnResults(){
@@ -1857,21 +1888,25 @@
     }
 
     // 選んだ家具の属性(attrs)ごとに、「何個の家具についていたか」を数える
-    // (例: 3個選んだ家具のうち2個に「いれもの」が付いていたら、attrCounts["いれもの"] は2)
+    // (苦手判定に使う: 選んだ家具の中に苦手な属性を持つものが1つでもあれば0点にする)
     const attrCounts = {};
     picks.forEach(f => f.attrs.forEach(a => { attrCounts[a] = (attrCounts[a] || 0) + 1; }));
 
     const scored = selectablePokemons.map(p => {
       // 苦手な属性が、選んだ家具の中に1つでもあれば、住みたがらないと考えて0点にする
       const dislikeHit = !!(p.dislike && attrCounts[p.dislike] > 0);
-      if (dislikeHit) return { p, score: 0, hits: 0 };
-      const best = bestLikeMatchWeighted(p.likes, attrCounts);
-      return { p, score: best.weight, hits: best.hits };
+      if (dislikeHit) return { p, score: 0, weight: 0, hits: 0 };
+      const best = bestLikeMatchWeighted(p.likes, picks);
+      return { p, score: best.score, weight: best.weight, hits: best.hits };
     });
 
     let matched = scored.filter(r => r.score > 0);
     matched.sort((a, b) => {
+      // 1. 好みが合っている家具の個数(score)がいちばん多いものを上に
       if (b.score !== a.score) return b.score - a.score;
+      // 2. 個数が同じなら、一致した属性のレア度合計(weight)が高いものを上に
+      if (b.weight !== a.weight) return b.weight - a.weight;
+      // 3. それも同じなら、一致した属性の種類数(hits)が多いものを上に
       if (b.hits !== a.hits) return b.hits - a.hits;
       return currentLang === "ja"
         ? a.p.name.localeCompare(b.p.name, 'ja')
@@ -1887,7 +1922,13 @@
 
     // 順位はつけず(ランキング形式にせず)、見つかった上位8匹までを、すべて並列に並べる。
     // 表示する「好物属性」「苦手属性」は、施設診断でポケモンを選んだときと同じ見た目(緑・オレンジの丸いラベル)。
-    let html = '<p class="result-lead">' + esc(tr('以下のポケモンが住みたがっています：')) + '</p>';
+    const furnPokemonNamesForCopy = top.map(r => pName(r.p.name));
+    const copyPokemonLabel = esc(tr('ポケモン名をコピー'));
+    let html = '<div class="result-lead-row">';
+    html += '<p class="result-lead">' + esc(tr('以下のポケモンが住みたがっています：')) + '</p>';
+    html += '<span class="dex-copy-wrap"><span class="dex-copy-msg" aria-live="polite"></span>' +
+      '<button type="button" class="dex-copy-btn" id="furnNamesCopyBtn" title="' + copyPokemonLabel + '" aria-label="' + copyPokemonLabel + '">' + COPY_ICON + '</button></span>';
+    html += '</div>';
     html += '<div class="legend-grid">';
     top.forEach(r => {
       const p = r.p;
@@ -1905,11 +1946,18 @@
     });
     html += '</div>';
     furnResultBody.innerHTML = html;
+
+    const furnNamesCopyBtn = document.getElementById("furnNamesCopyBtn");
+    if (furnNamesCopyBtn) {
+      furnNamesCopyBtn.addEventListener("click", () => copyNamesWithFeedback(furnNamesCopyBtn, furnPokemonNamesForCopy));
+    }
   }
 
   document.getElementById("diagnoseFurnBtn").addEventListener("click", renderFurnResults);
   document.getElementById("resetFurnBtn").addEventListener("click", () => {
     selectedFurn = new Array(FURN_SLOT_COUNT).fill(null);
+    showFurnSampleHint = false;
+    updateFurnSampleHint();
     renderFurnSlots();
     renderFurnResults();
   });
@@ -2218,6 +2266,7 @@
   renderFurnResults();
   setMode(currentMode);
   updateSampleHint();
+  updateFurnSampleHint();
 })();
 </script>
 

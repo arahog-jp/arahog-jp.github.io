@@ -29,6 +29,7 @@
     --gold:#C79A2E;
     --moss-soft:#E6EBD2; --moss-border:#CDD6B1; --moss-strong:#56682B;
     --danger:#C15B4A;
+    --hero-wash:rgba(250,246,236,.30);
     --shadow:0 1px 2px rgba(46,42,34,0.06), 0 8px 24px -12px rgba(46,42,34,0.18);
     --radius-lg:20px;
     --radius-md:14px;
@@ -53,6 +54,7 @@
       --gold:#E6C875;
       --moss-soft:#2A3320; --moss-border:#3F4B2F; --moss-strong:#B9CC8A;
       --danger:#F0897A;
+      --hero-wash:rgba(18,23,42,.30);
       --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -12px rgba(0,0,0,0.55);
     }
   }
@@ -74,6 +76,7 @@
     --gold:#E6C875;
     --moss-soft:#2A3320; --moss-border:#3F4B2F; --moss-strong:#B9CC8A;
     --danger:#F0897A;
+    --hero-wash:rgba(18,23,42,.30);
     --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -12px rgba(0,0,0,0.55);
   }
 
@@ -97,6 +100,11 @@
     --accent:#D9A404;
     --accent-strong:#A67D08;
     --accent-soft:#FBEEC3;
+    /* バナーのイラストは暖色(茶色っぽい地面など)なので、そのままだと青系の
+       配色と少しちぐはぐに見える。バナーの縁を、この色でうっすら上から
+       ぼかして、まわりの青となじむようにしている(下の .hero-banner .scrim
+       で使っている)。 */
+    --hero-wash:rgba(234,240,250,.42);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]) body.mode-furniture{
@@ -109,6 +117,7 @@
       --accent:#F2C94C;
       --accent-strong:#F7DA85;
       --accent-soft:#3A311A;
+      --hero-wash:rgba(18,23,42,.30);
     }
   }
   :root[data-theme="dark"] body.mode-furniture{
@@ -121,13 +130,23 @@
     --accent:#F2C94C;
     --accent-strong:#F7DA85;
     --accent-soft:#3A311A;
+    --hero-wash:rgba(18,23,42,.30);
   }
 
   *{box-sizing:border-box;}
   /* html にも --bg を敷いておく。PC の大きい画面だと、本文の高さが画面の高さより
-     短くて、body の下に隙間ができることがあるので、その隙間も夜は暗く見えるように。 */
+     短くて、body の下に隙間ができることがあるので、その隙間も夜は暗く見えるように。
+     ただし「家具からポケモン診断」の青い配色(--bg)は body.mode-furniture に
+     付けているので、body の親である html からは見えない(CSSの変数は、子の要素から
+     親の要素へさかのぼって参照することができないため)。html の背景は、いつも
+     施設診断(デフォルト)の色のままになる。ブラウザは既定で body のまわりに
+     8px ぶんの余白(マージン)を持っているため、そのままだと html の色(施設診断の色)
+     が、body の外側にごく細い縁として見えてしまい、家具からポケモン診断(青い配色)の
+     ときに、その縁だけ違う色に見えてしまう不具合があった。margin:0 を指定して、
+     body が html をすきまなく覆うようにすることで直している。 */
   html{ background:var(--bg); min-height:100%; }
   body{
+    margin:0;
     background:var(--bg);
     color:var(--text);
     font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","M PLUS Rounded 1c",sans-serif;
@@ -379,16 +398,26 @@
   .hero-banner .scrim{
     width:100%;
     height:100%;
-    /* 左(文字のほう)は濃く、右(ポケモンのほう)は透明にする、もとからの左右グラデーション */
-    background:linear-gradient(to right, rgba(255,255,255,.62) 0%, rgba(255,255,255,.62) 38%, rgba(255,255,255,0) 78%);
+    /* 2枚重ね。1枚目=左(文字のほう)は濃く、右(ポケモンのほう)は透明にする、もとからの
+       左右グラデーション。2枚目(--hero-wash)=画像全体にうっすらかける、そのときの
+       背景色(--bg)に合わせた色。画像そのものの暖色(茶色っぽい地面など)が、まわりの
+       色(とくに「家具からポケモン診断」の青系の配色)と縁のあたりで浮いて見えない
+       ように、右端や上下のふちも、まわりの色になじませている。 */
+    background:
+      linear-gradient(to right, rgba(255,255,255,.62) 0%, rgba(255,255,255,.62) 38%, rgba(255,255,255,0) 78%),
+      linear-gradient(var(--hero-wash), var(--hero-wash));
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]) .hero-banner .scrim{
-      background:linear-gradient(to right, rgba(13,17,32,.60) 0%, rgba(13,17,32,.60) 38%, rgba(13,17,32,0) 78%);
+      background:
+        linear-gradient(to right, rgba(13,17,32,.60) 0%, rgba(13,17,32,.60) 38%, rgba(13,17,32,0) 78%),
+        linear-gradient(var(--hero-wash), var(--hero-wash));
     }
   }
   :root[data-theme="dark"] .hero-banner .scrim{
-    background:linear-gradient(to right, rgba(13,17,32,.60) 0%, rgba(13,17,32,.60) 38%, rgba(13,17,32,0) 78%);
+    background:
+      linear-gradient(to right, rgba(13,17,32,.60) 0%, rgba(13,17,32,.60) 38%, rgba(13,17,32,0) 78%),
+      linear-gradient(var(--hero-wash), var(--hero-wash));
   }
   .hero-banner h1{
     align-self:center;

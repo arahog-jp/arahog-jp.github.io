@@ -7,18 +7,18 @@
 <!-- LINEやX(旧Twitter)などにリンクを貼ったときに、下に表示される説明文とタイトル・画像。
      ここを書いておかないと、LINEなどがページの中の文章を勝手に拾ってしまい、
      「お知らせ」などの関係ない文字が混ざって表示されることがあるため、明示的に指定している。 -->
-<meta name="description" content="このツールは非公式のファンツールです。作成者：新乃ほぐす(@arahog)">
+<meta name="description" content="ポケモンを選択すると、おすすめ施設を提案します。家具を選択すると、おすすめのポケモンを紹介します。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ぽこあ施設診断">
-<meta property="og:description" content="このツールは非公式のファンツールです。作成者：新乃ほぐす(@arahog)">
+<meta property="og:description" content="ポケモンを選択すると、おすすめ施設を提案します。家具を選択すると、おすすめのポケモンを紹介します。">
 <meta property="og:url" content="https://arahog-jp.github.io/">
 <!-- LINEなどにリンクを貼ったときに出る画像。
      LINEはこの画像を「正方形(縦横1:1)」の形に、真ん中を切り抜いて表示するため、
      あらかじめ banner-bright.png の右側(ポケモンがいる側)だけを、
-     正方形の形に切り抜いた別画像(banner-bright-card.jpg)を用意して指定している。
+     正方形の形に切り抜いた別画像(banner-bright-card.png)を用意して指定している。
      アドレスを短くするため、この画像だけは「画像保管庫」フォルダの中ではなく、
      index.htmlと同じ場所(リポジトリの直下)に置くようにしている。 -->
-<meta property="og:image" content="https://arahog-jp.github.io/banner-bright-card.jpg">
+<meta property="og:image" content="https://arahog-jp.github.io/banner-bright-card.png">
 <!-- X(旧Twitter)にリンクを貼ったときに出る、大きいほうのサムネイル画像。
      X はこの画像を「横2:縦1」の形に切り抜いて表示するため、
      あらかじめ banner-dark.png の右側(ポケモンがいる側)だけを、
@@ -371,8 +371,15 @@
     margin-top:8px;
     color:var(--text-muted);
     font-size:13.5px;
-    max-width:52ch;
+    /* 説明文は、上のバナーと同じ横幅いっぱいまで使って、ふつうに折り返す
+       (以前の max-width:52ch は、横幅がせまくなり、改行の位置が不自然になるので外した)。
+       text-wrap:pretty = 最後の行に1〜2文字だけが取り残されないように、ブラウザが
+       最後のほうの行の改行位置を少しだけ調整する(対応していないブラウザでは、ふつうの折り返し)。 */
+    text-wrap:pretty;
   }
+  /* 韓国語は、単語の途中(「싫어하는」の「싫」と「어하는」の間など)で改行されると
+     読みにくいので、単語の区切り(空白)でだけ改行する。ほかの言語は、そのまま。 */
+  html[lang="ko"] .hero p{ word-break:keep-all; }
 
   /* ---------- Hero banner(見出しをイラストの上に乗せる) ----------
      イラスト(昼は banner-bright.png、夜は banner-dark.png。下の
@@ -403,20 +410,24 @@
   .hero-banner picture{
     display:block;
     width:100%;
+    /* 画像はバナーの「下辺」にそろえて置く。バナーが見出しの行数で画像より縦に
+       伸びたときは、上のほうに余白ができ、そこへ向かってイラストが溶けるように消える。 */
+    align-self:end;
   }
   .hero-banner img{
     display:block;
     width:100%;
     height:auto;
   }
-  /* イラスト(img)にも、左右の幕(.scrim)にも、同じ「下端フェード」をかけている
-     (グラデーションを2枚重ねている状態)。こうすることで、バナーが見出しの行数で
-     画像より縦に伸びたときに、イラストと幕(色)が両方いっしょに背景へ溶けるように
-     消えていく。画像の高さがぴったりのときも、下のふちがやわらかく馴染む。 */
+  /* イラスト(img)にも、左右の幕(.scrim)にも、同じ「上端フェード」をかけている
+     (グラデーションを2枚重ねている状態)。画像は下辺にそろえて置いているので、
+     バナーが見出しの行数で画像より縦に伸びたときに、イラストと幕(色)が両方
+     いっしょに、上のほうの背景へ溶けるように消えていく。画像の高さがぴったりの
+     ときも、上のふちがやわらかく馴染む。(以前は上辺固定・下端フェードだった。) */
   .hero-banner img,
   .hero-banner .scrim{
-    -webkit-mask-image:linear-gradient(to bottom, #000 82%, transparent 100%);
-    mask-image:linear-gradient(to bottom, #000 82%, transparent 100%);
+    -webkit-mask-image:linear-gradient(to top, #000 82%, transparent 100%);
+    mask-image:linear-gradient(to top, #000 82%, transparent 100%);
   }
   .hero-banner .scrim{
     width:100%;
@@ -528,6 +539,24 @@
     font-family:"M PLUS Rounded 1c",sans-serif;
   }
   .chip-card .name{ font-weight:700; font-size:14px; }
+  /* 施設診断で選んだポケモンの、名前の行の右端に出す「好きな環境」 */
+  .chip-card .name-row{ display:flex; align-items:center; gap:8px; min-width:0; }
+  .chip-card .name-row .name{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  /* 家具からポケモン診断で選んだ家具：名前と環境の楕円が1行に入りきらないとき(スマホなど)は、
+     環境の楕円を上の行(右上)に、家具名を下の行に出す(wrap-reverse で、折り返した行が上に来る) */
+  .chip-card .name-row.wrap{ flex-wrap:wrap-reverse; row-gap:2px; }
+  .chip-card .name-row.wrap .name{ flex:0 1 auto; white-space:normal; overflow:visible; }
+  /* ごく淡いクリーム寄りの黄色の楕円。右端から少し内側(左)に寄せる(margin-right) */
+  .chip-card .env-tag, .legend-row .env-tag{
+    margin-left:auto; margin-right:10px; flex:none; font-size:10px; font-weight:700; line-height:1.5;
+    padding:1px 8px; border-radius:999px; white-space:nowrap;
+    border:1px solid #F1E3B3; background:#FFF8E1; color:#8A6A1C;
+  }
+  /* 暗い画面(ダークモード)のときは、同じ色みを暗い背景に合わせる */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .chip-card .env-tag, :root:not([data-theme="light"]) .legend-row .env-tag{ border-color:#5A4B22; background:#3A331C; color:#F3DE9A; }
+  }
+  :root[data-theme="dark"] .chip-card .env-tag, :root[data-theme="dark"] .legend-row .env-tag{ border-color:#5A4B22; background:#3A331C; color:#F3DE9A; }
   .chip-card .tags{
     margin-top:3px; display:flex; flex-wrap:wrap; gap:4px;
   }
@@ -669,6 +698,16 @@
     background:var(--surface); border:1px solid var(--border); color:var(--text-muted);
   }
   .furn-preview span b{ font-weight:800; color:var(--text); }
+  /* 好きな環境についての表示(⚠マークと、診断結果の上のお知らせ枠) */
+  .env-note{
+    margin:0 0 12px; padding:9px 12px; border-radius:var(--radius-sm);
+    background:var(--surface); border:1px solid var(--border);
+    font-size:12.5px; line-height:1.7; color:var(--text);
+  }
+  .env-note .env-conflict{ margin-top:2px; color:var(--accent-strong); font-weight:700; }
+  .env-warn{ margin-top:3px; font-size:11px; line-height:1.6; font-weight:700; color:var(--accent-strong); }
+  .env-warn-mark{ margin-left:3px; font-weight:800; color:var(--accent-strong); cursor:help; }
+  .furn-preview span.env-warn-mark{ padding:0; border:0; border-radius:0; background:none; font-size:inherit; color:var(--accent-strong); }
 
   /* 4位以降の詳細カードでは、🏆のうす絵柄は出さない */
   .top-pick.lower::before{ content:none; }
@@ -744,6 +783,10 @@
     font-family:"M PLUS Rounded 1c",sans-serif;
   }
   .legend-row .name{ font-weight:700; font-size:13px; }
+  /* 「家具からポケモン診断」の結果: 名前の行の右端に、好きな環境の楕円を出す */
+  .legend-row .name-row{ display:flex; align-items:center; gap:8px; min-width:0; }
+  .legend-row .name-row .name{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .legend-row .env-tag{ margin-right:0; }
   .legend-row .tags{ margin-top:4px; display:flex; flex-wrap:wrap; gap:4px; }
   .legend-row .tags span{ font-size:10px; padding:2px 7px; border-radius:999px; background:var(--primary-soft); color:var(--primary-strong); font-weight:700; }
   .legend-row .tags span.dislike{ background:var(--accent-soft); color:var(--accent-strong); }
@@ -1235,6 +1278,74 @@
     "木のすばこ": { type: "ひこう", multiplier: 2, floor: 2 }
   };
 
+  // ===== ポケモンの「好きな環境」についての決まり =====
+  // 元は、ぽこあマスタデータ.xlsx の「環境」シート(C列「避けたい家具の分類」)と「環境の共存」シートです。
+  // ゲームの仕様で、今後変わることはほぼないため、data.js ではなく、ここに直接書いています。
+  // ・ENV_ORDER：環境を画面に並べる順番。
+  // ・ENV_AVOID：その環境のポケモンが「置かれると住み心地が下がる」家具の分類。
+  //   家具の分類は、data.js の家具の "env"(Excelの家具リストの「環境1」「環境2」)で判定します(両方とも使います。例：エアコンは暖房と冷房の両方)。
+  //   該当する家具には⚠マークを付けますが、候補からは外しません(「苦手」ほど強くないため)。
+  //   タイプ相性で嫌がる家具(例：あたたかいポケモンと潤いの家具)は、「苦手」でカバーされているので、ここには書きません。
+  // ・ENV_CONFLICTS：同じ住処で、同時には成り立たない環境の組み合わせ(「環境の共存」シートの×)。
+  const ENV_ORDER = ["あかるい","くらい","すずしい","あたたかい","うるおっている","乾そうしている"];
+  const ENV_AVOID = { "くらい": ["照明"], "乾そうしている": ["潤い"] };  // 「乾そうしている」→「潤い」は2026年9月27日に追加
+  //   (2026年9月24日のゲームでの確認で、「あたたかい」と「うるおっている」は、同居してもポケモンが何も言わなかったため、両立できる(○)に変えました。
+  //    「うるおっている」と「乾そうしている」は、一度○にしましたが、2026年9月27日の確認で、やはり両立できない(×)と分かったので、元に戻しました)
+  const ENV_CONFLICTS = [["あかるい","くらい"],["すずしい","あたたかい"],["うるおっている","乾そうしている"]];
+  // 施設のランキングで、⚠の付く家具(おすすめ理由・丸いラベルに出る家具のグループ)が1つあるごとに、
+  // 並び順を決める点数(combined)を、この倍率で下げる(0.85なら、1つで85%、2つで約72%、3つで約61%…)。
+  // ⚠が少ない施設ほど上に来やすくなる。画面に出す「マッチ度」の%は変えない。
+  const ENV_WARN_PENALTY = 0.85;
+  // その家具を置くと住み心地が下がる(⚠を付ける)、選んだポケモンの一覧
+  function envWarnPicks(f, picks){
+    const fe = (f && f.env) || [];
+    if (!fe.length) return [];
+    return picks.filter(p => (ENV_AVOID[p.env] || []).some(c => fe.includes(c)));
+  }
+  // 「⚠ ○○は「くらい」の環境が好みです」の文
+  const envWarnText = p => tr('⚠ {name}は「{env}」の環境が好みです', { name: pName(p.name), env: tr(p.env) });
+  // 家具名の右に付ける、小さな⚠(マウスを乗せると理由が出る)
+  function envWarnMark(f, picks){
+    const who = envWarnPicks(f, picks);
+    if (!who.length) return "";
+    const t = esc(who.map(envWarnText).join(" / "));
+    return '<span class="env-warn-mark" title="' + t + '" aria-label="' + t + '">⚠</span>';
+  }
+  // 家具の下に出す、⚠の理由の行
+  function envWarnLines(f, picks){
+    return envWarnPicks(f, picks).map(p => '<div class="env-warn">' + esc(envWarnText(p)) + '</div>').join("");
+  }
+  // 環境の名前をかっこで囲む(日本語は『』、中国語は「」、英語は""、韓国語は'')
+  function quoteEnv(e){
+    const n = tr(e);
+    if (currentLang === "ja") return "『" + n + "』";
+    if (currentLang === "zhHans" || currentLang === "zhHant") return "「" + n + "」";
+    if (currentLang === "en") return '"' + n + '"';
+    return "'" + n + "'";
+  }
+  // 診断結果の上に出す「このメンバーは…の環境が好きです。」と、両立できない組み合わせのお知らせ
+  function buildEnvNoteHtml(picks){
+    const envs = ENV_ORDER.filter(e => picks.some(p => p.env === e));
+    if (!envs.length) return "";
+    const joined = (currentLang === "ja")
+      ? (envs.length === 2 ? envs.map(quoteEnv).join("と") : envs.map(quoteEnv).join("、"))  // 2つは「と」、3つ以上は「、」でつなぐ
+      : envs.map(quoteEnv).join(currentLang === "en" || currentLang === "ko" ? ", " : "、");
+    // 環境が1つのときは、英語などで単数形の文を使う(日本語の文は同じ)
+    const noteText = envs.length === 1
+      ? tr('このメンバーは{env}の環境が好きです。（環境が1つのとき）', { env: joined }, 'このメンバーは{env}の環境が好きです。'.replace('{env}', joined))
+      : tr('このメンバーは{env}の環境が好きです。', { env: joined });
+    let h = '<div class="env-note">' + esc(noteText);
+    ENV_CONFLICTS.forEach(([x, y]) => {
+      const a = picks.filter(p => p.env === x), b = picks.filter(p => p.env === y);
+      if (!a.length || !b.length) return;
+      h += '<div class="env-conflict">⚠ ' + esc(tr('{a}と{b}の好きな環境は、同じ住処では両立できません', {
+        a: a.map(p => pName(p.name)).join(listSep()),
+        b: b.map(p => pName(p.name)).join(listSep())
+      })) + '</div>';
+    });
+    return h + '</div>';
+  }
+
   const DEFAULT_PICK = ["デカヌチャン","パピモッチ","バウッツェル","ピカチュウ"];
   let selected = [null, null, null, null];
   DEFAULT_PICK.forEach((n, i) => {
@@ -1293,7 +1404,9 @@
           '<div class="chip-card">' +
             '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
             '<div style="min-width:0;flex:1;">' +
-              '<div class="name">' + esc(pName(p.name)) + '</div>' +
+              '<div class="name-row"><div class="name">' + esc(pName(p.name)) + '</div>' +
+                (p.env ? '<span class="env-tag" title="' + esc(tr('好きな環境')) + '">' + esc(tr(p.env)) + '</span>' : '') +
+              '</div>' +
               '<div class="tags">' +
                 p.likes.map(t => '<span>' + esc(aName(t)) + '</span>').join("") +
                 (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
@@ -1525,9 +1638,12 @@
       const coverageCount = picks.filter(p => coveragePokemonSet.has(p.name)).length;
       const coverageRatio = picks.length > 0 ? coverageCount / picks.length : 1;
 
+      // envWarnCount: この施設のおすすめ家具(matchedGroups)のうち、⚠が付く家具を含むグループの数
+      const envWarnCount = matchedGroups.filter(g => g.members.some(m => envWarnPicks(m.scored.furniture, picks).length > 0)).length;
+
       return {
         facility: fac,
-        ratio, ratioForRanking, achieved, achievedDisplay, possible,
+        ratio, ratioForRanking, achieved, achievedDisplay, possible, envWarnCount,
         totalGroups: groups.size,
         matchedGroupCount: matchedGroups.length,
         matchedGroups,
@@ -1546,6 +1662,8 @@
       r.achievedNorm = r.achieved / maxAchieved;
       const base = Math.sqrt(Math.max(0, r.ratioForRanking) * Math.max(0, r.achievedNorm));
       r.combined = base * Math.pow(Math.max(0, Math.min(1, r.coverageRatio)), COVERAGE_POWER);
+      // ⚠(好きな環境に合わない家具)が付く家具グループが多い施設ほど、順位を下げる(ENV_WARN_PENALTYを参照)
+      r.combined *= Math.pow(ENV_WARN_PENALTY, r.envWarnCount);
     });
 
     return rawScores.sort((a,b) => b.combined - a.combined || b.ratioForRanking - a.ratioForRanking || b.achieved - a.achieved);
@@ -1665,6 +1783,7 @@
           '<div style="flex:1;min-width:0;">' +
             '<div class="fname">' + fnameLabel + '</div>' +
             '<div class="who">' + whoHtml + '</div>' +
+            envWarnLines(r.furniture, picks) +
           '</div>' +
           '<span class="recipe-badge ' + recipeClass + '">' + recipeLabel + '</span>' +
         '</div>'
@@ -1801,14 +1920,15 @@
           // 2行目：好みが合うポケモンの名前を緑の楕円(「好きな家具一覧」と同じ見た目)で並べ、「が好き」と続ける。
           const pokemonPills = g.matchedNames.map(n => '<span class="pk">' + esc(pName(n)) + '</span>').join("");
           // 家具名の右に、下の丸いラベルと同じ見た目(小さく・うすい文字)で、その家具の点数を付ける。
-          let text = '<div class="rn"><b>' + esc(fName(first.name)) + '</b> <span class="sc">+' + first.scored.total.toFixed(1) + '</span>';
+          let text = '<div class="rn"><b>' + esc(fName(first.name)) + '</b>' + envWarnMark(first.scored.furniture, picks) + ' <span class="sc">+' + first.scored.total.toFixed(1) + '</span>';
           if (others.length > 0) {
             text += ' <button type="button" class="more-btn" data-count="' + others.length + '" aria-expanded="false">' + esc(tr('ほか{n}件', { n: others.length })) + ' ▾</button>';
           }
           text += '</div>';
           text += '<div class="rp">' + pokemonPills + '<span style="white-space:nowrap;">' + esc(tr('が好き')) + '</span></div>';
+          text += envWarnLines(first.scored.furniture, picks);
           if (others.length > 0) {
-            text += '<span class="more-list" hidden>' + esc(tr('ほかの候補：')) + (isEastAsian() ? '' : ' ') + others.map(m => esc(fName(m.name))).join(listSep()) + '</span>';
+            text += '<span class="more-list" hidden>' + esc(tr('ほかの候補：')) + (isEastAsian() ? '' : ' ') + others.map(m => esc(fName(m.name)) + envWarnMark(m.scored.furniture, picks)).join(listSep()) + '</span>';
           }
           h += '<div class="reason"><div class="reason-text">' + text + '</div></div>';
         });
@@ -1824,13 +1944,13 @@
       if (previewGroups.length > 0) {
         h += '<div class="furn-preview">';
         previewGroups.slice(0,8).forEach(pg => {
-          h += '<span><b>' + esc(fName(pg.first.name)) + '</b> +' + pg.first.scored.total.toFixed(1);
+          h += '<span><b>' + esc(fName(pg.first.name)) + '</b>' + envWarnMark(pg.first.scored.furniture, picks) + ' +' + pg.first.scored.total.toFixed(1);
           if (pg.others.length > 0) {
             h += ' <button type="button" class="more-btn" data-count="' + pg.others.length + '" aria-expanded="false">' + esc(tr('ほか{n}件', { n: pg.others.length })) + ' ▾</button>';
           }
           h += '</span>';
           if (pg.others.length > 0) {
-            h += '<div class="more-list" hidden>' + esc(tr('ほかの候補：')) + (isEastAsian() ? '' : ' ') + pg.others.map(m => esc(fName(m.name))).join(listSep()) + '</div>';
+            h += '<div class="more-list" hidden>' + esc(tr('ほかの候補：')) + (isEastAsian() ? '' : ' ') + pg.others.map(m => esc(fName(m.name)) + envWarnMark(m.scored.furniture, picks)).join(listSep()) + '</div>';
           }
         });
         h += '</div>';
@@ -1842,7 +1962,7 @@
 
     // 1〜3位は、最初から詳しく表示する(「上位○施設を詳しく表示しています。」の一文は、表示しない)。
     facCopyNames = [];
-    let html = "";
+    let html = buildEnvNoteHtml(picks);
     coTop.forEach((r, i) => {
       const badgeText = i === 0 ? '🏆 ' + tr('いちばんのおすすめ施設') : '🏆 ' + tr('おすすめ施設（{n}位）', { n: i + 1 });
       html += buildTopPickCardHtml(r, badgeText, false, "topBody" + i);
@@ -1916,7 +2036,11 @@
           '<div class="chip-card">' +
             '<div class="avatar">' + esc(firstChar(fName(f.name))) + '</div>' +
             '<div style="min-width:0;flex:1;">' +
-              '<div class="name">' + esc(fName(f.name)) + '</div>' +
+              '<div class="name-row wrap"><div class="name">' + esc(fName(f.name)) + '</div>' +
+                // 家具が作る環境(照明→あかるい、冷房→すずしい、暖房→あたたかい、潤い→うるおっている)を、
+                // 施設診断の「好きな環境」と同じクリーム色の楕円で出す(エアコンは「あたたかい・すずしい」)
+                ((f.env && f.env.length) ? '<span class="env-tag">' + f.env.map(c => esc(tr(FURN_CAT_ENV[c] || c))).join(listSep()) + '</span>' : '') +
+              '</div>' +
               '<div class="tags">' +
                 f.attrs.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +
               '</div>' +
@@ -1947,13 +2071,13 @@
 
       function showResults(q){
         const query = normSearch(norm(q).trim());
-        const usedNames = new Set(selectedFurn.filter(Boolean).map(f => f.name));
+        // 同じ家具(エアコンなど)を2個以上えらべるように、すでに選んだ家具も候補に残す(2026年9月24日に変更)
         let matches;
         if (!query) {
-          matches = furniture.filter(f => !usedNames.has(f.name));
+          matches = furniture.slice();
         } else {
           // 画面に出ている言語の名前でも、日本語の名前でも、見つかるようにする
-          matches = furniture.filter(f => !usedNames.has(f.name) &&
+          matches = furniture.filter(f =>
             (normSearch(fName(f.name)).includes(query) || normSearch(f.name).includes(query)));
         }
         if (currentLang !== "ja") {
@@ -2022,6 +2146,49 @@
     return { score: coveredCount, weight: dupTotal, hits: matchedAttrs.size };
   }
 
+  // ===== 家具からポケモン診断：選んだ家具で、住処がどんな環境になるか =====
+  // ・照明の家具があれば「あかるい」、潤いの家具があれば「うるおっている」。
+  //   ただし、照明は家具ごとに明るさが違い、地下などでは1〜2個では「あかるい」にならないこともある(屋外の日の光でも変わる)。
+  //   そのため、画面に「あかるい環境になります」とは出さず、「くらい」のポケモンに⚠を付けて、並び順を下げる(0.85倍)ことにだけ使う。
+  // ・気温は差し引きで決まる(2026年9月24日にゲームで確認)：暖房の家具1つ＝＋1、冷房1つ＝－2(冷房1つが暖房2つぶん)。
+  //   合計が＋なら「あたたかい」、－なら「すずしい」、0なら「ふつう」(どちらでもない)。
+  // ・エアコン(data.js の env が「暖房」「冷房」の両方)は、冷房・暖房を切り替えられるので、どちらの設定でも
+  //   同じ結果になるときだけ、その気温を「決まった環境」として扱う(設定しだいで変わるときは、気温は出さない)。
+  // 家具の分類(data.js の家具の "env")と、その家具が作る環境の対応
+  const FURN_CAT_ENV = { "照明": "あかるい", "冷房": "すずしい", "暖房": "あたたかい", "潤い": "うるおっている" };
+  function computeFurnEnv(picks){
+    const has = (f, c) => !!(f.env && f.env.includes(c));
+    const isSwitch = f => has(f, "暖房") && has(f, "冷房");
+    const lights = picks.filter(f => has(f, "照明"));
+    const humid = picks.filter(f => has(f, "潤い"));
+    const heaters = picks.filter(f => has(f, "暖房") && !isSwitch(f));
+    const coolers = picks.filter(f => has(f, "冷房") && !isSwitch(f));
+    const switches = picks.filter(isSwitch);
+    const base = heaters.length - 2 * coolers.length;
+    const tMax = base + switches.length;      // エアコンを全部「暖房」にしたとき
+    const tMin = base - 2 * switches.length;  // エアコンを全部「冷房」にしたとき
+    const envs = [];
+    const causes = {};
+    if (lights.length) { envs.push("あかるい"); causes["あかるい"] = { cat: "照明", items: lights }; }
+    if (tMin > 0) { envs.push("あたたかい"); causes["あたたかい"] = { cat: "暖房", items: heaters.concat(switches) }; }
+    else if (tMax < 0) { envs.push("すずしい"); causes["すずしい"] = { cat: "冷房", items: coolers.concat(switches) }; }
+    if (humid.length) { envs.push("うるおっている"); causes["うるおっている"] = { cat: "潤い", items: humid }; }
+    return { envs: ENV_ORDER.filter(e => envs.includes(e)), causes, hasSwitch: switches.length > 0 };
+  }
+  // 同じ家具を2個以上選んだときは「エアコン×2」のようにまとめて、家具名を並べる
+  function countedNames(items){
+    const counts = new Map();
+    items.forEach(f => counts.set(f.name, (counts.get(f.name) || 0) + 1));
+    return Array.from(counts, ([n, c]) => fName(n) + (c > 1 ? "×" + c : "")).join(listSep());
+  }
+  // このポケモンの好きな環境と両立しない(ENV_CONFLICTS)環境が、選んだ家具で作られているとき、その原因の一覧を返す
+  function furnEnvWarns(p, furnEnv){
+    const out = [];
+    furnEnv.envs.forEach(e => {
+      if (ENV_CONFLICTS.some(([x, y]) => (x === p.env && y === e) || (y === p.env && x === e))) out.push(furnEnv.causes[e]);
+    });
+    return out;
+  }
   function renderFurnResults(){
     const picks = selectedFurn.filter(Boolean);
     if (picks.length === 0) {
@@ -2034,18 +2201,27 @@
     const attrCounts = {};
     picks.forEach(f => f.attrs.forEach(a => { attrCounts[a] = (attrCounts[a] || 0) + 1; }));
 
+    // 選んだ家具で、その住処がどんな環境になるか(furnEnv.envs)と、その環境を作っている家具(furnEnv.causes)
+    const furnEnv = computeFurnEnv(picks);
+
     const scored = selectablePokemons.map(p => {
       // 苦手な属性が、選んだ家具の中に1つでもあれば、住みたがらないと考えて0点にする
       const dislikeHit = !!(p.dislike && attrCounts[p.dislike] > 0);
-      if (dislikeHit) return { p, score: 0, weight: 0, hits: 0 };
+      if (dislikeHit) return { p, score: 0, weight: 0, hits: 0, rankScore: 0, warns: [] };
       const best = bestLikeMatchWeighted(p.likes, picks, attrCounts);
-      return { p, score: best.score, weight: best.weight, hits: best.hits };
+      // ⚠：選んだ家具で作られる環境が、このポケモンの好きな環境と両立しない(ENV_CONFLICTS)とき。候補からは外さない。
+      const warns = furnEnvWarns(p, furnEnv);
+      const warnCount = warns.reduce((n, w) => n + w.items.length, 0);
+      // 並び順用の点数：⚠の原因になっている家具1つごとに ENV_WARN_PENALTY(0.85)倍する(施設診断と同じ考え方)
+      const rankScore = best.score * Math.pow(ENV_WARN_PENALTY, warnCount);
+      return { p, score: best.score, weight: best.weight, hits: best.hits, rankScore, warns };
     });
 
     let matched = scored.filter(r => r.score > 0);
+    const sameScore = (x, y) => Math.abs(x - y) < 1e-9;
     matched.sort((a, b) => {
-      // 1. 好みが合っている家具の個数(score)がいちばん多いものを上に
-      if (b.score !== a.score) return b.score - a.score;
+      // 1. 好みが合っている家具の個数(score)に、⚠による下げ(0.85倍)をかけた点数(rankScore)が高いものを上に
+      if (!sameScore(b.rankScore, a.rankScore)) return b.rankScore - a.rankScore;
       // 2. 個数が同じなら、選んだ家具群の中で重複している属性を好んでいる度合い(weight)が高いものを上に
       if (b.weight !== a.weight) return b.weight - a.weight;
       // 3. それも同じなら、一致した属性の種類数(hits)が多いものを上に
@@ -2065,11 +2241,12 @@
     // 同じ順位の中に何匹いても(同点タイでも)、全員をそのまま表示し、8匹などに絞り込まない。
     const rankGroups = [];
     let currentScore = null;
+    // (⚠のあるポケモンは rankScore が下がるので、同じ個数のポケモンより1つ下の順位になることがある)
     for (const r of matched) {
-      if (r.score !== currentScore) {
+      if (currentScore === null || !sameScore(r.rankScore, currentScore)) {
         if (rankGroups.length === 3) break; // すでに3位ぶんそろっていたら、4位以降は表示しない
         rankGroups.push({ rank: rankGroups.length + 1, items: [] });
-        currentScore = r.score;
+        currentScore = r.rankScore;
       }
       rankGroups[rankGroups.length - 1].items.push(r);
     }
@@ -2094,11 +2271,15 @@
           '<div class="legend-row">' +
             '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
             '<div style="min-width:0;flex:1;">' +
-              '<div class="name">' + esc(pName(p.name)) + '</div>' +
+              '<div class="name-row"><div class="name">' + esc(pName(p.name)) + '</div>' +
+                (p.env ? '<span class="env-tag" title="' + esc(tr('好きな環境')) + '">' + esc(tr(p.env)) + '</span>' : '') +
+              '</div>' +
               '<div class="tags">' +
                 p.likes.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +
                 (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
               '</div>' +
+              // 例：「⚠ ヨマワルは「くらい」の環境が好みです（照明：ランタン・デスクライト）」
+              r.warns.map(w => '<div class="env-warn">' + esc(envWarnText(p) + parenOpen() + tr(w.cat) + colon() + countedNames(w.items) + parenClose()) + '</div>').join("") +
             '</div>' +
           '</div>';
       });

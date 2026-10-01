@@ -139,6 +139,24 @@ const LANG = {
     ,{"ja": "家具を1～12個選択して、「ポケモンを診断する」のボタンを押します。", "en": "Select 1 to 12 pieces of furniture, then press the \"Find Pokémon\" button.", "ko": "가구를 1~12개 선택하고 '포켓몬을 진단한다' 버튼을 누릅니다.", "zhHans": "选择1~12件家具，然后按下「诊断宝可梦」按钮。", "zhHant": "選擇1~12件傢俱，然後按下「診斷寶可夢」按鈕。"}
     ,{"ja": "選択した家具を好きなポケモンが表示されます。", "en": "The Pokémon who like the furniture you selected will be shown.", "ko": "선택한 가구를 좋아하는 포켓몬이 표시됩니다.", "zhHans": "会显示喜欢所选家具的宝可梦。", "zhHant": "會顯示喜歡所選傢俱的寶可夢。"}
     ,{"ja": "ボタンを押すと、ポケモンの名前をコピーできます。", "en": "Press this button to copy the Pokémon names.", "ko": "버튼을 누르면 포켓몬 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制宝可梦名称。", "zhHant": "按下此按鈕即可複製寶可夢名稱。"}
+    ,{"ja": "あかるい", "en": "Bright", "ko": "밝음", "zhHans": "明亮", "zhHant": "明亮"}
+    ,{"ja": "くらい", "en": "Dark", "ko": "어두움", "zhHans": "昏暗", "zhHant": "昏暗"}
+    ,{"ja": "すずしい", "en": "Cool", "ko": "시원함", "zhHans": "凉爽", "zhHant": "涼爽"}
+    ,{"ja": "あたたかい", "en": "Warm", "ko": "따뜻함", "zhHans": "温暖", "zhHant": "溫暖"}
+    ,{"ja": "うるおっている", "en": "Humid", "ko": "촉촉함", "zhHans": "潮湿", "zhHant": "潮濕"}
+    ,{"ja": "乾そうしている", "en": "Dry", "ko": "건조함", "zhHans": "干燥", "zhHant": "乾燥"}
+    ,{"ja": "環境", "en": "Environment", "ko": "환경", "zhHans": "环境", "zhHant": "環境"}
+    ,{"ja": "好きな環境", "en": "Ideal Habitat", "ko": "좋아하는 환경", "zhHans": "喜欢的环境", "zhHant": "喜歡的環境"}
+    ,{"ja": "照明", "en": "Lighting", "ko": "조명", "zhHans": "照明", "zhHant": "照明"}
+    ,{"ja": "冷房", "en": "Cooling", "ko": "냉방", "zhHans": "制冷", "zhHant": "冷氣"}
+    ,{"ja": "暖房", "en": "Heating", "ko": "난방", "zhHans": "供暖", "zhHant": "暖氣"}
+    ,{"ja": "潤い", "en": "Humidifying", "ko": "가습", "zhHans": "加湿", "zhHant": "加濕"}
+    ,{"ja": "このメンバーは{env}の環境が好きです。", "en": "This group prefers these environments: {env}.", "ko": "이 멤버들은 {env} 환경을 좋아합니다.", "zhHans": "这些成员喜欢{env}的环境。", "zhHant": "這些成員喜歡{env}的環境。"}
+    ,{"ja": "⚠ {name}は「{env}」の環境が好みです", "en": "⚠ {name} prefers a \"{env}\" environment", "ko": "⚠ {name}은(는) '{env}' 환경을 좋아합니다", "zhHans": "⚠ {name}喜欢「{env}」的环境", "zhHant": "⚠ {name}喜歡「{env}」的環境"}
+    ,{"ja": "{a}と{b}の好きな環境は、同じ住処では両立できません", "en": "The Ideal Habitats of {a} and {b} can't exist together in the same den.", "ko": "{a}와(과) {b}이(가) 좋아하는 환경은 같은 서식지에서 함께 만들 수 없습니다", "zhHans": "{a}和{b}喜欢的环境无法在同一个栖息处共存", "zhHant": "{a}和{b}喜歡的環境無法在同一個棲息處共存"}
+    ,{"ja": "このメンバーは{env}の環境が好きです。（環境が1つのとき）", "en": "This group prefers this environment: {env}.", "ko": "이 멤버들은 {env} 환경을 좋아합니다.", "zhHans": "这些成员喜欢{env}的环境。", "zhHant": "這些成員喜歡{env}的環境。"}
+    ,{"ja": "1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設を", "en": "Choose 1–4 Pokémon and we'll compare their favorite and disliked attributes with furniture", "ko": "포켓몬을 1~4마리 선택하면, 각각이 좋아하는 속성과 싫어하는 속성을 가구와 대조하여", "zhHans": "选择1～4只宝可梦后，", "zhHant": "選擇1～4隻寶可夢後，"}
+    ,{"ja": "おすすめします。", "en": "to recommend the facilities that suit them best.", "ko": "궁합이 좋은 시설을 추천합니다.", "zhHans": "会将各自喜欢和讨厌的属性与家具进行比对，推荐契合度高的设施。", "zhHant": "會將各自喜歡與討厭的屬性與家具進行比對，推薦契合度高的設施。"}
   ],
   "attrs": [
     {"ja": "あそびば", "en": "Play spaces", "ko": "놀이 공간", "zhHans": "游乐区", "zhHant": "遊樂區"},

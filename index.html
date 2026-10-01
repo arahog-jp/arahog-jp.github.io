@@ -1056,6 +1056,7 @@
   </section>
 
   <section id="resultSection">
+    <div id="envNoteBody"></div>
     <div class="section-head">
       <h2>② <span data-i18n="診断結果">診断結果</span></h2>
       <span class="dex-copy-wrap fac-names-copy" id="facNamesCopyWrap" hidden><span class="dex-copy-msg fac-copy-label" aria-live="polite" data-i18n="施設名をコピー">施設名をコピー</span><button type="button" class="dex-copy-btn" id="facNamesCopyBtn" data-i18n-aria="施設名をコピー" data-i18n-title="施設名をコピー" aria-label="施設名をコピー" title="施設名をコピー"></button></span>
@@ -1374,6 +1375,7 @@
   const KYUKEI_SIZES = [4, 2, 1]; // ボタンを表示する順番
   let lastFurnScored = [];
   let dexGroupNames = []; // 「好きな家具一覧」の見出しごとの家具名(コピーボタン用)
+  const envNoteBody = document.getElementById("envNoteBody");
   const facNamesCopyWrap = document.getElementById("facNamesCopyWrap");
   const facNamesCopyBtn = document.getElementById("facNamesCopyBtn");
   let facNamesForCopy = [];  // 「② 診断結果」の右端の「施設名をコピー」でコピーする、8件(以下)の施設名
@@ -1855,6 +1857,7 @@
   function renderResults(){
     const picks = selected.filter(Boolean);
     if (picks.length === 0) {
+      envNoteBody.innerHTML = "";
       resultBody.innerHTML = '<div class="empty-state">' + esc(tr('まずはポケモンを1匹以上選んでください 🐾')) + '</div>';
       facNamesForCopy = [];
       facNamesCopyWrap.hidden = true;
@@ -1962,7 +1965,8 @@
 
     // 1〜3位は、最初から詳しく表示する(「上位○施設を詳しく表示しています。」の一文は、表示しない)。
     facCopyNames = [];
-    let html = buildEnvNoteHtml(picks);
+    envNoteBody.innerHTML = buildEnvNoteHtml(picks);
+    let html = '';
     coTop.forEach((r, i) => {
       const badgeText = i === 0 ? '🏆 ' + tr('いちばんのおすすめ施設') : '🏆 ' + tr('おすすめ施設（{n}位）', { n: i + 1 });
       html += buildTopPickCardHtml(r, badgeText, false, "topBody" + i);

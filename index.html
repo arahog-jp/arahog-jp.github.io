@@ -1857,9 +1857,9 @@
   // 「＋詳細」「－閉じる」ボタンの文字(日本語は今までどおり全角の＋と－)
   const detailOpenLabel = () => (isEastAsian() ? "＋" : "+ ") + tr('詳細');
   const detailCloseLabel = () => (isEastAsian() ? "－" : "- ") + tr('閉じる');
-  // 「② 診断結果」の1〜3位のカードを折りたたむ・ひろげるボタンの文字
+  // 「② 診断結果」の1〜3位のカードを折りたたむボタンの文字(「－たたむ」)。
+  // たたんだあとは、4位以降と同じ「＋詳細」(detailOpenLabel)を使う。
   const collapseLabel = () => (isEastAsian() ? "－" : "- ") + tr('たたむ');
-  const expandLabel = () => (isEastAsian() ? "＋" : "+ ") + tr('ひろげる');
 
   function renderResults(){
     const picks = selected.filter(Boolean);
@@ -2322,7 +2322,8 @@
       copyNamesWithFeedback(copyBtn, facCopyNames[+copyBtn.dataset.fac]);
       return;
     }
-    // 1〜3位のカードの「－たたむ」/「＋ひろげる」(デフォルトはひろげた状態)
+    // 1〜3位のカードの「－たたむ」/「＋詳細」(デフォルトはひろげた状態。
+    // たたんだあとの文言は、4位以降の「＋詳細」ボタンと合わせている)
     const topCollapseBtn = e.target.closest(".top-collapse-btn");
     if (topCollapseBtn) {
       const body = document.getElementById(topCollapseBtn.getAttribute("aria-controls"));
@@ -2330,7 +2331,7 @@
       const willOpen = body.hidden;
       body.hidden = !willOpen;
       topCollapseBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
-      topCollapseBtn.textContent = willOpen ? collapseLabel() : expandLabel();
+      topCollapseBtn.textContent = willOpen ? collapseLabel() : detailOpenLabel();
       return;
     }
     const detailBtn = e.target.closest(".detail-btn");
@@ -2340,7 +2341,8 @@
       const willOpen = detail.hidden;
       detail.hidden = !willOpen;
       detailBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
-      detailBtn.textContent = willOpen ? detailCloseLabel() : detailOpenLabel();
+      // 開いたあとの文言は「－閉じる」ではなく、1〜3位のカードと表記をそろえて「－たたむ」(collapseLabel)にする
+      detailBtn.textContent = willOpen ? collapseLabel() : detailOpenLabel();
       return;
     }
     const moreBtn = e.target.closest(".more-btn");

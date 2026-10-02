@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プライバシーポリシー | ぽこあ施設診断</title>
+<meta name="description" content="ぽこあ施設診断のプライバシーポリシーです。広告の配信、外部に送信される情報、ブラウザに保存する情報について説明します。">
+<!-- このページは、ぽこあ施設診断(index.html)のプライバシーポリシーです。
+     index.html と同じ場所(リポジトリの直下)に置きます。公開したときのアドレスは
+     https://arahog-jp.github.io/privacy.html です。
+     ・文言の翻訳は、index.html と同じ lang.js の "ui" を使います(下のほうの <script src="lang.js">)。
+       文を足したり変えたりするときは、lang.js の "ui" と、Excel「言語(その他)」シートにも、同じ行を足します。
+     ・文の中の {a}…{/a} と {b}…{/b} は、リンクにする部分の目印です(リンク先は、その要素の data-a・data-b に書きます)。
+       翻訳の文にも、同じ目印を入れます。
+     ・広告を出さないページなので、AdSense のコードは入れていません。
+     ・サイトが外部とやりとりする相手や、ブラウザに保存する内容を変えたときは、このページの文も合わせて直します。 -->
+<!-- ホーム画面・ブラウザのタブのアイコン(index.html と同じ画像を使う) -->
+<link rel="apple-touch-icon" href="画像保管庫/home-icon.png">
+<link rel="icon" type="image/png" href="画像保管庫/home-icon.png">
+<style>
+  /* 色と角丸は、index.html の :root と同じ値にしている(施設診断の配色)。
+     index.html の色を変えたときは、ここも同じ値に直すこと。 */
+  :root{
+    --bg:#FAF6EC;
+    --surface:#FFFFFF;
+    --surface-alt:#F1EADA;
+    --text:#2E2A22;
+    --text-muted:#7A7160;
+    --primary:#3E7C59;
+    --primary-strong:#2C5B40;
+    --primary-soft:#DCEBE0;
+    --border:#E4DAC3;
+    --shadow:0 1px 2px rgba(46,42,34,0.06), 0 8px 24px -12px rgba(46,42,34,0.18);
+    --radius-lg:20px;
+    --radius-md:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12172A;
+      --surface:#1C2340;
+      --surface-alt:#242C4C;
+      --text:#F1EDE0;
+      --text-muted:#B6B2CE;
+      --primary:#7FD9A8;
+      --primary-strong:#57C48B;
+      --primary-soft:#233A31;
+      --border:#333C63;
+      --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -12px rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12172A;
+    --surface:#1C2340;
+    --surface-alt:#242C4C;
+    --text:#F1EDE0;
+    --text-muted:#B6B2CE;
+    --primary:#7FD9A8;
+    --primary-strong:#57C48B;
+    --primary-soft:#233A31;
+    --border:#333C63;
+    --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -12px rgba(0,0,0,0.55);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ background:var(--bg); min-height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","M PLUS Rounded 1c",sans-serif;
+    padding:0 18px;
+    line-height:1.6;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+  /* 日本語以外の言語は、index.html と同じ書体にする */
+  html[lang="ko"] body, html[lang="ko"] body *{ font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif !important; }
+  html[lang="zh-Hans"] body, html[lang="zh-Hans"] body *{ font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif !important; }
+  html[lang="zh-Hant"] body, html[lang="zh-Hant"] body *{ font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif !important; }
+  a{ color:var(--primary-strong); overflow-wrap:anywhere; }
+
+  /* ---------- 上の帯(index.html のヘッダーと同じ見た目) ---------- */
+  header.top{
+    margin:0 -18px;
+    padding:14px 18px;
+    padding-top:calc(14px + env(safe-area-inset-top, 0px));
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  header.top a.home{
+    display:flex; align-items:center; gap:10px;
+    color:inherit; text-decoration:none;
+  }
+  header.top .mark{
+    width:38px; height:38px; border-radius:11px;
+    background:linear-gradient(155deg, var(--primary) 0%, var(--primary-strong) 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-size:19px; flex:none;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  header.top .mark img{ width:100%; height:100%; object-fit:cover; display:block; }
+  header.top .title{
+    font-family:"M PLUS Rounded 1c",sans-serif;
+    font-weight:800; font-size:17px; letter-spacing:.01em;
+  }
+  header.top .sub{ font-size:11px; color:var(--text-muted); margin-top:1px; }
+
+  /* ---------- 本文 ---------- */
+  main{ max-width:720px; margin:0 auto; padding:22px 0 56px; }
+  .back{ font-size:13px; font-weight:700; }
+  .back a{ text-decoration:none; }
+  .back a:hover{ text-decoration:underline; }
+
+  /* 言語の切り替え(lang.js の "languages" から作る。言語が1つだけのときは出さない) */
+  .langs{ display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .langs button{
+    font-family:inherit; font-size:12px; line-height:1.4;
+    padding:5px 11px; border-radius:999px;
+    border:1px solid var(--border); background:var(--surface); color:var(--text-muted);
+    cursor:pointer;
+  }
+  .langs button[aria-current="true"]{
+    background:var(--primary-soft); border-color:var(--primary); color:var(--primary-strong); font-weight:700;
+  }
+
+  .policy{
+    margin-top:14px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    padding:24px 20px 22px;
+  }
+  .policy h1{
+    font-family:"M PLUS Rounded 1c",sans-serif;
+    font-weight:800; font-size:21px; line-height:1.4;
+    margin:0; text-wrap:balance;
+  }
+  .policy .lead{ margin:10px 0 0; font-size:14px; line-height:1.9; }
+
+  .policy section{ margin-top:26px; padding-top:22px; border-top:1px solid var(--border); }
+  .policy h2{
+    font-family:"M PLUS Rounded 1c",sans-serif;
+    font-weight:800; font-size:16px; line-height:1.5;
+    color:var(--primary-strong);
+    margin:0 0 8px; text-wrap:balance;
+  }
+  .policy p{ margin:0; font-size:14px; line-height:1.9; }
+  .policy p + p{ margin-top:.9em; }
+  .policy ul{ margin:.7em 0 0; padding-left:1.35em; font-size:14px; line-height:1.9; }
+  .policy li + li{ margin-top:.45em; }
+  .policy p + ul{ margin-top:.5em; }
+  .policy ul + p{ margin-top:.9em; }
+  .policy .after-dest{ margin-top:14px; }
+
+  /* 送信先ごとのカード(スマホでも横にはみ出さないよう、表ではなく縦に並べる) */
+  .dest{
+    margin-top:12px;
+    background:var(--surface-alt);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:14px 14px 12px;
+  }
+  .dest h3{
+    font-family:"M PLUS Rounded 1c",sans-serif;
+    font-weight:800; font-size:14.5px; line-height:1.5; margin:0;
+  }
+  .dest .corp{ font-size:12px; color:var(--text-muted); margin-top:1px; }
+  .dest dl{ margin:10px 0 0; font-size:13.5px; line-height:1.8; }
+  .dest dt{ font-weight:700; color:var(--text-muted); font-size:12px; }
+  .dest dd{ margin:0 0 8px; }
+  .dest dd:last-child{ margin-bottom:0; }
+
+  .dates{ margin-top:14px; font-size:13px; color:var(--text-muted); line-height:1.8; }
+  .back-bottom{ margin-top:18px; }
+
+  footer.site{
+    max-width:720px; margin:0 auto; padding:0 0 calc(34px + env(safe-area-inset-bottom, 0px));
+    font-size:12px; color:var(--text-muted); line-height:1.8; text-align:center;
+  }
+</style>
+<!-- 文字の書体(index.html と同じ、Googleフォントの読み込み) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+</head>
+<body>
+
+<header class="top">
+  <a class="home" href="./">
+    <!-- index.html と同じアイコン。画像が読み込めないときは、絵文字に戻す。 -->
+    <div class="mark"><img src="画像保管庫/home-icon.png" alt="" onerror="this.parentNode.textContent='🏕️'"></div>
+    <div>
+      <div class="title" data-i18n="ぽこあ施設診断">ぽこあ施設診断</div>
+      <div class="sub" data-i18n="プライバシーポリシー">プライバシーポリシー</div>
+    </div>
+  </a>
+</header>
+
+<main>
+  <div class="back"><a href="./">← <span data-i18n="ツールにもどる">ツールにもどる</span></a></div>
+  <div class="langs" id="langList" hidden></div>
+
+  <article class="policy">
+    <h1 data-i18n="プライバシーポリシー">プライバシーポリシー</h1>
+    <p class="lead" data-i18n="「ぽこあ施設診断」(以下「当サイト」)での、閲覧者の情報の取り扱いについて説明します。">「ぽこあ施設診断」(以下「当サイト」)での、閲覧者の情報の取り扱いについて説明します。</p>
+
+    <section>
+      <h2>1. <span data-i18n="広告の配信について">広告の配信について</span></h2>
+      <p data-i18n="当サイトは、Googleの広告サービス「Google AdSense」のコードを設置しています。審査の状況などにより、広告が表示されない場合があります。">当サイトは、Googleの広告サービス「Google AdSense」のコードを設置しています。審査の状況などにより、広告が表示されない場合があります。</p>
+      <ul>
+        <li data-i18n="Googleなどの第三者配信事業者は、Cookie(クッキー。ブラウザに保存される小さなデータ)を使用して、閲覧者が当サイトや他のウェブサイトに過去にアクセスした際の情報にもとづいて、広告を配信します。">Googleなどの第三者配信事業者は、Cookie(クッキー。ブラウザに保存される小さなデータ)を使用して、閲覧者が当サイトや他のウェブサイトに過去にアクセスした際の情報にもとづいて、広告を配信します。</li>
+        <li data-i18n="Googleが広告Cookieを使用することにより、Googleやそのパートナーは、閲覧者が当サイトや他のサイトにアクセスした際の情報にもとづいて、適切な広告を表示できます。">Googleが広告Cookieを使用することにより、Googleやそのパートナーは、閲覧者が当サイトや他のサイトにアクセスした際の情報にもとづいて、適切な広告を表示できます。</li>
+        <li data-i18n="閲覧者は、Googleの{a}広告設定{/a}で、パーソナライズド広告(閲覧者に合わせて選ばれる広告)を無効にできます。" data-a="https://www.google.com/settings/ads">閲覧者は、Googleの<a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">広告設定</a>で、パーソナライズド広告(閲覧者に合わせて選ばれる広告)を無効にできます。</li>
+        <li data-i18n="{a}www.aboutads.info{/a} にアクセスすると、パーソナライズド広告に使われる第三者配信事業者のCookieを無効にできます。" data-a="https://www.aboutads.info/choices/"><a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">www.aboutads.info</a> にアクセスすると、パーソナライズド広告に使われる第三者配信事業者のCookieを無効にできます。</li>
+      </ul>
+      <p data-i18n="欧州経済領域(EEA)・英国・スイスから閲覧した場合は、広告のためのCookieなどの利用について、同意を確認するメッセージが表示されます。">欧州経済領域(EEA)・英国・スイスから閲覧した場合は、広告のためのCookieなどの利用について、同意を確認するメッセージが表示されます。</p>
+      <p data-i18n="Googleによる情報の使い方は、{a}Google のサービスを使用するサイトやアプリから収集した情報の Google による使用{/a}をご覧ください。" data-a="https://policies.google.com/technologies/partner-sites">Googleによる情報の使い方は、<a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">Google のサービスを使用するサイトやアプリから収集した情報の Google による使用</a>をご覧ください。</p>
+    </section>
+
+    <section>
+      <h2>2. <span data-i18n="外部に送信される情報">外部に送信される情報</span></h2>
+      <p data-i18n="当サイトを開くと、閲覧者のブラウザから、次の3つのサービスへ情報が送信されます。">当サイトを開くと、閲覧者のブラウザから、次の3つのサービスへ情報が送信されます。</p>
+
+      <div class="dest">
+        <h3>Google AdSense</h3>
+        <div class="corp"><span data-i18n="送信先">送信先</span><span class="colon">：</span>Google LLC</div>
+        <dl>
+          <dt data-i18n="送信される情報">送信される情報</dt>
+          <dd data-i18n="閲覧したページのアドレス、IPアドレス、Cookieなどの識別子、ブラウザや端末の情報">閲覧したページのアドレス、IPアドレス、Cookieなどの識別子、ブラウザや端末の情報</dd>
+          <dt data-i18n="利用目的">利用目的</dt>
+          <dd data-i18n="広告の配信、広告の効果測定、不正行為の防止">広告の配信、広告の効果測定、不正行為の防止</dd>
+        </dl>
+      </div>
+
+      <div class="dest">
+        <h3>Google Fonts</h3>
+        <div class="corp"><span data-i18n="送信先">送信先</span><span class="colon">：</span>Google LLC</div>
+        <dl>
+          <dt data-i18n="送信される情報">送信される情報</dt>
+          <dd data-i18n="IPアドレス、ブラウザや端末の情報、当サイトのアドレス">IPアドレス、ブラウザや端末の情報、当サイトのアドレス</dd>
+          <dt data-i18n="利用目的">利用目的</dt>
+          <dd data-i18n="文字の書体(フォント)の表示">文字の書体(フォント)の表示</dd>
+        </dl>
+      </div>
+
+      <div class="dest">
+        <h3>GitHub Pages</h3>
+        <div class="corp"><span data-i18n="送信先">送信先</span><span class="colon">：</span>GitHub, Inc.</div>
+        <dl>
+          <dt data-i18n="送信される情報">送信される情報</dt>
+          <dd data-i18n="IPアドレス、ブラウザや端末の情報、閲覧したページのアドレス">IPアドレス、ブラウザや端末の情報、閲覧したページのアドレス</dd>
+          <dt data-i18n="利用目的">利用目的</dt>
+          <dd data-i18n="当サイトの公開(ページの配信)、安全対策">当サイトの公開(ページの配信)、安全対策</dd>
+        </dl>
+      </div>
+
+      <p class="after-dest" data-i18n="各社での情報の取り扱いは、{a}Google のプライバシーポリシー{/a}、{b}GitHub の一般プライバシー ステートメント{/b}をご覧ください。" data-a="https://policies.google.com/privacy" data-b="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">各社での情報の取り扱いは、<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google のプライバシーポリシー</a>、<a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub の一般プライバシー ステートメント</a>をご覧ください。</p>
+    </section>
+
+    <section>
+      <h2>3. <span data-i18n="ブラウザに保存する情報">ブラウザに保存する情報</span></h2>
+      <p data-i18n="当サイトは、使いやすくするために、次の3つを閲覧者のブラウザの中(ローカルストレージ)に保存します。これらは、運営者や外部には送信されません。">当サイトは、使いやすくするために、次の3つを閲覧者のブラウザの中(ローカルストレージ)に保存します。これらは、運営者や外部には送信されません。</p>
+      <ul>
+        <li data-i18n="表示する言語の設定">表示する言語の設定</li>
+        <li data-i18n="最後に使った診断の種類(施設診断・家具からポケモン診断)">最後に使った診断の種類(施設診断・家具からポケモン診断)</li>
+        <li data-i18n="読み終えたお知らせの記録">読み終えたお知らせの記録</li>
+      </ul>
+      <p data-i18n="えらんだポケモンや家具、診断の結果は、保存も送信もしていません。">えらんだポケモンや家具、診断の結果は、保存も送信もしていません。</p>
+      <p data-i18n="ブラウザの設定で当サイトのデータを削除すると、保存した情報は消えます。">ブラウザの設定で当サイトのデータを削除すると、保存した情報は消えます。</p>
+    </section>
+
+    <section>
+      <h2>4. <span data-i18n="運営者が取得しない情報">運営者が取得しない情報</span></h2>
+      <p data-i18n="当サイトには、氏名やメールアドレスなどを入力する欄、会員登録、アクセス解析はありません。運営者が、閲覧者個人を特定できる情報を取得することはありません。">当サイトには、氏名やメールアドレスなどを入力する欄、会員登録、アクセス解析はありません。運営者が、閲覧者個人を特定できる情報を取得することはありません。</p>
+    </section>
+
+    <section>
+      <h2>5. <span data-i18n="お問い合わせ">お問い合わせ</span></h2>
+      <p data-i18n="ご意見や不具合の報告は、作成者のX(旧Twitter)までお願いします。">ご意見や不具合の報告は、作成者のX(旧Twitter)までお願いします。</p>
+      <p><span data-i18n="作成者">作成者</span><span class="colon">：</span><a href="https://x.com/arahog" target="_blank" rel="noopener noreferrer">新乃ほぐす(@arahog)</a></p>
+      <p data-i18n="お問い合わせで受け取った情報は、返信や対応のためだけに使います。">お問い合わせで受け取った情報は、返信や対応のためだけに使います。</p>
+    </section>
+
+    <section>
+      <h2>6. <span data-i18n="プライバシーポリシーの変更">プライバシーポリシーの変更</span></h2>
+      <p data-i18n="内容を変更することがあります。変更したときは、このページでお知らせします。">内容を変更することがあります。変更したときは、このページでお知らせします。</p>
+      <div class="dates"><span data-i18n="制定日">制定日</span><span class="colon">：</span>2026.9.21</div>
+    </section>
+  </article>
+
+  <div class="back back-bottom"><a href="./">← <span data-i18n="ツールにもどる">ツールにもどる</span></a></div>
+</main>
+
+<footer class="site"><span data-i18n="非公式のファンツール" data-ja="このツールは非公式のファンツールです。">このツールは非公式のファンツールです。</span></footer>
+
+<!-- 翻訳データ(index.html と同じファイル)。読み込めなかったときは、日本語だけで表示します(止まりません)。 -->
+<script src="lang.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  // ===== 言語切り替え(index.html と同じ決まり) =====
+  // ・翻訳は lang.js(LANG)の "ui" から探します。見つからないときは、その部分だけ日本語のまま表示します。
+  // ・翻訳が見つからなかった文は、ブラウザの「コンソール」(F12キー)に、警告として出ます。
+  // ・言語は、①アドレスの ?lang=…、②ブラウザに保存した設定(index.html と共通の "pokopiaLang")、
+  //   ③ブラウザの言語、の順で決めます。
+  const HAS_LANG = (typeof LANG !== "undefined") && LANG && Array.isArray(LANG.languages) && LANG.languages.length > 0;
+  const LANGS = HAS_LANG ? LANG.languages : [{ code: "ja", name: "日本語" }];
+  const nfkc = s => String(s == null ? "" : s).normalize("NFKC");
+  const UI = new Map(((HAS_LANG && LANG.ui) || []).map(r => [nfkc(r.ja), r]));
+  const HTML_LANG = { ja: "ja", en: "en", ko: "ko", zhHans: "zh-Hans", zhHant: "zh-Hant" };
+  const FONT_URLS = {
+    ko: "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap",
+    zhHans: "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&display=swap",
+    zhHant: "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&display=swap"
+  };
+  let currentLang = "ja";
+  const missingSet = new Set();
+
+  function loadLangFont(code){
+    const href = FONT_URLS[code];
+    if (!href || document.querySelector('link[data-lang-font="' + code + '"]')) return;
+    const l = document.createElement("link");
+    l.rel = "stylesheet"; l.href = href; l.setAttribute("data-lang-font", code);
+    document.head.appendChild(l);
+  }
+  function detectLang(){
+    const codes = LANGS.map(l => l.code);
+    try { const q = new URLSearchParams(location.search).get("lang"); if (q && codes.includes(q)) return q; } catch (e) {}
+    try { const saved = localStorage.getItem("pokopiaLang"); if (saved && codes.includes(saved)) return saved; } catch (e) {}
+    const list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || "ja"];
+    for (const raw of list) {
+      const l = String(raw).toLowerCase();
+      if (l.startsWith("ja") && codes.includes("ja")) return "ja";
+      if (l.startsWith("ko") && codes.includes("ko")) return "ko";
+      if (l.startsWith("zh")) {
+        const c = /(-tw|-hk|-mo|hant)/.test(l) ? "zhHant" : "zhHans";
+        if (codes.includes(c)) return c;
+      }
+      if (l.startsWith("en") && codes.includes("en")) return "en";
+    }
+    return codes.includes("en") ? "en" : "ja";
+  }
+  // 画面の文言。jaOverride は、日本語のときだけ使う文(data-ja)。
+  function tr(ja, jaOverride){
+    if (currentLang === "ja") return (jaOverride !== undefined ? jaOverride : ja);
+    const row = UI.get(nfkc(ja));
+    const v = row && row[currentLang];
+    if (v) return v;
+    if (!missingSet.has(ja)) {
+      missingSet.add(ja);
+      console.warn("[lang] 翻訳が見つかりません(日本語のまま表示します): ui / " + ja + " / " + currentLang);
+    }
+    return ja;
+  }
+  const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const isEastAsian = () => currentLang === "ja" || currentLang === "zhHans" || currentLang === "zhHant";
+  const colon = () => isEastAsian() ? "：" : ": ";
+
+  // 文の中の {a}…{/a}・{b}…{/b} を、リンクに置きかえる(リンク先は、要素の data-a・data-b)
+  function withLinks(text, el){
+    let html = esc(text);
+    ["a", "b"].forEach(k => {
+      const href = el.getAttribute("data-" + k);
+      if (!href) return;
+      html = html.replace(new RegExp("\\{" + k + "\\}([\\s\\S]*?)\\{/" + k + "\\}"),
+        '<a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">$1</a>');
+    });
+    return html;
+  }
+
+  function applyText(){
+    document.documentElement.lang = HTML_LANG[currentLang] || currentLang;
+    document.title = tr("プライバシーポリシー") + " | " + tr("ぽこあ施設診断");
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const ja = el.getAttribute("data-ja");
+      const text = tr(el.getAttribute("data-i18n"), ja === null ? undefined : ja);
+      if (el.hasAttribute("data-a") || el.hasAttribute("data-b")) el.innerHTML = withLinks(text, el);
+      else el.textContent = text;
+    });
+    document.querySelectorAll(".colon").forEach(el => { el.textContent = colon(); });
+    buildLangList();
+  }
+
+  const langListEl = document.getElementById("langList");
+  function buildLangList(){
+    if (LANGS.length < 2) { langListEl.hidden = true; return; }
+    langListEl.hidden = false;
+    langListEl.innerHTML = LANGS.map(l =>
+      '<button type="button" data-lang="' + esc(l.code) + '"' +
+      (l.code === currentLang ? ' aria-current="true"' : '') + '>' + esc(l.name) + '</button>'
+    ).join("");
+  }
+  langListEl.addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-lang]");
+    if (!b) return;
+    setLang(b.dataset.lang);
+  });
+  function setLang(code){
+    if (!LANGS.some(l => l.code === code)) code = "ja";
+    currentLang = code;
+    // index.html と同じ名前で保存する(ツールにもどったときも、同じ言語で表示される)
+    try { localStorage.setItem("pokopiaLang", code); } catch (e) {}
+    loadLangFont(code);
+    applyText();
+  }
+
+  currentLang = detectLang();
+  loadLangFont(currentLang);
+  applyText();
+})();
+</script>
+
+</body>
+</html>

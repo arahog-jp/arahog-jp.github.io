@@ -368,6 +368,16 @@
   .about-close:active{ background:var(--border); }
 
   main{ max-width:720px; margin:0 auto; padding-bottom:64px; }
+  /* ページのいちばん下の、プライバシーポリシー(privacy.html)へのリンク。
+     main の下の余白(64px)の中に重ねて出して、ページ全体の長さが変わらないようにしている。
+     (下のほうにある footer{…} の決まりの、上の線・余白は、ここで打ち消している。) */
+  footer.site-footer{
+    max-width:720px; margin:-40px auto 0;
+    padding:0 0 calc(22px + env(safe-area-inset-bottom, 0px));
+    border-top:0;
+    text-align:center; font-size:12px; line-height:1.5;
+  }
+  footer.site-footer a{ color:var(--text-muted); }
 
   /* ---------- Hero ---------- */
   .hero{
@@ -977,6 +987,7 @@
       <span data-i18n="ツールの診断結果・スクリーンショットは自由にご利用いただけます。">ツールの診断結果・スクリーンショットは自由にご利用いただけます。</span><br>
       <span data-i18n="その際、当ツールを利用した旨を記載していただけると、うれしいです。">その際、当ツールを利用した旨を記載していただけると、うれしいです。</span>
     </p>
+    <p><a href="privacy.html" data-i18n="プライバシーポリシー">プライバシーポリシー</a></p>
     </div>
   </div>
 </div>
@@ -1192,6 +1203,8 @@
 </div>
 
 </main>
+<!-- プライバシーポリシー(privacy.html)へのリンク。AdSense(広告)を使うために必要なので、消さないこと。 -->
+<footer class="site-footer"><a href="privacy.html" data-i18n="プライバシーポリシー">プライバシーポリシー</a></footer>
 <script src="data.js"></script>
 <script src="lang.js"></script>
 <script>

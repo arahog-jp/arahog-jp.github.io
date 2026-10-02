@@ -339,6 +339,25 @@
   .qa-row + .qa-row{ margin-top:.35em; }
   .qa-mark{ flex:none; font-weight:800; color:var(--primary-strong); }
   .qa-q .qa-text{ font-weight:700; }
+  /* Q&A「各施設の配点はどうやって決めているの？」: 長い回答の段落、「＋算出式を表示」ボタン、開いたときの算出式の枠 */
+  .qa-body{ flex:1; min-width:0; }
+  .qa-para{ display:block; }
+  .qa-para + .qa-para{ margin-top:.55em; }
+  .formula-toggle{
+    display:inline-block; margin-top:.8em; padding:3px 12px; border-radius:999px;
+    border:1.5px solid var(--border); background:var(--surface);
+    font:inherit; font-size:11px; font-weight:700; line-height:1.6; color:var(--text-muted); cursor:pointer;
+  }
+  .formula-toggle:active{ background:var(--surface-alt); }
+  .formula-panel{
+    margin-top:8px; padding:10px 12px; border:1px solid var(--border); border-radius:var(--radius-sm);
+    background:var(--surface-alt); font-size:11.5px; line-height:1.75; overflow-wrap:anywhere;
+  }
+  .fm-step + .fm-step{ margin-top:.9em; }
+  .fm-h{ font-weight:800; color:var(--primary-strong); }
+  .fm-eq{ padding-left:1.2em; font-weight:700; }
+  /* 「・」や「A =」で始まる行は、2行目からを1文字ぶん下げて、行頭の記号をそろえる */
+  .fm-li{ padding-left:2.2em; text-indent:-1em; }
   .about-close{
     position:absolute; top:8px; right:8px;
     width:26px; height:26px; border-radius:50%;
@@ -1027,6 +1046,46 @@
       <div class="qa-item">
         <div class="qa-row qa-q"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="ここに載っている家具じゃなきゃダメなの？">ここに載っている家具じゃなきゃダメなの？</span></div>
         <div class="qa-row qa-a"><span class="qa-mark">A.</span><span class="qa-text"><span data-i18n="そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。">そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。</span><br><span data-i18n="このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。">このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。</span></span></div>
+      </div>
+      <!-- 配点のしくみ。計算のしかた(下のほうの scoreFurniture・computeFacilityScoresV2 など)を変えたときは、この説明と算出式、lang.js と Excel「言語(その他)」の訳も、合わせて直すこと -->
+      <div class="qa-item">
+        <div class="qa-row qa-q"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="各施設の配点はどうやって決めているの？">各施設の配点はどうやって決めているの？</span></div>
+        <div class="qa-row qa-a"><span class="qa-mark">A.</span><div class="qa-text qa-body">
+          <span class="qa-para" data-i18n="施設ごとに、その施設らしい家具をえらび、家具1つずつに、その施設にとっての重要さを3段階の「必要レベル」(1〜3)で設定しています。">施設ごとに、その施設らしい家具をえらび、家具1つずつに、その施設にとっての重要さを3段階の「必要レベル」(1〜3)で設定しています。</span>
+          <span class="qa-para" data-i18n="診断では、えらんだポケモンの好物と家具の属性が合うほど、その家具に点が入ります(ポケモン図鑑の「好きなもの」を見れる画面で、上のほうに載っているものほど点数が高く、下に載っているものほど点数が低くなります)。めずらしい属性で合ったときは高く、ありふれた属性で合ったときは低く数えます。苦手な属性をふくむ家具は、そのポケモンについては0点です。">診断では、えらんだポケモンの好物と家具の属性が合うほど、その家具に点が入ります(ポケモン図鑑の「好きなもの」を見れる画面で、上のほうに載っているものほど点数が高く、下に載っているものほど点数が低くなります)。めずらしい属性で合ったときは高く、ありふれた属性で合ったときは低く数えます。苦手な属性をふくむ家具は、そのポケモンについては0点です。</span>
+          <span class="qa-para" data-i18n="家具の点に必要レベルを掛けて合計し、満点に対する割合を「マッチ度」として表示しています。順位は、マッチ度のほかに、えらんだポケモン全員の好みに合っているかなども加えて決めているため、マッチ度の順と入れかわることがあります。">家具の点に必要レベルを掛けて合計し、満点に対する割合を「マッチ度」として表示しています。順位は、マッチ度のほかに、えらんだポケモン全員の好みに合っているかなども加えて決めているため、マッチ度の順と入れかわることがあります。</span>
+          <button type="button" class="formula-toggle" id="formulaToggle" aria-expanded="false" aria-controls="formulaPanel">＋算出式を表示</button>
+          <div class="formula-panel" id="formulaPanel" hidden>
+            <div class="fm-step">
+              <div class="fm-h">① <span data-i18n="家具の点(ポケモン1匹ごと)">家具の点(ポケモン1匹ごと)</span></div>
+              <div class="fm-eq">= <span data-i18n="好物の点 × レア度">好物の点 × レア度</span></div>
+              <div class="fm-li" data-i18n="・好物の点：好物（図鑑表示の上から順に、5・4・3・2・1点）">・好物の点：好物（図鑑表示の上から順に、5・4・3・2・1点）</div>
+              <div class="fm-li" data-i18n="・レア度 = √(30 ÷ その属性をもつ家具の数)　※0.4〜4の範囲におさめる">・レア度 = √(30 ÷ その属性をもつ家具の数)　※0.4〜4の範囲におさめる</div>
+              <div class="fm-li" data-i18n="・好物が2つ以上合うときは、いちばん高い1つだけを使う">・好物が2つ以上合うときは、いちばん高い1つだけを使う</div>
+              <div class="fm-li" data-i18n="・苦手な属性をふくむ家具は0点">・苦手な属性をふくむ家具は0点</div>
+              <div class="fm-li" data-i18n="・ひこうタイプは、「とまり木」「木のすばこ」が2倍(合う好物がなくても2点)">・ひこうタイプは、「とまり木」「木のすばこ」が2倍(合う好物がなくても2点)</div>
+              <div class="fm-li" data-i18n="→ えらんだポケモン全員分を足したものが、その家具の点">→ えらんだポケモン全員分を足したものが、その家具の点</div>
+            </div>
+            <div class="fm-step">
+              <div class="fm-h">② <span data-i18n="一致度(家具ごと、0〜1)">一致度(家具ごと、0〜1)</span></div>
+              <div class="fm-eq">= <span data-i18n="家具の点 ÷ (5 × えらんだ匹数)　※1をこえたら1">家具の点 ÷ (5 × えらんだ匹数)　※1をこえたら1</span></div>
+              <div class="fm-li" data-i18n="・名前はちがっても中身がほぼ同じ家具は、1グループとして1回だけ数え、グループの中でいちばん点の高い家具を使う">・名前はちがっても中身がほぼ同じ家具は、1グループとして1回だけ数え、グループの中でいちばん点の高い家具を使う</div>
+            </div>
+            <div class="fm-step">
+              <div class="fm-h">③ <span data-i18n="マッチ度(画面に出る％)">マッチ度(画面に出る％)</span></div>
+              <div class="fm-eq">= <span data-i18n="(必要レベル × 一致度)の合計 ÷ 必要レベルの合計">(必要レベル × 一致度)の合計 ÷ 必要レベルの合計</span></div>
+            </div>
+            <div class="fm-step">
+              <div class="fm-h">④ <span data-i18n="順位を決める点">順位を決める点</span></div>
+              <div class="fm-eq">= <span data-i18n="√(A × B) × C × C × 0.85をD回掛けた数">√(A × B) × C × C × 0.85をD回掛けた数</span></div>
+              <div class="fm-li" data-i18n="A = (必要レベル × 順位用の一致度 × 順位用の一致度)の合計 ÷ 必要レベルの合計">A = (必要レベル × 順位用の一致度 × 順位用の一致度)の合計 ÷ 必要レベルの合計</div>
+              <div class="fm-li" data-i18n="B = (必要レベル × 順位用の一致度 × 順位用の一致度)の合計 ÷ 全施設の中での最大値">B = (必要レベル × 順位用の一致度 × 順位用の一致度)の合計 ÷ 全施設の中での最大値</div>
+              <div class="fm-li" data-i18n="C = この施設に好きな家具があるポケモンの数 ÷ えらんだ匹数">C = この施設に好きな家具があるポケモンの数 ÷ えらんだ匹数</div>
+              <div class="fm-li" data-i18n="D = ⚠(好きな環境に合わない家具)がつく、おすすめ家具グループの数">D = ⚠(好きな環境に合わない家具)がつく、おすすめ家具グループの数</div>
+              <div class="fm-li" data-i18n="※順位用の一致度 = 家具の点 ÷ (5 × 4 × えらんだ匹数)">※順位用の一致度 = 家具の点 ÷ (5 × 4 × えらんだ匹数)</div>
+            </div>
+          </div>
+        </div></div>
       </div>
     </div>
   </div>
@@ -2463,6 +2522,19 @@
     updateVerifyMark();
   });
 
+  // Q&A の「＋算出式を表示」(「各施設の配点はどうやって決めているの？」の中)。
+  // 開いたあとの文言は、診断結果のボタンと表記をそろえて「－たたむ」(collapseLabel)にしている。
+  const formulaToggle = document.getElementById("formulaToggle");
+  const formulaPanel = document.getElementById("formulaPanel");
+  function updateFormulaToggle(){
+    formulaToggle.textContent = formulaPanel.hidden ? (isEastAsian() ? "＋" : "+ ") + tr('算出式を表示') : collapseLabel();
+  }
+  formulaToggle.addEventListener("click", () => {
+    formulaPanel.hidden = !formulaPanel.hidden;
+    formulaToggle.setAttribute("aria-expanded", formulaPanel.hidden ? "false" : "true");
+    updateFormulaToggle();
+  });
+
   function closeMenu(){
     menuDropdown.hidden = true;
     menuBtn.setAttribute("aria-expanded", "false");
@@ -2610,6 +2682,7 @@
     // 名前を並べるときの区切り(日本語・中国語は「、」、英語・韓国語は「, 」)
     document.querySelectorAll(".name-sep").forEach(el => { el.textContent = (currentLang === "en" || currentLang === "ko") ? ", " : "、"; });
     updateVerifyMark();
+    updateFormulaToggle();
     renderNews();
     buildLangMenu();
   }

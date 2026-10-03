@@ -323,8 +323,15 @@
   .news-text{ font-size:12.5px; line-height:1.9; color:var(--text); }
   /* Q&A の小窓: 文章が長いので、小窓の中だけスクロールできるようにする(✕ボタンは動かさない) */
   /* スクロールバーは、小窓の右の余白の中(中身の右はしから13px右)に出す。スマホでは、スクロールバーが中身の上に重なって出るため、
-     中身の右はしに置いたボタン(Q&A の「＋」「－」の印など)と重ならないようにしている(中身の幅は、これまでと同じ)。 */
-  .qa-scroll{ max-height:calc(100vh - 96px); max-height:calc(100dvh - 96px); overflow-y:auto; margin-right:-13px; padding-right:15px; }
+     中身の右はしに置いたボタン(Q&A の「＋」「－」の印など)と重ならないようにしている(中身の幅は、これまでと同じ)。
+     スクロールする範囲の上のはしは、右上の「✕」ボタンの上のはしと同じ高さ(小窓の上から8px)まで広げてある(margin-top と padding-top)。
+     こうすると、スクロールした中身が、「✕」ボタンの途中で切れずに、「✕」ボタンの下を通って消える(はじめの表示位置と、小窓の大きさは、これまでと同じ)。
+     position と z-index は、「✕」ボタン(.about-close の z-index:2)を、スクロールする中身やスクロールバーより、必ず上に重ねるためのもの。 */
+  .qa-scroll{
+    max-height:calc(100vh - 80px); max-height:calc(100dvh - 80px); overflow-y:auto;
+    margin-right:-13px; padding-right:15px; margin-top:-16px; padding-top:16px;
+    position:relative; z-index:0;
+  }
   /* 使い方の小窓: 「施設診断の使い方」「家具からポケモン診断の使い方」のグループ見出し */
   .how-group-title{ font-size:12.5px; font-weight:800; line-height:1.6; color:var(--text-muted); margin:0 0 10px; }
   .how-group-title-2nd{ margin-top:1.8em; padding-top:1.4em; border-top:1px solid var(--border); }
@@ -381,12 +388,15 @@
   .fm-eq{ padding-left:1.2em; font-weight:700; }
   /* 「・」や「A =」で始まる行は、2行目からを1文字ぶん下げて、行頭の記号をそろえる */
   .fm-li{ padding-left:2.2em; text-indent:-1em; }
+  /* 「✕」ボタンは、いちばん上に重ねる(z-index)。スクロールした中身は、このボタンの下を通る。
+     まわりの細い白いふち(box-shadow)は、下を通る文字と、ボタンとのあいだを、少し空けて見せるためのもの。 */
   .about-close{
-    position:absolute; top:8px; right:8px;
+    position:absolute; top:8px; right:8px; z-index:2;
     width:26px; height:26px; border-radius:50%;
     border:none; background:var(--surface-alt); color:var(--text-muted);
     font-size:12px; cursor:pointer;
     display:flex; align-items:center; justify-content:center; padding:0;
+    box-shadow:0 0 0 2px var(--surface-raised);
   }
   .about-close:active{ background:var(--border); }
 

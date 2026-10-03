@@ -810,18 +810,11 @@
   }
 
   /* ---------- Furniture table (collapsible) ---------- */
-  details.furn-details{
+  /* 「③好きな家具一覧」の枠。中の一覧は、いつも開いたままで出す(開け閉めする行は、2026年10月3日になくした) */
+  .furn-details{
     border:1px solid var(--border); border-radius:var(--radius-md); background:var(--surface);
     overflow:hidden;
   }
-  details.furn-details > summary{
-    list-style:none; cursor:pointer; padding:13px 16px;
-    display:flex; align-items:center; justify-content:space-between;
-    font-weight:700; font-size:13.5px;
-  }
-  details.furn-details > summary::-webkit-details-marker{ display:none; }
-  details.furn-details > summary .chev{ transition:transform .2s ease; color:var(--text-faint); }
-  details.furn-details[open] > summary .chev{ transform:rotate(90deg); }
   .furn-table-wrap{ overflow-x:auto; border-top:1px solid var(--border); }
   table.furn-table{ width:100%; border-collapse:collapse; font-size:12px; white-space:nowrap; }
   table.furn-table th, table.furn-table td{
@@ -882,7 +875,7 @@
   }
 
   /* ---------- Furniture dex (tabs + sort) ---------- */
-  .dex-body{ padding:14px 16px 16px; border-top:1px solid var(--border); }
+  .dex-body{ padding:14px 16px 16px; }
   .tabbar{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
   .tabbar button{
     padding:7px 13px; border-radius:999px; border:1.5px solid var(--border);
@@ -1048,7 +1041,7 @@
       </div>
       <div class="how-item">
         <div class="how-h">③ <span data-i18n="好きな家具一覧">好きな家具一覧</span></div>
-        <p class="how-p"><span data-i18n="「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。">「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、家具の名前をコピーできます。">ボタンを押すと、家具の名前をコピーできます。</span></p>
+        <p class="how-p"><span data-i18n="選んだポケモンの好きな家具一覧が表示されます。">選んだポケモンの好きな家具一覧が表示されます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、家具の名前をコピーできます。">ボタンを押すと、家具の名前をコピーできます。</span></p>
       </div>
       <div class="how-group-title how-group-title-2nd" data-i18n="家具からポケモン診断の使い方">家具からポケモン診断の使い方</div>
       <div class="how-item">
@@ -1189,8 +1182,8 @@
       <h2>③ <span data-i18n="好きな家具一覧">好きな家具一覧</span></h2>
       <span class="count" id="dexCount">0件</span>
     </div>
-    <details class="furn-details" id="dexDetails">
-      <summary><span data-i18n="えらんだポケモンが好きな家具を見る（+詳細）">えらんだポケモンが好きな家具を見る（+詳細）</span> <span class="chev">›</span></summary>
+    <!-- 家具の一覧は、いつも開いたままで出す(以前は、「えらんだポケモンが好きな家具を見る（+詳細）」の行を押して開く形だった。2026年10月3日に変更) -->
+    <div class="furn-details" id="dexDetails">
       <div class="dex-body">
         <div class="tabbar" id="dexTabs"></div>
         <div class="sort-row">
@@ -1204,7 +1197,7 @@
         <div class="sort-row" id="dexSizeFilterRow" style="display:none;"></div>
         <div class="furn-dex-grid" id="dexGrid"></div>
       </div>
-    </details>
+    </div>
   </section>
 
 </div>

@@ -223,6 +223,7 @@ const LANG = {
     ,{"ja": "お問い合わせで受け取った情報は、返信や対応のためだけに使います。", "en": "Information received through inquiries is used only to reply and respond.", "ko": "문의를 통해 받은 정보는 답변과 대응을 위해서만 사용합니다.", "zhHans": "通过咨询收到的信息，仅用于回复和处理。", "zhHant": "透過洽詢收到的資訊，僅用於回覆和處理。"}
     ,{"ja": "内容を変更することがあります。変更したときは、このページでお知らせします。", "en": "This policy may be changed. Any changes will be announced on this page.", "ko": "내용을 변경할 수 있습니다. 변경한 경우에는 이 페이지에서 알려 드립니다.", "zhHans": "内容可能会变更。变更时，将在本页面告知。", "zhHant": "內容可能會變更。變更時，將在本頁面告知。"}
     ,{"ja": "制定日", "en": "Effective date", "ko": "제정일", "zhHans": "制定日期", "zhHant": "制定日期"}
+    ,{"ja": "選んだポケモンの好きな家具一覧が表示されます。", "en": "A list of furniture the selected Pokémon like will be shown.", "ko": "선택한 포켓몬이 좋아하는 가구 목록이 표시됩니다.", "zhHans": "会显示所选宝可梦喜欢的家具列表。", "zhHant": "會顯示所選寶可夢喜歡的家具列表。"}
   ],
   "attrs": [
     {"ja": "あそびば", "en": "Play spaces", "ko": "놀이 공간", "zhHans": "游乐区", "zhHant": "遊樂區"},

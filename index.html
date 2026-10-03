@@ -895,8 +895,8 @@
   }
   .segmented button.active{ background:var(--accent); color:#fff; }
 
-  /* 一覧の高さ：PCでは、家具が8つ、全部見える高さ(600px。8つ目の下に、9つ目の上のふちが少しだけのぞく)。 */
-  .furn-dex-grid{ display:flex; flex-direction:column; gap:7px; max-height:600px; overflow-y:auto; }
+  /* 一覧の高さ：PCでは、家具が9つ、全部見える高さ(670px。9つ目の下に、10個目の上のふちが少しだけのぞく)。 */
+  .furn-dex-grid{ display:flex; flex-direction:column; gap:7px; max-height:670px; overflow-y:auto; }
   /* スマホ(画面の幅が480px以下)では、ポケモンの名前のラベルが2行に折り返して、家具1つぶんが高くなるので、
      家具が5つ見えて、その下に6つ目の頭が少しのぞく高さ(512px)にする。 */
   @media (max-width:480px){ .furn-dex-grid{ max-height:512px; } }

@@ -955,6 +955,8 @@
     font-size:9.5px; padding:2px 6px; border-radius:999px;
     background:var(--primary-soft); color:var(--primary-strong); font-weight:700;
   }
+  /* 「きゅうけい」の、ポケモン名の右の「(4)」(そのポケモンのサイズ)。名前とのあいだを、少しだけ空ける */
+  .furn-dex-item .who .who-size{ margin-left:3px; font-size:inherit; }
   .recipe-badge{
     font-size:10px; font-weight:800; padding:3px 8px; border-radius:999px; flex:none;
     white-space:nowrap;
@@ -1897,7 +1899,8 @@
       // 「きゅうけい」では、ポケモン名の右に、そのポケモンのサイズを「(4)」のように、半角のかっこと数字だけで出す
       // (「（サイズ4）」と書くと長くなり、スマホでラベルが何行にも折り返すため。家具名の右は「（サイズ4）」のまま)。
       const whoHtml = whoPokemon.map(pp => {
-        const sizeText = showSize ? sp() + '(' + (pp.size != null ? pp.size : esc(tr('不明'))) + ')' : '';
+        // 名前と「(4)」のあいだは、文字の空白ではなく、CSS(.who-size の margin-left)で、どの言語でも同じ幅だけ空ける
+        const sizeText = showSize ? '<small class="who-size">(' + (pp.size != null ? pp.size : esc(tr('不明'))) + ')</small>' : '';
         return '<span>' + esc(pName(pp.name)) + sizeText + '</span>';
       }).join("");
       const furnEnvTagHtml = (r.furniture.env && r.furniture.env.length)

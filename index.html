@@ -902,9 +902,10 @@
   }
   .segmented button.active{ background:var(--accent); color:#fff; }
 
-  .furn-dex-grid{ display:flex; flex-direction:column; gap:7px; max-height:420px; overflow-y:auto; }
+  /* 一覧の高さ：PCでは、家具が8つ、全部見える高さ(600px。8つ目の下に、9つ目の上のふちが少しだけのぞく)。 */
+  .furn-dex-grid{ display:flex; flex-direction:column; gap:7px; max-height:600px; overflow-y:auto; }
   /* スマホ(画面の幅が480px以下)では、ポケモンの名前のラベルが2行に折り返して、家具1つぶんが高くなるので、
-     家具が5つ見えるくらいまで、一覧の高さを広げる(5つ目の下に、6つ目の頭が少しのぞく高さ。PCでは、420pxのままで5つ見える)。 */
+     家具が5つ見えて、その下に6つ目の頭が少しのぞく高さ(512px)にする。 */
   @media (max-width:480px){ .furn-dex-grid{ max-height:512px; } }
   .dex-group-head{
     font-size:11.5px; font-weight:800; color:var(--primary-strong);
@@ -1893,11 +1894,11 @@
       const recipeLabel = recipeKnown ? (hasRecipe ? tr('レシピあり') : tr('レシピなし')) : tr('レシピ不明');
       const recipeClass = hasRecipe ? "yes" : "no";
       const fnameLabel = esc(fName(r.furniture.name)) + (showSize ? parenOpen() + esc(tr('サイズ')) + sp() + (r.furniture.size != null ? r.furniture.size : esc(tr('不明'))) + parenClose() : '');
+      // 「きゅうけい」では、ポケモン名の右に、そのポケモンのサイズを「(4)」のように、半角のかっこと数字だけで出す
+      // (「（サイズ4）」と書くと長くなり、スマホでラベルが何行にも折り返すため。家具名の右は「（サイズ4）」のまま)。
       const whoHtml = whoPokemon.map(pp => {
-        const tags = [];
-        if (showSize) tags.push(esc(tr('サイズ')) + sp() + (pp.size != null ? pp.size : esc(tr('不明'))));
-        const label = tags.length ? (esc(pName(pp.name)) + parenOpen() + tags.join('・') + parenClose()) : esc(pName(pp.name));
-        return '<span>' + label + '</span>';
+        const sizeText = showSize ? sp() + '(' + (pp.size != null ? pp.size : esc(tr('不明'))) + ')' : '';
+        return '<span>' + esc(pName(pp.name)) + sizeText + '</span>';
       }).join("");
       const furnEnvTagHtml = (r.furniture.env && r.furniture.env.length)
         ? '<span class="env-tag">' + r.furniture.env.map(c => esc(tr(FURN_CAT_ENV[c] || c))).join(listSep()) + '</span>'

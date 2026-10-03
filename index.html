@@ -339,6 +339,27 @@
   .qa-row + .qa-row{ margin-top:.35em; }
   .qa-mark{ flex:none; font-weight:800; color:var(--primary-strong); }
   .qa-q .qa-text{ font-weight:700; }
+  /* Q&A は、開け閉めする形(はじめは「Q.」の行だけが並び、「Q.」の行を押すと「A.」が開く。2026年10月3日に変更)。
+     「Q.」の行は、行ぜんたいが押せるボタンで、右端に「＋」(開いているときは「－」)の丸い印を出す。
+     印は、文字ではなく線で描いている(どの言語でも同じ見た目になるので、翻訳が要らない)。 */
+  #qaOverlay .qa-item{ border-top:1px solid var(--border); padding:9px 0; }
+  #qaOverlay .qa-item + .qa-item{ margin-top:0; }
+  #qaOverlay .qa-item:last-child{ border-bottom:1px solid var(--border); }
+  #qaOverlay .qa-q{
+    width:100%; margin:0; padding:0; border:none; background:none;
+    font-family:inherit; text-align:left; cursor:pointer; -webkit-tap-highlight-color:transparent;
+  }
+  #qaOverlay .qa-q .qa-text{ flex:1; min-width:0; }
+  .qa-pm{
+    flex:none; position:relative; width:20px; height:20px; margin-top:2px; border-radius:50%;
+    border:1.5px solid var(--border); background:var(--surface); color:var(--text-muted);
+  }
+  .qa-pm::before, .qa-pm::after{ content:""; position:absolute; left:50%; top:50%; background:currentColor; border-radius:1px; }
+  .qa-pm::before{ width:9px; height:1.5px; margin:-.75px 0 0 -4.5px; } /* 横の線 */
+  .qa-pm::after{ width:1.5px; height:9px; margin:-4.5px 0 0 -.75px; }  /* 縦の線(開いているときは消して、「－」にする) */
+  .qa-q[aria-expanded="true"] .qa-pm::after{ display:none; }
+  #qaOverlay .qa-q:active .qa-pm{ background:var(--surface-alt); }
+  #qaOverlay .qa-a{ margin-top:.5em; padding-bottom:3px; }
   /* Q&A「各施設の配点はどうやって決めているの？」: 長い回答の段落、「＋算出式を表示」ボタン、開いたときの算出式の枠 */
   .qa-body{ flex:1; min-width:0; }
   .qa-para{ display:block; }
@@ -1045,23 +1066,25 @@
 </div>
 
 <!-- Q&A の小窓(⋮メニューの「Q&A」から開く) -->
+<!-- 開け閉めする形：はじめは「Q.」の行だけが並び、「Q.」の行(右端に「＋」の丸い印)を押すと、その下の「A.」が開く(もう一度押すと閉じる)。
+     Q&Aを足すときは、ほかの qa-item と同じ形(「Q.」は button の qa-q で、最後に qa-pm の印。「A.」は hidden を付けた qa-a)で書く。開け閉めのプログラムは、足さなくてよい。 -->
 <div class="about-overlay" id="qaOverlay" hidden>
   <div class="about-card" role="dialog" aria-modal="true" aria-label="Q&amp;A">
     <button type="button" class="about-close" id="qaCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
     <div class="qa-scroll">
       <div class="qa-title">Q&amp;A</div>
       <div class="qa-item">
-        <div class="qa-row qa-q"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="テーブルなどは無いのですか？">テーブルなどは無いのですか？</span></div>
-        <div class="qa-row qa-a"><span class="qa-mark">A.</span><span class="qa-text" data-i18n="ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！">ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！</span></div>
+        <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="テーブルなどは無いのですか？">テーブルなどは無いのですか？</span><span class="qa-pm" aria-hidden="true"></span></button>
+        <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text" data-i18n="ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！">ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！</span></div>
       </div>
       <div class="qa-item">
-        <div class="qa-row qa-q"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="ここに載っている家具じゃなきゃダメなの？">ここに載っている家具じゃなきゃダメなの？</span></div>
-        <div class="qa-row qa-a"><span class="qa-mark">A.</span><span class="qa-text"><span data-i18n="そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。">そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。</span><br><span data-i18n="このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。">このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。</span></span></div>
+        <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="ここに載っている家具じゃなきゃダメなの？">ここに載っている家具じゃなきゃダメなの？</span><span class="qa-pm" aria-hidden="true"></span></button>
+        <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text"><span data-i18n="そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。">そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。</span><br><span data-i18n="このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。">このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。</span></span></div>
       </div>
       <!-- 配点のしくみ。計算のしかた(下のほうの scoreFurniture・computeFacilityScoresV2 など)を変えたときは、この説明と算出式、lang.js と Excel「言語(その他)」の訳も、合わせて直すこと -->
       <div class="qa-item">
-        <div class="qa-row qa-q"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="各施設の配点はどうやって決めているの？">各施設の配点はどうやって決めているの？</span></div>
-        <div class="qa-row qa-a"><span class="qa-mark">A.</span><div class="qa-text qa-body">
+        <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="各施設の配点はどうやって決めているの？">各施設の配点はどうやって決めているの？</span><span class="qa-pm" aria-hidden="true"></span></button>
+        <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><div class="qa-text qa-body">
           <span class="qa-para" data-i18n="施設ごとに、その施設らしい家具をえらび、家具1つずつに、その施設にとっての重要さを3段階の「必要レベル」(1〜3)で設定しています。">施設ごとに、その施設らしい家具をえらび、家具1つずつに、その施設にとっての重要さを3段階の「必要レベル」(1〜3)で設定しています。</span>
           <span class="qa-para" data-i18n="診断では、えらんだポケモンの好物と家具の属性が合うほど、その家具に点が入ります(ポケモン図鑑の「好きなもの」を見れる画面で、上のほうに載っているものほど点数が高く、下に載っているものほど点数が低くなります)。めずらしい属性で合ったときは高く、ありふれた属性で合ったときは低く数えます。苦手な属性をふくむ家具は、そのポケモンについては0点です。">診断では、えらんだポケモンの好物と家具の属性が合うほど、その家具に点が入ります(ポケモン図鑑の「好きなもの」を見れる画面で、上のほうに載っているものほど点数が高く、下に載っているものほど点数が低くなります)。めずらしい属性で合ったときは高く、ありふれた属性で合ったときは低く数えます。苦手な属性をふくむ家具は、そのポケモンについては0点です。</span>
           <span class="qa-para" data-i18n="家具の点に必要レベルを掛けて合計し、満点に対する割合を「マッチ度」として表示しています。順位は、マッチ度のほかに、えらんだポケモン全員の好みに合っているかなども加えて決めているため、マッチ度の順と入れかわることがあります。">家具の点に必要レベルを掛けて合計し、満点に対する割合を「マッチ度」として表示しています。順位は、マッチ度のほかに、えらんだポケモン全員の好みに合っているかなども加えて決めているため、マッチ度の順と入れかわることがあります。</span>
@@ -1100,8 +1123,8 @@
       </div>
       <!-- 家具からポケモン診断の、ポケモンの選び方。計算のしかた(下のほうの bestLikeMatchWeighted・renderFurnResults・computeFurnEnv など)を変えたときは、この説明と、lang.js と Excel「言語(その他)」の訳も、合わせて直すこと -->
       <div class="qa-item">
-        <div class="qa-row qa-q"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="家具からポケモン診断はどうやってポケモンを選出してるの？">家具からポケモン診断はどうやってポケモンを選出してるの？</span></div>
-        <div class="qa-row qa-a"><span class="qa-mark">A.</span><span class="qa-text" data-i18n="えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。">えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。</span></div>
+        <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="家具からポケモン診断はどうやってポケモンを選出してるの？">家具からポケモン診断はどうやってポケモンを選出してるの？</span><span class="qa-pm" aria-hidden="true"></span></button>
+        <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text" data-i18n="えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。">えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。</span></div>
       </div>
     </div>
   </div>
@@ -2553,6 +2576,38 @@
     updateFormulaToggle();
   });
 
+  // Q&A の開け閉め。はじめは「Q.」の行だけが並び、「Q.」の行を押すと、その下の「A.」が開く(もう一度押すと閉じる)。
+  // qa-item の中の、qa-q(ボタン)と qa-a(答えの行)を、組にして扱うので、Q&Aを足しても、ここを直す必要はない。
+  function setQaItemOpen(item, open){
+    const q = item.querySelector(".qa-q");
+    const a = item.querySelector(".qa-a");
+    if (!q || !a) return;
+    a.hidden = !open;
+    q.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  qaOverlay.querySelectorAll(".qa-item").forEach((item, i) => {
+    const q = item.querySelector(".qa-q");
+    const a = item.querySelector(".qa-a");
+    if (!q || !a) return;
+    if (!a.id) a.id = "qaAnswer" + (i + 1);
+    q.setAttribute("aria-controls", a.id);
+  });
+  qaOverlay.addEventListener("click", (e) => {
+    const q = e.target.closest(".qa-q");
+    if (!q) return;
+    const item = q.closest(".qa-item");
+    if (item) setQaItemOpen(item, q.getAttribute("aria-expanded") !== "true");
+  });
+  // Q&A の小窓を開くたびに、すべて閉じた状態(「Q.」の行だけが並んだ状態)に戻す
+  function resetQa(){
+    qaOverlay.querySelectorAll(".qa-item").forEach(item => setQaItemOpen(item, false));
+    formulaPanel.hidden = true;
+    formulaToggle.setAttribute("aria-expanded", "false");
+    updateFormulaToggle();
+    const sc = qaOverlay.querySelector(".qa-scroll");
+    if (sc) sc.scrollTop = 0;
+  }
+
   function closeMenu(){
     menuDropdown.hidden = true;
     menuBtn.setAttribute("aria-expanded", "false");
@@ -2580,6 +2635,7 @@
   }
   function openQa(){
     closeMenu();
+    resetQa();
     qaOverlay.hidden = false;
   }
   function closeQa(){

@@ -903,6 +903,9 @@
   .segmented button.active{ background:var(--accent); color:#fff; }
 
   .furn-dex-grid{ display:flex; flex-direction:column; gap:7px; max-height:420px; overflow-y:auto; }
+  /* スマホ(画面の幅が480px以下)では、ポケモンの名前のラベルが2行に折り返して、家具1つぶんが高くなるので、
+     家具が5つ見えるくらいまで、一覧の高さを広げる(5つ目の下に、6つ目の頭が少しのぞく高さ。PCでは、420pxのままで5つ見える)。 */
+  @media (max-width:480px){ .furn-dex-grid{ max-height:512px; } }
   .dex-group-head{
     font-size:11.5px; font-weight:800; color:var(--primary-strong);
     padding:6px 2px 4px; margin:0 0 -4px;

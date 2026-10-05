@@ -16,214 +16,205 @@ const LANG = {
     {"code": "zhHant", "name": "繁體中文"}
   ],
   "ui": [
-    {"ja": "家具", "en": "Furniture", "ko": "가구", "zhHans": "家具", "zhHant": "傢俱"},
-    {"ja": "施設", "en": "Facility", "ko": "시설", "zhHans": "设施", "zhHant": "設施"},
-    {"ja": "診断", "en": "Finder", "ko": "진단", "zhHans": "诊断", "zhHant": "診斷"},
-    {"ja": "一覧", "en": "List", "ko": "목록", "zhHans": "列表", "zhHant": "列表"},
-    {"ja": "好み", "en": "Like", "ko": "취향", "zhHans": "喜好", "zhHant": "喜好"},
-    {"ja": "おもちゃ", "en": "Toy", "ko": "장난감", "zhHans": "玩具", "zhHant": "玩具"},
-    {"ja": "かざりつけ", "en": "Decoration", "ko": "장식", "zhHans": "装饰", "zhHant": "裝飾"},
-    {"ja": "きゅうけい", "en": "Relaxation", "ko": "휴식", "zhHans": "休息", "zhHant": "休息"},
-    {"ja": "ｻｲｽﾞ", "en": "Size", "ko": "사이즈", "zhHans": "尺寸", "zhHant": "尺寸"},
-    {"ja": "レシピ", "en": "Recipe", "ko": "레시피", "zhHans": "配方", "zhHant": "配方"},
-    {"ja": "あり", "en": "Available", "ko": "유", "zhHans": "有", "zhHant": "有"},
-    {"ja": "なし", "en": "Not available", "ko": "무", "zhHans": "无", "zhHant": "無"},
-    {"ja": "すべて", "en": "All", "ko": "모두", "zhHans": "全部", "zhHant": "全部"},
-    {"ja": "マッチ度", "en": "Match rate", "ko": "일치도", "zhHans": "匹配度", "zhHant": "契合度"},
-    {"ja": "好物", "en": "Favorites", "ko": "좋아하는 것", "zhHans": "喜欢的东西", "zhHant": "喜歡的東西"},
-    {"ja": "苦手", "en": "Dislikes", "ko": "싫어하는 것", "zhHans": "讨厌的东西", "zhHant": "討厭的東西"},
     {"ja": "ぽこあ施設診断", "en": "Pokopia Facility Finder", "ko": "포코피아 시설 진단", "zhHans": "Pokopia 设施诊断", "zhHant": "Pokopia 設施診斷"},
-    {"ja": "ポケモン", "en": "Pokémon", "ko": "포켓몬", "zhHans": "宝可梦", "zhHant": "寶可夢"},
-    {"ja": "属性", "en": "Attribute", "ko": "속성", "zhHans": "属性", "zhHant": "屬性"},
-    {"ja": "選ぶ", "en": "Select", "ko": "선택", "zhHans": "选择", "zhHant": "選擇"},
-    {"ja": "施設を診断する", "en": "Find facilities", "ko": "시설 진단하기", "zhHans": "诊断设施", "zhHant": "診斷設施"},
-    {"ja": "えらび直す", "en": "Reset", "ko": "다시 선택", "zhHans": "重新选择", "zhHant": "重新選擇"},
-    {"ja": "診断結果", "en": "Results", "ko": "진단 결과", "zhHans": "诊断结果", "zhHant": "診斷結果"},
-    {"ja": "おすすめ", "en": "Recommended", "ko": "추천", "zhHans": "推荐", "zhHant": "推薦"},
-    {"ja": "いちばんのおすすめ施設", "en": "Top recommended facility", "ko": "가장 추천하는 시설", "zhHans": "最推荐的设施", "zhHant": "最推薦的設施"},
-    {"ja": "おすすめ施設", "en": "Recommended facility", "ko": "추천 시설", "zhHans": "推荐设施", "zhHant": "推薦設施"},
-    {"ja": "おすすめ理由", "en": "Why it's recommended", "ko": "추천 이유", "zhHans": "推荐理由", "zhHant": "推薦理由"},
-    {"ja": "好きな家具一覧", "en": "Favorite furniture list", "ko": "좋아하는 가구 목록", "zhHans": "喜欢的家具列表", "zhHant": "喜歡的家具列表"},
-    {"ja": "詳細", "en": "Details", "ko": "상세", "zhHans": "详情", "zhHant": "詳情"},
-    {"ja": "閉じる", "en": "Close", "ko": "닫기", "zhHans": "关闭", "zhHant": "關閉"},
-    {"ja": "ほか", "en": "Others", "ko": "그 외", "zhHans": "其他", "zhHant": "其他"},
-    {"ja": "件", "en": "items", "ko": "개", "zhHans": "件", "zhHant": "件"},
-    {"ja": "ほか{n}件", "en": "+{n} more", "ko": "그 외 {n}개", "zhHans": "其他{n}件", "zhHant": "其他{n}件"},
-    {"ja": "{n}匹が好き", "en": "Liked by {n}", "ko": "{n}마리가 좋아함", "zhHans": "{n}只喜欢", "zhHant": "{n}隻喜歡"},
-    {"ja": "{n} / 4 匹", "en": "{n} / 4 Pokémon", "ko": "{n} / 4마리", "zhHans": "{n} / 4只", "zhHant": "{n} / 4隻"},
-    {"ja": "レベル", "en": "Level", "ko": "레벨", "zhHans": "等级", "zhHant": "等級"},
-    {"ja": "必要レベル", "en": "Required level", "ko": "필요 레벨", "zhHans": "所需等级", "zhHant": "所需等級"},
-    {"ja": "得点", "en": "Score", "ko": "점수", "zhHans": "得分", "zhHant": "得分"},
-    {"ja": "順位", "en": "Rank", "ko": "순위", "zhHans": "排名", "zhHant": "排名"},
-    {"ja": "不明", "en": "Unknown", "ko": "알 수 없음", "zhHans": "未知", "zhHant": "未知"},
-    {"ja": "レシピ不明", "en": "Recipe unknown", "ko": "레시피 불명", "zhHans": "配方不明", "zhHant": "配方不明"},
-    {"ja": "検索", "en": "Search", "ko": "검색", "zhHans": "搜索", "zhHant": "搜尋"},
-    {"ja": "ポケモン名で検索", "en": "Search by Pokémon name", "ko": "포켓몬 이름으로 검색", "zhHans": "按宝可梦名称搜索", "zhHant": "依寶可夢名稱搜尋"},
-    {"ja": "見つかりませんでした", "en": "No results found", "ko": "검색 결과가 없습니다", "zhHans": "未找到结果", "zhHant": "找不到結果"},
-    {"ja": "メニュー", "en": "Menu", "ko": "메뉴", "zhHans": "菜单", "zhHant": "選單"},
-    {"ja": "このツールについて", "en": "About this tool", "ko": "이 도구 소개", "zhHans": "关于本工具", "zhHant": "關於本工具"},
-    {"ja": "言語", "en": "Language", "ko": "언어", "zhHans": "语言", "zhHant": "語言"},
-    {"ja": "言語名(各言語での表記)", "en": "English", "ko": "한국어", "zhHans": "简体中文", "zhHant": "繁體中文"},
-    {"ja": "非公式のファンツール", "en": "Unofficial fan tool", "ko": "비공식 팬 도구", "zhHans": "非官方粉丝工具", "zhHant": "非官方粉絲工具"},
-    {"ja": "作成者", "en": "Created by", "ko": "제작자", "zhHans": "作者", "zhHant": "作者"},
-    {"ja": "共同検証者", "en": "Co-verifier", "ko": "공동 검증자", "zhHans": "共同验证者", "zhHant": "共同驗證者"},
-    {"ja": "Special Thanks", "en": "Special thanks", "ko": "특별히 감사드립니다", "zhHans": "特别鸣谢", "zhHant": "特別感謝"},
-    {"ja": "サンプル", "en": "Sample", "ko": "샘플", "zhHans": "示例", "zhHant": "範例"},
-    // ↓ ここから下の行は、Claudeが追加した翻訳案です(要確認)。Excelの「言語(その他)」シートの55行目以降と同じ内容です。
     {"ja": "えらんだポケモンから、つくるべき施設をおすすめ", "en": "Facility recommendations based on the Pokémon you choose", "ko": "선택한 포켓몬에게 어울리는 시설 추천", "zhHans": "根据所选宝可梦，推荐应建造的设施", "zhHant": "根據所選寶可夢，推薦應建造的設施"},
+    {"ja": "ぽこあ家具診断", "en": "Pokopia Furniture Finder", "ko": "포코피아 가구 진단", "zhHans": "Pokopia 家具诊断", "zhHant": "Pokopia 家具診斷"},
+    {"ja": "えらんだ家具から、住みたがるポケモンをおすすめ", "en": "Pokémon recommendations based on the furniture you choose", "ko": "선택한 가구를 바탕으로 살고 싶어하는 포켓몬 추천", "zhHans": "根据所选家具，推荐想居住的宝可梦", "zhHant": "根據所選家具，推薦想居住的寶可夢"},
+    {"ja": "メニュー", "en": "Menu", "ko": "메뉴", "zhHans": "菜单", "zhHant": "選單"},
+    {"ja": "家具からポケモン診断に切り替え", "en": "Switch to Furniture → Pokémon Finder", "ko": "가구로 포켓몬 진단으로 전환", "zhHans": "切换到「从家具诊断宝可梦」", "zhHant": "切換到「從家具診斷寶可夢」"},
+    {"ja": "施設診断に切り替え", "en": "Switch to Facility Finder", "ko": "시설 진단으로 전환", "zhHans": "切换到设施诊断", "zhHant": "切換到設施診斷"},
+    {"ja": "このツールについて", "en": "About this tool", "ko": "이 도구 소개", "zhHans": "关于本工具", "zhHant": "關於本工具"},
+    {"ja": "使い方", "en": "How to use", "ko": "사용 방법", "zhHans": "使用方法", "zhHant": "使用方法"},
+    {"ja": "お知らせ", "en": "News", "ko": "공지사항", "zhHans": "公告", "zhHant": "公告"},
+    {"ja": "言語", "en": "Language", "ko": "언어", "zhHans": "语言", "zhHant": "語言"},
+    {"ja": "閉じる", "en": "Close", "ko": "닫기", "zhHans": "关闭", "zhHant": "關閉"},
+    {"ja": "プライバシーポリシー", "en": "Privacy Policy", "ko": "개인정보처리방침", "zhHans": "隐私权政策", "zhHant": "隱私權政策"},
     {"ja": "ポケモンの「好物」と「苦手」から、", "en": "Based on your Pokémon's favorites and dislikes,", "ko": "포켓몬이 좋아하는 것과 싫어하는 것을 바탕으로,", "zhHans": "根据宝可梦喜欢和讨厌的东西，", "zhHant": "根據寶可夢喜歡和討厭的東西，"},
     {"ja": "おすすめ施設を診断します", "en": "we'll find the facilities that suit them best", "ko": "추천 시설을 진단합니다", "zhHans": "诊断推荐设施", "zhHant": "診斷推薦設施"},
     {"ja": "1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設をおすすめします。", "en": "Choose 1–4 Pokémon and we'll compare their favorite and disliked attributes with furniture to recommend the facilities that suit them best.", "ko": "포켓몬을 1~4마리 선택하면, 각각이 좋아하는 속성과 싫어하는 속성을 가구와 대조하여 궁합이 좋은 시설을 추천합니다.", "zhHans": "选择1～4只宝可梦后，会将各自喜欢和讨厌的属性与家具进行比对，推荐契合度高的设施。", "zhHant": "選擇1～4隻寶可夢後，會將各自喜歡與討厭的屬性與家具進行比對，推薦契合度高的設施。"},
     {"ja": "ポケモンをえらぶ", "en": "Select Pokémon", "ko": "포켓몬 선택", "zhHans": "选择宝可梦", "zhHant": "選擇寶可夢"},
-    {"ja": "{n}件", "en": "{n} items", "ko": "{n}개", "zhHans": "{n}件", "zhHant": "{n}件"},
+    {"ja": "{n} / 4 匹", "en": "{n} / 4 Pokémon", "ko": "{n} / 4마리", "zhHans": "{n} / 4只", "zhHant": "{n} / 4隻"},
+    {"ja": "ポケモン名で検索", "en": "Search by Pokémon name", "ko": "포켓몬 이름으로 검색", "zhHans": "按宝可梦名称搜索", "zhHant": "依寶可夢名稱搜尋"},
+    {"ja": "見つかりませんでした", "en": "No results found", "ko": "검색 결과가 없습니다", "zhHans": "未找到结果", "zhHant": "找不到結果"},
+    {"ja": "クリア", "en": "Clear", "ko": "지우기", "zhHans": "清除", "zhHant": "清除"},
+    {"ja": "苦手", "en": "Dislikes", "ko": "싫어하는 것", "zhHans": "讨厌的东西", "zhHant": "討厭的東西"},
+    {"ja": "施設を診断する", "en": "Find facilities", "ko": "시설 진단하기", "zhHans": "诊断设施", "zhHant": "診斷設施"},
+    {"ja": "えらび直す", "en": "Reset", "ko": "다시 선택", "zhHans": "重新选择", "zhHant": "重新選擇"},
     {"ja": "※ サンプルとして4匹を仮選択済みです", "en": "* 4 sample Pokémon are pre-selected", "ko": "※ 샘플로 포켓몬 4마리를 미리 선택해 두었습니다", "zhHans": "※ 已预先选择4只宝可梦作为示例", "zhHant": "※ 已預先選擇4隻寶可夢作為範例"},
-    {"ja": "えらんだポケモンが好きな家具を見る（+詳細）", "en": "View furniture your Pokémon like (+ details)", "ko": "선택한 포켓몬이 좋아하는 가구 보기 (+상세)", "zhHans": "查看所选宝可梦喜欢的家具（+详情）", "zhHant": "查看所選寶可夢喜歡的家具（+詳情）"},
-    {"ja": "切り替え", "en": "Filter", "ko": "필터", "zhHans": "筛选", "zhHant": "篩選"},
-    {"ja": "レシピあり", "en": "Recipe available", "ko": "레시피 있음", "zhHans": "有配方", "zhHant": "有配方"},
-    {"ja": "レシピなし", "en": "No recipe", "ko": "레시피 없음", "zhHans": "无配方", "zhHant": "無配方"},
-    {"ja": "ｻｲｽﾞで絞り込み", "en": "Filter by size", "ko": "사이즈로 필터", "zhHans": "按尺寸筛选", "zhHant": "依尺寸篩選"},
-    {"ja": "この分類には好みに合う家具がありませんでした", "en": "No furniture in this category matches your Pokémon's likes", "ko": "이 분류에는 취향에 맞는 가구가 없습니다", "zhHans": "此分类中没有符合喜好的家具", "zhHant": "此分類中沒有符合喜好的家具"},
+    {"ja": "まずはポケモンを1匹以上選んでください 🐾", "en": "Start by selecting at least one Pokémon 🐾", "ko": "먼저 포켓몬을 1마리 이상 선택해 주세요 🐾", "zhHans": "请先选择至少1只宝可梦 🐾", "zhHant": "請先選擇至少1隻寶可夢 🐾"},
+    {"ja": "診断結果", "en": "Results", "ko": "진단 결과", "zhHans": "诊断结果", "zhHant": "診斷結果"},
+    {"ja": "いちばんのおすすめ施設", "en": "Top recommended facility", "ko": "가장 추천하는 시설", "zhHans": "最推荐的设施", "zhHant": "最推薦的設施"},
+    {"ja": "おすすめ施設（{n}位）", "en": "Recommended facility (#{n})", "ko": "추천 시설 ({n}위)", "zhHans": "推荐设施（第{n}名）", "zhHant": "推薦設施（第{n}名）"},
+    {"ja": "マッチ度", "en": "Match rate", "ko": "일치도", "zhHans": "匹配度", "zhHant": "契合度"},
     {"ja": "が好き", "en": "like this", "ko": "좋아함", "zhHans": "喜欢", "zhHant": "喜歡"},
     {"ja": "ほかの候補：", "en": "Other options:", "ko": "다른 후보:", "zhHans": "其他候选：", "zhHant": "其他候選："},
+    {"ja": "ほか{n}件", "en": "+{n} more", "ko": "그 외 {n}개", "zhHans": "其他{n}件", "zhHant": "其他{n}件"},
     {"ja": "今回選んだポケモンの好みに合う家具は見つかりませんでしたが、総合スコアが最も高い施設です", "en": "No furniture matched your chosen Pokémon's likes, but this facility has the highest overall score", "ko": "선택한 포켓몬의 취향에 맞는 가구는 찾지 못했지만, 종합 점수가 가장 높은 시설입니다", "zhHans": "没有找到符合所选宝可梦喜好的家具，但这是综合得分最高的设施", "zhHant": "沒有找到符合所選寶可夢喜好的家具，但這是綜合得分最高的設施"},
-    {"ja": "まずはポケモンを1匹以上選んでください 🐾", "en": "Start by selecting at least one Pokémon 🐾", "ko": "먼저 포켓몬을 1마리 이상 선택해 주세요 🐾", "zhHans": "请先选择至少1只宝可梦 🐾", "zhHant": "請先選擇至少1隻寶可夢 🐾"},
+    {"ja": "詳細", "en": "Details", "ko": "상세", "zhHans": "详情", "zhHant": "詳情"},
+    {"ja": "たたむ", "en": "Collapse", "ko": "접기", "zhHans": "收起", "zhHant": "收合"},
+    {"ja": "家具名をコピー", "en": "Copy furniture names", "ko": "가구 이름 복사", "zhHans": "复制家具名称", "zhHant": "複製家具名稱"},
+    {"ja": "施設名をコピー", "en": "Copy facility names", "ko": "시설 이름 복사", "zhHans": "复制设施名称", "zhHant": "複製設施名稱"},
+    {"ja": "コピーしました", "en": "Copied", "ko": "복사했어요", "zhHans": "已复制", "zhHant": "已複製"},
+    {"ja": "コピーできませんでした", "en": "Couldn't copy", "ko": "복사하지 못했어요", "zhHans": "复制失败", "zhHant": "複製失敗"},
+    {"ja": "好きな家具一覧", "en": "Favorite furniture list", "ko": "좋아하는 가구 목록", "zhHans": "喜欢的家具列表", "zhHant": "喜歡的家具列表"},
+    {"ja": "切り替え", "en": "Filter", "ko": "필터", "zhHans": "筛选", "zhHant": "篩選"},
+    {"ja": "おもちゃ", "en": "Toy", "ko": "장난감", "zhHans": "玩具", "zhHant": "玩具"},
+    {"ja": "かざりつけ", "en": "Decoration", "ko": "장식", "zhHans": "装饰", "zhHant": "裝飾"},
+    {"ja": "きゅうけい", "en": "Relaxation", "ko": "휴식", "zhHans": "休息", "zhHant": "休息"},
+    {"ja": "すべて", "en": "All", "ko": "모두", "zhHans": "全部", "zhHant": "全部"},
+    {"ja": "レシピあり", "en": "Recipe available", "ko": "레시피 있음", "zhHans": "有配方", "zhHant": "有配方"},
+    {"ja": "レシピなし", "en": "No recipe", "ko": "레시피 없음", "zhHans": "无配方", "zhHant": "無配方"},
+    {"ja": "レシピ不明", "en": "Recipe unknown", "ko": "레시피 불명", "zhHans": "配方不明", "zhHant": "配方不明"},
+    {"ja": "不明", "en": "Unknown", "ko": "알 수 없음", "zhHans": "未知", "zhHant": "未知"},
+    {"ja": "ｻｲｽﾞ", "en": "Size", "ko": "사이즈", "zhHans": "尺寸", "zhHant": "尺寸"},
+    {"ja": "ｻｲｽﾞで絞り込み", "en": "Filter by size", "ko": "사이즈로 필터", "zhHans": "按尺寸筛选", "zhHant": "依尺寸篩選"},
+    {"ja": "{n}件", "en": "{n} items", "ko": "{n}개", "zhHans": "{n}件", "zhHant": "{n}件"},
+    {"ja": "{n}匹が好き", "en": "Liked by {n}", "ko": "{n}마리가 좋아함", "zhHans": "{n}只喜欢", "zhHant": "{n}隻喜歡"},
+    {"ja": "この分類には好みに合う家具がありませんでした", "en": "No furniture in this category matches your Pokémon's likes", "ko": "이 분류에는 취향에 맞는 가구가 없습니다", "zhHans": "此分类中没有符合喜好的家具", "zhHant": "此分類中沒有符合喜好的家具"},
+    {"ja": "好きな環境", "en": "Ideal Habitat", "ko": "좋아하는 환경", "zhHans": "喜欢的环境", "zhHant": "喜歡的環境"},
+    {"ja": "あかるい", "en": "Bright", "ko": "밝음", "zhHans": "明亮", "zhHant": "明亮"},
+    {"ja": "くらい", "en": "Dark", "ko": "어두움", "zhHans": "昏暗", "zhHant": "昏暗"},
+    {"ja": "すずしい", "en": "Cool", "ko": "시원함", "zhHans": "凉爽", "zhHant": "涼爽"},
+    {"ja": "あたたかい", "en": "Warm", "ko": "따뜻함", "zhHans": "温暖", "zhHant": "溫暖"},
+    {"ja": "うるおっている", "en": "Humid", "ko": "촉촉함", "zhHans": "潮湿", "zhHant": "潮濕"},
+    {"ja": "乾そうしている", "en": "Dry", "ko": "건조함", "zhHans": "干燥", "zhHant": "乾燥"},
+    {"ja": "照明", "en": "Lighting", "ko": "조명", "zhHans": "照明", "zhHant": "照明"},
+    {"ja": "冷房", "en": "Cooling", "ko": "냉방", "zhHans": "制冷", "zhHant": "冷氣"},
+    {"ja": "暖房", "en": "Heating", "ko": "난방", "zhHans": "供暖", "zhHant": "暖氣"},
+    {"ja": "潤い", "en": "Humidifying", "ko": "가습", "zhHans": "加湿", "zhHant": "加濕"},
+    {"ja": "このメンバーは{env}の環境が好きです。", "en": "This group prefers these environments: {env}.", "ko": "이 멤버들은 {env} 환경을 좋아합니다.", "zhHans": "这些成员喜欢{env}的环境。", "zhHant": "這些成員喜歡{env}的環境。"},
+    {"ja": "このメンバーは{env}の環境が好きです。（環境が1つのとき）", "en": "This group prefers this environment: {env}.", "ko": "이 멤버들은 {env} 환경을 좋아합니다.", "zhHans": "这些成员喜欢{env}的环境。", "zhHant": "這些成員喜歡{env}的環境。"},
+    {"ja": "⚠ {name}は「{env}」の環境が好みです", "en": "⚠ {name} prefers a \"{env}\" environment", "ko": "⚠ {name}은(는) '{env}' 환경을 좋아합니다", "zhHans": "⚠ {name}喜欢「{env}」的环境", "zhHant": "⚠ {name}喜歡「{env}」的環境"},
+    {"ja": "{a}と{b}の好きな環境は、同じ住処では両立できません", "en": "The Ideal Habitats of {a} and {b} can't exist together in the same den.", "ko": "{a}와(과) {b}이(가) 좋아하는 환경은 같은 서식지에서 함께 만들 수 없습니다", "zhHans": "{a}和{b}喜欢的环境无法在同一个栖息处共存", "zhHant": "{a}和{b}喜歡的環境無法在同一個棲息處共存"},
+    {"ja": "置いた家具から、", "en": "Based on the furniture you place,", "ko": "배치한 가구를 바탕으로,", "zhHans": "根据摆放的家具，", "zhHant": "根據擺放的家具，"},
+    {"ja": "住みたがるポケモンを", "en": "we'll find the Pokémon", "ko": "살고 싶어하는 포켓몬을", "zhHans": "诊断出", "zhHant": "診斷出"},
+    {"ja": "診断します", "en": "who want to live there", "ko": "진단합니다", "zhHans": "想居住的宝可梦", "zhHant": "想居住的寶可夢"},
+    {"ja": "家具を選ぶと、その家具が好きなポケモンを表示します。", "en": "Choose furniture, and we'll show the Pokémon who like it.", "ko": "가구를 선택하면, 그 가구를 좋아하는 포켓몬을 표시합니다.", "zhHans": "选择家具后，会显示喜欢该家具的宝可梦。", "zhHant": "選擇家具後，會顯示喜歡該家具的寶可夢。"},
+    {"ja": "家具をえらぶ", "en": "Select furniture", "ko": "가구 선택", "zhHans": "选择家具", "zhHant": "選擇家具"},
+    {"ja": "{n} / 12 個", "en": "{n} / 12 items", "ko": "{n} / 12개", "zhHans": "{n} / 12件", "zhHant": "{n} / 12件"},
+    {"ja": "家具名で検索", "en": "Search by furniture name", "ko": "가구 이름으로 검색", "zhHans": "按家具名称搜索", "zhHant": "依家具名稱搜尋"},
+    {"ja": "ポケモンを診断する", "en": "Find Pokémon", "ko": "포켓몬 진단하기", "zhHans": "诊断宝可梦", "zhHant": "診斷寶可夢"},
+    {"ja": "※ サンプルとして仮選択済みです", "en": "* Sample furniture is pre-selected", "ko": "※ 샘플로 가구를 미리 선택해 두었습니다", "zhHans": "※ 已预先选择家具作为示例", "zhHant": "※ 已預先選擇家具作為範例"},
+    {"ja": "まずは家具を1つ以上選んでください 🛋️", "en": "Start by selecting at least one piece of furniture 🛋️", "ko": "먼저 가구를 1개 이상 선택해 주세요 🛋️", "zhHans": "请先选择至少1件家具 🛋️", "zhHant": "請先選擇至少1件家具 🛋️"},
+    {"ja": "以下のポケモンが住みたがっています：", "en": "The following Pokémon want to live here:", "ko": "다음 포켓몬들이 여기에 살고 싶어합니다:", "zhHans": "以下宝可梦想住在这里：", "zhHant": "以下寶可夢想住在這裡："},
+    {"ja": "選んだ家具の属性に合うポケモンが見つかりませんでした", "en": "No Pokémon matched the attributes of the furniture you selected", "ko": "선택한 가구의 속성에 맞는 포켓몬을 찾지 못했습니다", "zhHans": "没有找到符合所选家具属性的宝可梦", "zhHant": "沒有找到符合所選家具屬性的寶可夢"},
+    {"ja": "ポケモン名をすべてコピー", "en": "Copy all Pokémon names", "ko": "포켓몬 이름 전체 복사", "zhHans": "复制全部宝可梦名称", "zhHant": "複製全部寶可夢名稱"},
+    {"ja": "検証者", "en": "Verified by", "ko": "검증자", "zhHans": "验证者", "zhHant": "驗證者"},
+    {"ja": "ツールにもどる", "en": "Back to the tool", "ko": "도구로 돌아가기", "zhHans": "返回工具", "zhHant": "返回工具"},
+    {"ja": "「ぽこあ施設診断」(以下「当サイト」)での、閲覧者の情報の取り扱いについて説明します。", "en": "This page explains how visitor information is handled on Pokopia Facility Finder (\"this site\").", "ko": "'포코피아 시설 진단'(이하 '본 사이트')에서 방문자의 정보를 어떻게 다루는지 설명합니다.", "zhHans": "本页说明「Pokopia 设施诊断」（以下称“本网站”）如何处理访问者的信息。", "zhHant": "本頁說明「Pokopia 設施診斷」（以下稱「本網站」）如何處理訪客的資訊。"},
+    {"ja": "広告の配信について", "en": "About advertising", "ko": "광고 게재에 대하여", "zhHans": "关于广告投放", "zhHant": "關於廣告放送"},
+    {"ja": "当サイトは、Googleの広告サービス「Google AdSense」のコードを設置しています。審査の状況などにより、広告が表示されない場合があります。", "en": "This site includes code for Google AdSense, Google's advertising service. Ads may not be displayed, depending on factors such as the review status.", "ko": "본 사이트에는 Google의 광고 서비스 'Google 애드센스'의 코드가 설치되어 있습니다. 심사 상황 등에 따라 광고가 표시되지 않을 수 있습니다.", "zhHans": "本网站设置了 Google 的广告服务“Google AdSense”的代码。根据审核情况等，广告可能不会显示。", "zhHant": "本網站設置了 Google 的廣告服務「Google AdSense」的程式碼。視審查情況等，廣告可能不會顯示。"},
+    {"ja": "Googleなどの第三者配信事業者は、Cookie(クッキー。ブラウザに保存される小さなデータ)を使用して、閲覧者が当サイトや他のウェブサイトに過去にアクセスした際の情報にもとづいて、広告を配信します。", "en": "Third party vendors, including Google, use cookies (small pieces of data stored in your browser) to serve ads based on a user's prior visits to this website or other websites.", "ko": "Google 및 서드 파티 공급업체는 쿠키(브라우저에 저장되는 작은 데이터)를 사용해 사용자가 이전에 본 사이트 또는 다른 웹사이트에 방문한 기록을 토대로 광고를 게재합니다.", "zhHans": "第三方供应商（包括 Google）会根据用户之前访问本网站或其他网站的记录，利用 Cookie（保存在浏览器中的小型数据）来投放广告。", "zhHant": "第三方供應商（包括 Google）會使用 Cookie（儲存在瀏覽器中的小型資料），根據使用者先前在本網站（或其他網站）上瀏覽的內容放送廣告。"},
+    {"ja": "Googleが広告Cookieを使用することにより、Googleやそのパートナーは、閲覧者が当サイトや他のサイトにアクセスした際の情報にもとづいて、適切な広告を表示できます。", "en": "Google's use of advertising cookies enables it and its partners to serve ads to users based on their visits to this site and/or other sites on the Internet.", "ko": "Google의 광고 쿠키 사용으로 Google과 파트너는 사용자의 본 사이트 방문 및/또는 인터넷상의 다른 사이트 방문 기록을 토대로 광고를 게재할 수 있습니다.", "zhHans": "通过使用广告 Cookie，Google 及其合作伙伴可以根据用户访问本网站和/或互联网上其他网站的记录来投放广告。", "zhHant": "Google 及合作夥伴會利用廣告 Cookie，根據使用者在本網站和/或其他網站瀏覽的內容，對他們放送合適的廣告。"},
+    {"ja": "閲覧者は、Googleの{a}広告設定{/a}で、パーソナライズド広告(閲覧者に合わせて選ばれる広告)を無効にできます。", "en": "Users may opt out of personalized advertising (ads chosen to suit each user) by visiting {a}Ads Settings{/a}.", "ko": "사용자는 {a}광고 설정{/a}에서 개인 맞춤 광고(사용자에게 맞추어 선택되는 광고)를 거부할 수 있습니다.", "zhHans": "用户可以访问{a}广告设置{/a}来选择停用个性化广告（根据用户情况选择的广告）。", "zhHant": "使用者可前往「{a}廣告設定{/a}」停用個人化廣告（依使用者情況選擇的廣告）。"},
+    {"ja": "{a}www.aboutads.info{/a} にアクセスすると、パーソナライズド広告に使われる第三者配信事業者のCookieを無効にできます。", "en": "Alternatively, users can opt out of a third-party vendor's use of cookies for personalized advertising by visiting {a}www.aboutads.info{/a}.", "ko": "{a}www.aboutads.info{/a}에 방문하면 개인 맞춤 광고를 위한 서드 파티 공급업체의 쿠키 사용을 거부할 수 있습니다.", "zhHans": "访问 {a}www.aboutads.info{/a}，可以选择停用第三方供应商用于个性化广告的 Cookie。", "zhHant": "前往 {a}www.aboutads.info{/a}，可選擇停用第三方供應商用於個人化廣告的 Cookie。"},
+    {"ja": "欧州経済領域(EEA)・英国・スイスから閲覧した場合は、広告のためのCookieなどの利用について、同意を確認するメッセージが表示されます。", "en": "If you visit from the European Economic Area (EEA), the United Kingdom, or Switzerland, a message is shown asking for your consent to the use of cookies and similar technologies for advertising.", "ko": "유럽 경제 지역(EEA), 영국, 스위스에서 방문한 경우, 광고를 위한 쿠키 등의 사용에 대한 동의를 확인하는 메시지가 표시됩니다.", "zhHans": "如果您从欧洲经济区（EEA）、英国或瑞士访问，将显示一条消息，就广告用途的 Cookie 等的使用征求您的同意。", "zhHant": "如果您從歐洲經濟區（EEA）、英國或瑞士瀏覽，將顯示一則訊息，就廣告用途的 Cookie 等的使用徵求您的同意。"},
+    {"ja": "Googleによる情報の使い方は、{a}Google のサービスを使用するサイトやアプリから収集した情報の Google による使用{/a}をご覧ください。", "en": "For how Google uses information, see {a}How Google uses information from sites or apps that use our services{/a}.", "ko": "Google의 정보 사용 방식은 {a}Google이 Google 서비스를 사용하는 웹사이트 또는 앱의 정보를 사용하는 방법{/a}을 참고해 주세요.", "zhHans": "关于 Google 如何使用信息，请参阅{a}Google 如何利用从使用 Google 服务的网站和应用中收集的信息{/a}。", "zhHant": "關於 Google 如何使用資訊，請參閱{a}Google 如何運用來自採用 Google 服務的網站和應用程式的資訊{/a}。"},
+    {"ja": "外部に送信される情報", "en": "Information sent to external services", "ko": "외부로 전송되는 정보", "zhHans": "发送到外部的信息", "zhHant": "傳送至外部的資訊"},
+    {"ja": "当サイトを開くと、閲覧者のブラウザから、次の3つのサービスへ情報が送信されます。", "en": "When you open this site, your browser sends information to the following three services.", "ko": "본 사이트를 열면 방문자의 브라우저에서 다음 3가지 서비스로 정보가 전송됩니다.", "zhHans": "打开本网站时，访问者的浏览器会向以下3项服务发送信息。", "zhHant": "開啟本網站時，訪客的瀏覽器會向以下3項服務傳送資訊。"},
+    {"ja": "送信先", "en": "Recipient", "ko": "전송 대상", "zhHans": "发送对象", "zhHant": "傳送對象"},
+    {"ja": "送信される情報", "en": "Information sent", "ko": "전송되는 정보", "zhHans": "发送的信息", "zhHant": "傳送的資訊"},
+    {"ja": "閲覧したページのアドレス、IPアドレス、Cookieなどの識別子、ブラウザや端末の情報", "en": "The address (URL) of the page you viewed, your IP address, identifiers such as cookies, and information about your browser and device", "ko": "방문한 페이지의 주소, IP 주소, 쿠키 등의 식별자, 브라우저 및 기기 정보", "zhHans": "所浏览页面的网址、IP 地址、Cookie 等标识符、浏览器和设备的信息", "zhHant": "所瀏覽頁面的網址、IP 位址、Cookie 等識別碼、瀏覽器和裝置的資訊"},
+    {"ja": "利用目的", "en": "Purpose", "ko": "이용 목적", "zhHans": "使用目的", "zhHant": "使用目的"},
+    {"ja": "広告の配信、広告の効果測定、不正行為の防止", "en": "Serving ads, measuring ad effectiveness, and preventing fraud", "ko": "광고 게재, 광고 효과 측정, 부정행위 방지", "zhHans": "投放广告、衡量广告效果、防止欺诈行为", "zhHant": "放送廣告、評估廣告成效、防止詐欺行為"},
+    {"ja": "IPアドレス、ブラウザや端末の情報、当サイトのアドレス", "en": "Your IP address, information about your browser and device, and the address of this site", "ko": "IP 주소, 브라우저 및 기기 정보, 본 사이트의 주소", "zhHans": "IP 地址、浏览器和设备的信息、本网站的网址", "zhHant": "IP 位址、瀏覽器和裝置的資訊、本網站的網址"},
+    {"ja": "文字の書体(フォント)の表示", "en": "Displaying fonts (typefaces)", "ko": "글꼴(폰트) 표시", "zhHans": "显示文字的字体", "zhHant": "顯示文字的字型"},
+    {"ja": "IPアドレス、ブラウザや端末の情報、閲覧したページのアドレス", "en": "Your IP address, information about your browser and device, and the address (URL) of the page you viewed", "ko": "IP 주소, 브라우저 및 기기 정보, 방문한 페이지의 주소", "zhHans": "IP 地址、浏览器和设备的信息、所浏览页面的网址", "zhHant": "IP 位址、瀏覽器和裝置的資訊、所瀏覽頁面的網址"},
+    {"ja": "当サイトの公開(ページの配信)、安全対策", "en": "Hosting this site (delivering its pages) and security", "ko": "본 사이트의 공개(페이지 전송), 보안 대책", "zhHans": "发布本网站（传送网页）、安全措施", "zhHant": "發布本網站（傳送網頁）、安全措施"},
+    {"ja": "各社での情報の取り扱いは、{a}Google のプライバシーポリシー{/a}、{b}GitHub の一般プライバシー ステートメント{/b}をご覧ください。", "en": "For how each company handles information, see the {a}Google Privacy Policy{/a} and the {b}GitHub General Privacy Statement{/b}.", "ko": "각 회사의 정보 취급에 대해서는 {a}Google 개인정보처리방침{/a}과 {b}GitHub의 개인정보처리방침{/b}을 참고해 주세요.", "zhHans": "各公司对信息的处理方式，请参阅 {a}Google 隐私权政策{/a}和 {b}GitHub 的隐私声明{/b}。", "zhHant": "各公司對資訊的處理方式，請參閱 {a}Google 隱私權政策{/a}和 {b}GitHub 的隱私權聲明{/b}。"},
+    {"ja": "ブラウザに保存する情報", "en": "Information stored in your browser", "ko": "브라우저에 저장되는 정보", "zhHans": "保存在浏览器中的信息", "zhHant": "儲存在瀏覽器中的資訊"},
+    {"ja": "当サイトは、使いやすくするために、次の3つを閲覧者のブラウザの中(ローカルストレージ)に保存します。これらは、運営者や外部には送信されません。", "en": "To make the site easier to use, this site stores the following three items in your browser (local storage). They are not sent to the operator or to any external party.", "ko": "본 사이트는 사용 편의를 위해 다음 3가지를 방문자의 브라우저 안(로컬 스토리지)에 저장합니다. 이 정보는 운영자나 외부로 전송되지 않습니다.", "zhHans": "为了方便使用，本网站会将以下3项内容保存在访问者的浏览器中（本地存储）。这些内容不会发送给运营者或外部。", "zhHant": "為了方便使用，本網站會將以下3項內容儲存在訪客的瀏覽器中（本機儲存空間）。這些內容不會傳送給營運者或外部。"},
+    {"ja": "表示する言語の設定", "en": "Your display language setting", "ko": "표시 언어 설정", "zhHans": "显示语言的设置", "zhHant": "顯示語言的設定"},
+    {"ja": "最後に使った診断の種類(施設診断・家具からポケモン診断)", "en": "The finder you used last (Facility Finder or Furniture → Pokémon Finder)", "ko": "마지막으로 사용한 진단의 종류(시설 진단 · 가구로 포켓몬 진단)", "zhHans": "最后使用的诊断种类（设施诊断、「从家具诊断宝可梦」）", "zhHant": "最後使用的診斷種類（設施診斷、「從家具診斷寶可夢」）"},
+    {"ja": "読み終えたお知らせの記録", "en": "A record of the news items you have read", "ko": "읽은 공지사항의 기록", "zhHans": "已读公告的记录", "zhHant": "已讀公告的記錄"},
+    {"ja": "えらんだポケモンや家具、診断の結果は、保存も送信もしていません。", "en": "The Pokémon and furniture you choose, and the results, are neither stored nor sent.", "ko": "선택한 포켓몬과 가구, 진단 결과는 저장하지도 전송하지도 않습니다.", "zhHans": "您选择的宝可梦和家具以及诊断结果，既不会保存，也不会发送。", "zhHant": "您選擇的寶可夢和家具以及診斷結果，既不會儲存，也不會傳送。"},
+    {"ja": "ブラウザの設定で当サイトのデータを削除すると、保存した情報は消えます。", "en": "If you delete this site's data in your browser settings, the stored information is erased.", "ko": "브라우저 설정에서 본 사이트의 데이터를 삭제하면 저장된 정보는 지워집니다.", "zhHans": "在浏览器的设置中删除本网站的数据后，已保存的信息就会消失。", "zhHant": "在瀏覽器的設定中刪除本網站的資料後，已儲存的資訊就會消失。"},
+    {"ja": "運営者が取得しない情報", "en": "Information the operator does not collect", "ko": "운영자가 수집하지 않는 정보", "zhHans": "运营者不会获取的信息", "zhHant": "營運者不會取得的資訊"},
+    {"ja": "当サイトには、氏名やメールアドレスなどを入力する欄、会員登録、アクセス解析はありません。運営者が、閲覧者個人を特定できる情報を取得することはありません。", "en": "This site has no fields for entering your name, email address, or similar details, no user registration, and no access analytics. The operator does not obtain information that can identify individual visitors.", "ko": "본 사이트에는 이름이나 이메일 주소 등을 입력하는 칸, 회원 가입, 접속 분석이 없습니다. 운영자가 방문자 개인을 식별할 수 있는 정보를 수집하는 일은 없습니다.", "zhHans": "本网站没有填写姓名、电子邮件地址等的输入栏，没有会员注册，也没有访问分析。运营者不会获取能够识别访问者个人的信息。", "zhHant": "本網站沒有填寫姓名、電子郵件地址等的輸入欄，沒有會員註冊，也沒有流量分析。營運者不會取得能夠識別訪客個人的資訊。"},
+    {"ja": "お問い合わせ", "en": "Contact", "ko": "문의", "zhHans": "联系方式", "zhHant": "聯絡方式"},
+    {"ja": "ご意見や不具合の報告は、作成者のX(旧Twitter)までお願いします。", "en": "Please send feedback and bug reports to the creator on X (formerly Twitter).", "ko": "의견이나 오류 신고는 제작자의 X(구 Twitter)로 보내 주세요.", "zhHans": "意见及问题反馈，请通过作者的 X（原 Twitter）联系。", "zhHant": "意見及問題回報，請透過作者的 X（原 Twitter）聯絡。"},
+    {"ja": "作成者", "en": "Created by", "ko": "제작자", "zhHans": "作者", "zhHant": "作者"},
+    {"ja": "お問い合わせで受け取った情報は、返信や対応のためだけに使います。", "en": "Information received through inquiries is used only to reply and respond.", "ko": "문의를 통해 받은 정보는 답변과 대응을 위해서만 사용합니다.", "zhHans": "通过咨询收到的信息，仅用于回复和处理。", "zhHant": "透過洽詢收到的資訊，僅用於回覆和處理。"},
+    {"ja": "プライバシーポリシーの変更", "en": "Changes to this Privacy Policy", "ko": "개인정보처리방침의 변경", "zhHans": "隐私权政策的变更", "zhHant": "隱私權政策的變更"},
+    {"ja": "内容を変更することがあります。変更したときは、このページでお知らせします。", "en": "This policy may be changed. Any changes will be announced on this page.", "ko": "내용을 변경할 수 있습니다. 변경한 경우에는 이 페이지에서 알려 드립니다.", "zhHans": "内容可能会变更。变更时，将在本页面告知。", "zhHant": "內容可能會變更。變更時，將在本頁面告知。"},
+    {"ja": "制定日", "en": "Effective date", "ko": "제정일", "zhHans": "制定日期", "zhHant": "制定日期"},
+    {"ja": "非公式のファンツール", "en": "Unofficial fan tool", "ko": "비공식 팬 도구", "zhHans": "非官方粉丝工具", "zhHant": "非官方粉絲工具"},
+    {"ja": "家具", "en": "Furniture", "ko": "가구", "zhHans": "家具", "zhHant": "家具"},
+    {"ja": "施設", "en": "Facility", "ko": "시설", "zhHans": "设施", "zhHant": "設施"},
+    {"ja": "診断", "en": "Finder", "ko": "진단", "zhHans": "诊断", "zhHant": "診斷"},
+    {"ja": "一覧", "en": "List", "ko": "목록", "zhHans": "列表", "zhHant": "列表"},
+    {"ja": "好み", "en": "Like", "ko": "취향", "zhHans": "喜好", "zhHant": "喜好"},
+    {"ja": "レシピ", "en": "Recipe", "ko": "레시피", "zhHans": "配方", "zhHant": "配方"},
+    {"ja": "あり", "en": "Available", "ko": "유", "zhHans": "有", "zhHant": "有"},
+    {"ja": "なし", "en": "Not available", "ko": "무", "zhHans": "无", "zhHant": "無"},
+    {"ja": "好物", "en": "Favorites", "ko": "좋아하는 것", "zhHans": "喜欢的东西", "zhHant": "喜歡的東西"},
+    {"ja": "ポケモン", "en": "Pokémon", "ko": "포켓몬", "zhHans": "宝可梦", "zhHant": "寶可夢"},
+    {"ja": "属性", "en": "Attribute", "ko": "속성", "zhHans": "属性", "zhHant": "屬性"},
+    {"ja": "選ぶ", "en": "Select", "ko": "선택", "zhHans": "选择", "zhHant": "選擇"},
+    {"ja": "おすすめ", "en": "Recommended", "ko": "추천", "zhHans": "推荐", "zhHant": "推薦"},
+    {"ja": "おすすめ施設", "en": "Recommended facility", "ko": "추천 시설", "zhHans": "推荐设施", "zhHant": "推薦設施"},
+    {"ja": "おすすめ理由", "en": "Why it's recommended", "ko": "추천 이유", "zhHans": "推荐理由", "zhHant": "推薦理由"},
+    {"ja": "ほか", "en": "Others", "ko": "그 외", "zhHans": "其他", "zhHant": "其他"},
+    {"ja": "件", "en": "items", "ko": "개", "zhHans": "件", "zhHant": "件"},
+    {"ja": "レベル", "en": "Level", "ko": "레벨", "zhHans": "等级", "zhHant": "等級"},
+    {"ja": "必要レベル", "en": "Required level", "ko": "필요 레벨", "zhHans": "所需等级", "zhHant": "所需等級"},
+    {"ja": "得点", "en": "Score", "ko": "점수", "zhHans": "得分", "zhHant": "得分"},
+    {"ja": "順位", "en": "Rank", "ko": "순위", "zhHans": "排名", "zhHant": "排名"},
+    {"ja": "検索", "en": "Search", "ko": "검색", "zhHans": "搜索", "zhHant": "搜尋"},
+    {"ja": "言語名(各言語での表記)", "en": "English", "ko": "한국어", "zhHans": "简体中文", "zhHant": "繁體中文"},
+    {"ja": "サンプル", "en": "Sample", "ko": "샘플", "zhHans": "示例", "zhHant": "範例"},
+    {"ja": "環境", "en": "Environment", "ko": "환경", "zhHans": "环境", "zhHant": "環境"},
+    {"ja": "リリースしました。", "en": "We've released the tool.", "ko": "출시했습니다.", "zhHans": "已正式发布。", "zhHant": "已正式發布。"},
+    {"ja": "各施設への得点配分メカニズムを微調整しました。", "en": "We've fine-tuned how points are allocated to each facility.", "ko": "각 시설의 점수 배분 방식을 미세 조정했습니다.", "zhHans": "微调了各设施的得分分配机制。", "zhHant": "微調了各設施的得分分配機制。"},
+    {"ja": "このツールは非公式のファンツールです。", "en": "Unofficial fan tool", "ko": "비공식 팬 도구", "zhHans": "非官方粉丝工具", "zhHant": "非官方粉絲工具"},
+    {"ja": "改善要望・不具合報告は作成者までお願いします。", "en": "Please send feature requests and bug reports to the creator.", "ko": "개선 요청 및 오류 신고는 제작자에게 문의해 주세요.", "zhHans": "改进建议及问题反馈，请联系作者。", "zhHant": "改善建議及問題回報，請聯絡作者。"},
+    {"ja": "家具属性の共同検証者様", "en": "Co-verifier", "ko": "공동 검증자", "zhHans": "共同验证者", "zhHant": "共同驗證者"},
+    {"ja": "家具属性の検証について", "en": "About furniture attribute verification", "ko": "가구 속성 검증에 대하여", "zhHans": "关于家具属性的验证", "zhHant": "關於家具屬性的驗證"},
+    {"ja": "Special Thanks", "en": "Special thanks", "ko": "특별히 감사드립니다", "zhHans": "特别鸣谢", "zhHant": "特別感謝"},
     {"ja": "ツールの診断結果・スクリーンショットは自由にご利用いただけます。", "en": "You are free to use the tool's results and screenshots.", "ko": "도구의 진단 결과와 스크린샷은 자유롭게 이용하실 수 있습니다.", "zhHans": "本工具的诊断结果和截图可自由使用。", "zhHant": "本工具的診斷結果與截圖可自由使用。"},
     {"ja": "その際、当ツールを利用した旨を記載していただけると、うれしいです。", "en": "We would appreciate it if you mentioned that you used this tool.", "ko": "이용하실 때 이 도구를 사용했다고 표기해 주시면 기쁘겠습니다.", "zhHans": "若能注明使用了本工具，我们将不胜感激。", "zhHant": "若能註明使用了本工具，我們將不勝感激。"},
-    {"ja": "クリア", "en": "Clear", "ko": "지우기", "zhHans": "清除", "zhHant": "清除"},
-    {"ja": "おすすめ施設（{n}位）", "en": "Recommended facility (#{n})", "ko": "추천 시설 ({n}위)", "zhHans": "推荐设施（第{n}名）", "zhHant": "推薦設施（第{n}名）"}
-    ,{"ja": "改善要望・不具合報告は作成者までお願いします。", "en": "Please send feature requests and bug reports to the creator.", "ko": "개선 요청 및 오류 신고는 제작자에게 문의해 주세요.", "zhHans": "改进建议及问题反馈，请联系作者。", "zhHant": "改善建議及問題回報，請聯絡作者。"}
-    ,{"ja": "テーブルなどは無いのですか？", "en": "Are there no tables or similar furniture?", "ko": "테이블 같은 가구는 없나요?", "zhHans": "没有桌子之类的家具吗？", "zhHant": "沒有桌子之類的家具嗎？"}
-    ,{"ja": "ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！", "en": "Pokémon only have preferences for furniture in the \"Toys,\" \"Decorations,\" and \"Relaxation\" categories, so this tool only shows those. Furniture that doesn't belong to any of these categories, such as tables, will make them happy no matter which one you place!", "ko": "포켓몬이 좋아하는 것은 '장난감', '장식', '휴식' 가구뿐이라서, 이 도구에서는 그것들만 표시하고 있어요. 테이블처럼 '장난감', '장식', '휴식' 중 어디에도 속하지 않는 가구는 어떤 것을 놓아도 좋아해 준답니다!", "zhHans": "宝可梦们喜欢的只有「玩具」「装饰」「休息」类的家具，所以本工具只显示这些。像桌子这样不属于「玩具」「装饰」「休息」任何一类的家具，无论放哪一个，它们都会很开心哦！", "zhHant": "寶可夢們喜歡的只有「玩具」「裝飾」「休息」類的家具，所以本工具只顯示這些。像桌子這樣不屬於「玩具」「裝飾」「休息」任何一類的家具，無論放哪一個，牠們都會很開心喔！"}
-    ,{"ja": "ここに載っている家具じゃなきゃダメなの？", "en": "Does it have to be the furniture listed here?", "ko": "여기에 나와 있는 가구가 아니면 안 되나요?", "zhHans": "一定要是这里列出的家具吗？", "zhHant": "一定要是這裡列出的家具嗎？"}
-    ,{"ja": "そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。", "en": "Not at all. It's easy to make Pokémon more comfortable, so feel free to place any furniture you like.", "ko": "그렇지 않아요. 포켓몬이 지내기 편하게 만드는 건 간단하니, 좋아하는 가구를 놓아도 괜찮아요.", "zhHans": "并不是的。提升宝可梦的居住舒适度很简单，所以放你喜欢的家具就可以了。", "zhHant": "並不是的。提升寶可夢的居住舒適度很簡單，所以放你喜歡的家具就可以了。"}
-    ,{"ja": "このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。", "en": "If you want to build something as a home for Pokémon but don't know what kind of home to make, I hope this tool can be a helpful reference.", "ko": "이 도구는 '포켓몬의 집으로 뭔가 만들고 싶은데, 어떤 집을 만들어야 할지 모르겠다'는 분들께 참고가 되면 좋겠어요.", "zhHans": "如果你想为宝可梦打造一个家，却不知道该建成什么样，希望本工具能为你提供一些参考。", "zhHant": "如果你想為寶可夢打造一個家，卻不知道該建成什麼樣，希望本工具能為你提供一些參考。"}
-    ,{"ja": "使い方", "en": "How to use", "ko": "사용 방법", "zhHans": "使用方法", "zhHant": "使用方法"}
-    ,{"ja": "住まわせたい1～4匹のポケモンを選択して、「施設を診断する」のボタンを押します。", "en": "Select 1 to 4 Pokémon you want to house, then press the \"Find facilities\" button.", "ko": "살게 하고 싶은 포켓몬을 1~4마리 선택한 뒤 '시설 진단하기' 버튼을 누르세요.", "zhHans": "选择1～4只想让它们居住的宝可梦，然后按下「诊断设施」按钮。", "zhHant": "選擇1～4隻想讓牠們居住的寶可夢，然後按下「診斷設施」按鈕。"}
-    ,{"ja": "おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。", "en": "Up to 8 recommended facilities are shown. You can see the details of facilities ranked 4th and below with the \"+ Details\" button.", "ko": "추천 시설이 최대 8개까지 표시됩니다. 4위 이하 시설의 상세 내용은 '+ 상세' 버튼으로 볼 수 있어요.", "zhHans": "最多会显示8个推荐设施。第4名及以后的设施详情，可通过「＋详情」按钮查看。", "zhHant": "最多會顯示8個推薦設施。第4名及之後的設施詳情，可透過「＋詳情」按鈕查看。"}
-    ,{"ja": "「えらんだポケモンが好きな家具を見る（+詳細）」のボタンを押すと、選んだポケモンの好きな家具が表示されます。", "en": "Press the \"View furniture your Pokémon like (+ details)\" button to show the furniture the selected Pokémon like.", "ko": "'선택한 포켓몬이 좋아하는 가구 보기 (+상세)' 버튼을 누르면 선택한 포켓몬이 좋아하는 가구가 표시됩니다.", "zhHans": "按下「查看所选宝可梦喜欢的家具（+详情）」按钮，就会显示所选宝可梦喜欢的家具。", "zhHant": "按下「查看所選寶可夢喜歡的家具（+詳情）」按鈕，就會顯示所選寶可夢喜歡的家具。"}
-    ,{"ja": "お知らせ", "en": "News", "ko": "공지사항", "zhHans": "公告", "zhHant": "公告"}
-    ,{"ja": "リリースしました。", "en": "We've released the tool.", "ko": "출시했습니다.", "zhHans": "已正式发布。", "zhHant": "已正式發布。"}
-    ,{"ja": "家具属性の検証について", "en": "About furniture attribute verification", "ko": "가구 속성 검증에 대하여", "zhHans": "关于家具属性的验证", "zhHant": "關於家具屬性的驗證"}
-    ,{"ja": "検証者", "en": "Verified by", "ko": "검증자", "zhHans": "验证者", "zhHant": "驗證者"}
-    ,{"ja": "家具名をコピー", "en": "Copy furniture names", "ko": "가구 이름 복사", "zhHans": "复制家具名称", "zhHant": "複製家具名稱"}
-    ,{"ja": "コピーしました", "en": "Copied", "ko": "복사했어요", "zhHans": "已复制", "zhHant": "已複製"}
-    ,{"ja": "コピーできませんでした", "en": "Couldn't copy", "ko": "복사하지 못했어요", "zhHans": "复制失败", "zhHant": "複製失敗"}
-    ,{"ja": "ボタンを押すと、家具の名前をコピーできます。", "en": "Press this button to copy the furniture names.", "ko": "버튼을 누르면 가구 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制家具名称。", "zhHant": "按下此按鈕即可複製家具名稱。"}
-    ,{"ja": "施設名をコピー", "en": "Copy facility names", "ko": "시설 이름 복사", "zhHans": "复制设施名称", "zhHant": "複製設施名稱"}
-    ,{"ja": "たたむ", "en": "Collapse", "ko": "접기", "zhHans": "收起", "zhHant": "收合"}
-    ,{"ja": "ひろげる", "en": "Expand", "ko": "펼치기", "zhHans": "展开", "zhHant": "展開"}
-    // ↓ ここから下は、「家具からポケモン診断」を追加したときに、Claudeが付けた翻訳案です(要確認)。
-    ,{"ja": "ぽこあ家具診断", "en": "Pokopia Furniture Finder", "ko": "포코피아 가구 진단", "zhHans": "Pokopia 家具诊断", "zhHant": "Pokopia 傢俱診斷"}
-    ,{"ja": "えらんだ家具から、住みたがるポケモンをおすすめ", "en": "Pokémon recommendations based on the furniture you choose", "ko": "선택한 가구를 바탕으로 살고 싶어하는 포켓몬 추천", "zhHans": "根据所选家具，推荐想居住的宝可梦", "zhHant": "根據所選傢俱，推薦想居住的寶可夢"}
-    ,{"ja": "置いた家具から、", "en": "Based on the furniture you place,", "ko": "배치한 가구를 바탕으로,", "zhHans": "根据摆放的家具，", "zhHant": "根據擺放的傢俱，"}
-    ,{"ja": "住みたがるポケモンを診断します", "en": "we'll find the Pokémon who want to live there", "ko": "살고 싶어하는 포켓몬을 진단합니다", "zhHans": "诊断出想居住的宝可梦", "zhHant": "診斷出想居住的寶可夢"}
-    ,{"ja": "住みたがるポケモンを", "en": "we'll find the Pokémon", "ko": "살고 싶어하는 포켓몬을", "zhHans": "诊断出", "zhHant": "診斷出"}
-    ,{"ja": "診断します", "en": "who want to live there", "ko": "진단합니다", "zhHans": "想居住的宝可梦", "zhHant": "想居住的寶可夢"}
-    ,{"ja": "家具を選ぶと、その家具が好きなポケモンを表示します。", "en": "Choose furniture, and we'll show the Pokémon who like it.", "ko": "가구를 선택하면, 그 가구를 좋아하는 포켓몬을 표시합니다.", "zhHans": "选择家具后，会显示喜欢该家具的宝可梦。", "zhHant": "選擇傢俱後，會顯示喜歡該傢俱的寶可夢。"}
-    ,{"ja": "家具をえらぶ", "en": "Select furniture", "ko": "가구 선택", "zhHans": "选择家具", "zhHant": "選擇傢俱"}
-    ,{"ja": "{n} / 12 個", "en": "{n} / 12 items", "ko": "{n} / 12개", "zhHans": "{n} / 12件", "zhHant": "{n} / 12件"}
-    ,{"ja": "家具名で検索", "en": "Search by furniture name", "ko": "가구 이름으로 검색", "zhHans": "按家具名称搜索", "zhHant": "依傢俱名稱搜尋"}
-    ,{"ja": "ポケモンを診断する", "en": "Find Pokémon", "ko": "포켓몬 진단하기", "zhHans": "诊断宝可梦", "zhHant": "診斷寶可夢"}
-    ,{"ja": "※ サンプルとして仮選択済みです", "en": "* Sample furniture is pre-selected", "ko": "※ 샘플로 가구를 미리 선택해 두었습니다", "zhHans": "※ 已预先选择家具作为示例", "zhHant": "※ 已預先選擇傢俱作為範例"}
-    ,{"ja": "以下のポケモンが住みたがっています：", "en": "The following Pokémon want to live here:", "ko": "다음 포켓몬들이 여기에 살고 싶어합니다:", "zhHans": "以下宝可梦想住在这里：", "zhHant": "以下寶可夢想住在這裡："}
-    ,{"ja": "まずは家具を1つ以上選んでください 🛋️", "en": "Start by selecting at least one piece of furniture 🛋️", "ko": "먼저 가구를 1개 이상 선택해 주세요 🛋️", "zhHans": "请先选择至少1件家具 🛋️", "zhHant": "請先選擇至少1件傢俱 🛋️"}
-    ,{"ja": "選んだ家具の属性に合うポケモンが見つかりませんでした", "en": "No Pokémon matched the attributes of the furniture you selected", "ko": "선택한 가구의 속성에 맞는 포켓몬을 찾지 못했습니다", "zhHans": "没有找到符合所选家具属性的宝可梦", "zhHant": "沒有找到符合所選傢俱屬性的寶可夢"}
-    ,{"ja": "家具からポケモン診断に切り替え", "en": "Switch to Furniture → Pokémon Finder", "ko": "가구로 포켓몬 진단으로 전환", "zhHans": "切换到「从家具诊断宝可梦」", "zhHant": "切換到「從傢俱診斷寶可夢」"}
-    ,{"ja": "施設診断に切り替え", "en": "Switch to Facility Finder", "ko": "시설 진단으로 전환", "zhHans": "切换到设施诊断", "zhHant": "切換到設施診斷"}
-    ,{"ja": "ポケモン名をコピー", "en": "Copy Pokémon names", "ko": "포켓몬 이름 복사", "zhHans": "复制宝可梦名称", "zhHant": "複製寶可夢名稱"}
-    ,{"ja": "ポケモン名をすべてコピー", "en": "Copy all Pokémon names", "ko": "포켓몬 이름 전체 복사", "zhHans": "复制全部宝可梦名称", "zhHant": "複製全部寶可夢名稱"}
-    ,{"ja": "{n}位", "en": "#{n}", "ko": "{n}위", "zhHans": "第{n}名", "zhHant": "第{n}名"}
-    ,{"ja": "施設診断の使い方", "en": "How to use Facility Finder", "ko": "시설 진단 사용법", "zhHans": "设施诊断使用方法", "zhHant": "設施診斷使用方法"}
-    ,{"ja": "家具からポケモン診断の使い方", "en": "How to use Furniture → Pokémon Finder", "ko": "가구로 포켓몬 진단 사용법", "zhHans": "「从家具诊断宝可梦」使用方法", "zhHant": "「從傢俱診斷寶可夢」使用方法"}
-    ,{"ja": "ボタンを押すと、施設の名前や家具の名前をコピーできます。", "en": "Press this button to copy the facility names or furniture names.", "ko": "버튼을 누르면 시설 이름이나 가구 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制设施名称或家具名称。", "zhHant": "按下此按鈕即可複製設施名稱或家具名稱。"}
-    ,{"ja": "家具を1～12個選択して、「ポケモンを診断する」のボタンを押します。", "en": "Select 1 to 12 pieces of furniture, then press the \"Find Pokémon\" button.", "ko": "가구를 1~12개 선택하고 '포켓몬을 진단한다' 버튼을 누릅니다.", "zhHans": "选择1~12件家具，然后按下「诊断宝可梦」按钮。", "zhHant": "選擇1~12件傢俱，然後按下「診斷寶可夢」按鈕。"}
-    ,{"ja": "選択した家具を好きなポケモンが表示されます。", "en": "The Pokémon who like the furniture you selected will be shown.", "ko": "선택한 가구를 좋아하는 포켓몬이 표시됩니다.", "zhHans": "会显示喜欢所选家具的宝可梦。", "zhHant": "會顯示喜歡所選傢俱的寶可夢。"}
-    ,{"ja": "ボタンを押すと、ポケモンの名前をコピーできます。", "en": "Press this button to copy the Pokémon names.", "ko": "버튼을 누르면 포켓몬 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制宝可梦名称。", "zhHant": "按下此按鈕即可複製寶可夢名稱。"}
-    ,{"ja": "あかるい", "en": "Bright", "ko": "밝음", "zhHans": "明亮", "zhHant": "明亮"}
-    ,{"ja": "くらい", "en": "Dark", "ko": "어두움", "zhHans": "昏暗", "zhHant": "昏暗"}
-    ,{"ja": "すずしい", "en": "Cool", "ko": "시원함", "zhHans": "凉爽", "zhHant": "涼爽"}
-    ,{"ja": "あたたかい", "en": "Warm", "ko": "따뜻함", "zhHans": "温暖", "zhHant": "溫暖"}
-    ,{"ja": "うるおっている", "en": "Humid", "ko": "촉촉함", "zhHans": "潮湿", "zhHant": "潮濕"}
-    ,{"ja": "乾そうしている", "en": "Dry", "ko": "건조함", "zhHans": "干燥", "zhHant": "乾燥"}
-    ,{"ja": "環境", "en": "Environment", "ko": "환경", "zhHans": "环境", "zhHant": "環境"}
-    ,{"ja": "好きな環境", "en": "Ideal Habitat", "ko": "좋아하는 환경", "zhHans": "喜欢的环境", "zhHant": "喜歡的環境"}
-    ,{"ja": "照明", "en": "Lighting", "ko": "조명", "zhHans": "照明", "zhHant": "照明"}
-    ,{"ja": "冷房", "en": "Cooling", "ko": "냉방", "zhHans": "制冷", "zhHant": "冷氣"}
-    ,{"ja": "暖房", "en": "Heating", "ko": "난방", "zhHans": "供暖", "zhHant": "暖氣"}
-    ,{"ja": "潤い", "en": "Humidifying", "ko": "가습", "zhHans": "加湿", "zhHant": "加濕"}
-    ,{"ja": "このメンバーは{env}の環境が好きです。", "en": "This group prefers these environments: {env}.", "ko": "이 멤버들은 {env} 환경을 좋아합니다.", "zhHans": "这些成员喜欢{env}的环境。", "zhHant": "這些成員喜歡{env}的環境。"}
-    ,{"ja": "⚠ {name}は「{env}」の環境が好みです", "en": "⚠ {name} prefers a \"{env}\" environment", "ko": "⚠ {name}은(는) '{env}' 환경을 좋아합니다", "zhHans": "⚠ {name}喜欢「{env}」的环境", "zhHant": "⚠ {name}喜歡「{env}」的環境"}
-    ,{"ja": "{a}と{b}の好きな環境は、同じ住処では両立できません", "en": "The Ideal Habitats of {a} and {b} can't exist together in the same den.", "ko": "{a}와(과) {b}이(가) 좋아하는 환경은 같은 서식지에서 함께 만들 수 없습니다", "zhHans": "{a}和{b}喜欢的环境无法在同一个栖息处共存", "zhHant": "{a}和{b}喜歡的環境無法在同一個棲息處共存"}
-    ,{"ja": "このメンバーは{env}の環境が好きです。（環境が1つのとき）", "en": "This group prefers this environment: {env}.", "ko": "이 멤버들은 {env} 환경을 좋아합니다.", "zhHans": "这些成员喜欢{env}的环境。", "zhHant": "這些成員喜歡{env}的環境。"}
-    ,{"ja": "1〜4匹のポケモンを選ぶと、それぞれの好物属性・苦手属性の家具と照らし合わせて、相性のよい施設を", "en": "Choose 1–4 Pokémon and we'll compare their favorite and disliked attributes with furniture", "ko": "포켓몬을 1~4마리 선택하면, 각각이 좋아하는 속성과 싫어하는 속성을 가구와 대조하여", "zhHans": "选择1～4只宝可梦后，", "zhHant": "選擇1～4隻寶可夢後，"}
-    ,{"ja": "おすすめします。", "en": "to recommend the facilities that suit them best.", "ko": "궁합이 좋은 시설을 추천합니다.", "zhHans": "会将各自喜欢和讨厌的属性与家具进行比对，推荐契合度高的设施。", "zhHant": "會將各自喜歡與討厭的屬性與家具進行比對，推薦契合度高的設施。"}
-    ,{"ja": "各施設への得点配分メカニズムを微調整しました。", "en": "We've fine-tuned how points are allocated to each facility.", "ko": "각 시설의 점수 배분 방식을 미세 조정했습니다.", "zhHans": "微调了各设施的得分分配机制。", "zhHant": "微調了各設施的得分分配機制。"}
-    ,{"ja": "各施設の配点はどうやって決めているの？", "en": "How are the points for each facility decided?", "ko": "각 시설의 배점은 어떻게 정하나요?", "zhHans": "各设施的配分是怎么决定的？", "zhHant": "各設施的配分是怎麼決定的？"}
-    ,{"ja": "施設ごとに、その施設らしい家具をえらび、家具1つずつに、その施設にとっての重要さを3段階の「必要レベル」(1〜3)で設定しています。", "en": "For each facility, we choose furniture that suits it, and give each piece a \"Required level\" from 1 to 3 that shows how important it is to that facility.", "ko": "시설마다 그 시설에 어울리는 가구를 고르고, 가구 하나하나에 그 시설에서의 중요도를 3단계의 '필요 레벨'(1~3)로 설정해 두었습니다.", "zhHans": "我们为每个设施挑选了符合该设施特色的家具，并为每件家具设定了3个等级的「所需等级」（1～3），表示它对该设施的重要程度。", "zhHant": "我們為每個設施挑選了符合該設施特色的家具，並為每件家具設定了3個等級的「所需等級」（1～3），表示它對該設施的重要程度。"}
-    ,{"ja": "診断では、えらんだポケモンの好物と家具の属性が合うほど、その家具に点が入ります(ポケモン図鑑の「好きなもの」を見れる画面で、上のほうに載っているものほど点数が高く、下に載っているものほど点数が低くなります)。めずらしい属性で合ったときは高く、ありふれた属性で合ったときは低く数えます。苦手な属性をふくむ家具は、そのポケモンについては0点です。", "en": "In the diagnosis, a piece of furniture earns points when its attributes match the favorites of the Pokémon you chose (on the Pokédex screen that shows a Pokémon's \"Favorites\", items listed higher are worth more points and items listed lower are worth fewer). A match on a rare attribute counts for more, and a match on a common attribute counts for less. Furniture with an attribute a Pokémon dislikes scores 0 points for that Pokémon.", "ko": "진단에서는 선택한 포켓몬이 좋아하는 것과 가구의 속성이 맞을수록 그 가구에 점수가 들어갑니다(포켓몬 도감에서 '좋아하는 것'을 볼 수 있는 화면에서, 위쪽에 실린 것일수록 점수가 높고 아래쪽에 실린 것일수록 점수가 낮아집니다). 드문 속성으로 맞으면 높게, 흔한 속성으로 맞으면 낮게 계산합니다. 싫어하는 속성이 포함된 가구는 그 포켓몬에 대해서는 0점입니다.", "zhHans": "诊断时，所选宝可梦喜欢的东西与家具的属性越相符，该家具的得分就越高（在宝可梦图鉴中可以查看「喜欢的东西」的画面里，排在越上面的分数越高，排在越下面的分数越低）。与稀有属性相符时分数较高，与常见属性相符时分数较低。含有讨厌属性的家具，对该宝可梦来说是0分。", "zhHant": "診斷時，所選寶可夢喜歡的東西與家具的屬性越相符，該家具的得分就越高（在寶可夢圖鑑中可以查看「喜歡的東西」的畫面裡，排在越上面的分數越高，排在越下面的分數越低）。與稀有屬性相符時分數較高，與常見屬性相符時分數較低。含有討厭屬性的家具，對該寶可夢來說是0分。"}
-    ,{"ja": "家具の点に必要レベルを掛けて合計し、満点に対する割合を「マッチ度」として表示しています。順位は、マッチ度のほかに、えらんだポケモン全員の好みに合っているかなども加えて決めているため、マッチ度の順と入れかわることがあります。", "en": "We multiply each furniture's points by its Required level, add them up, and show the share of the maximum possible total as the \"Match rate\". The ranking also takes into account things like whether the facility suits all of the Pokémon you chose, so it may differ from the order of Match rates.", "ko": "가구의 점수에 필요 레벨을 곱해 합산하고, 만점에 대한 비율을 '일치도'로 표시합니다. 순위는 일치도 외에 선택한 포켓몬 모두의 취향에 맞는지 등도 더해서 정하기 때문에, 일치도 순서와 달라질 수 있습니다.", "zhHans": "将家具的得分乘以所需等级后相加，并把它占满分的比例显示为「匹配度」。排名除了匹配度之外，还会考虑是否符合所选全部宝可梦的喜好等因素，因此可能与匹配度的顺序不同。", "zhHant": "將家具的得分乘以所需等級後相加，並把它占滿分的比例顯示為「契合度」。排名除了契合度之外，還會考慮是否符合所選全部寶可夢的喜好等因素，因此可能與契合度的順序不同。"}
-    ,{"ja": "算出式を表示", "en": "Show formula", "ko": "계산식 보기", "zhHans": "显示计算公式", "zhHant": "顯示計算公式"}
-    ,{"ja": "家具の点(ポケモン1匹ごと)", "en": "Furniture points (per Pokémon)", "ko": "가구의 점수(포켓몬 1마리당)", "zhHans": "家具得分（每只宝可梦）", "zhHant": "家具得分（每隻寶可夢）"}
-    ,{"ja": "好物の点 × レア度", "en": "Favorite points × Rarity", "ko": "좋아하는 것의 점수 × 희귀도", "zhHans": "喜欢的东西的分数 × 稀有度", "zhHant": "喜歡的東西的分數 × 稀有度"}
-    ,{"ja": "・好物の点：好物（図鑑表示の上から順に、5・4・3・2・1点）", "en": "• Favorite points: 5, 4, 3, 2, 1 points for the favorites in the order shown in the Pokédex, from the top", "ko": "• 좋아하는 것의 점수: 좋아하는 것(도감에 표시된 위에서부터 순서대로 5·4·3·2·1점)", "zhHans": "・喜欢的东西的分数：喜欢的东西（按图鉴显示从上到下的顺序，依次为5、4、3、2、1分）", "zhHant": "・喜歡的東西的分數：喜歡的東西（依圖鑑顯示由上到下的順序，依序為5、4、3、2、1分）"}
-    ,{"ja": "・レア度 = √(30 ÷ その属性をもつ家具の数)　※0.4〜4の範囲におさめる", "en": "• Rarity = √(30 ÷ number of furniture with that attribute)  *kept within 0.4–4", "ko": "• 희귀도 = √(30 ÷ 그 속성을 가진 가구의 수)　※0.4~4 범위로 제한", "zhHans": "・稀有度 = √(30 ÷ 拥有该属性的家具数量)　※限制在0.4～4的范围内", "zhHant": "・稀有度 = √(30 ÷ 擁有該屬性的家具數量)　※限制在0.4～4的範圍內"}
-    ,{"ja": "・好物が2つ以上合うときは、いちばん高い1つだけを使う", "en": "• If two or more favorites match, only the highest one is used", "ko": "• 좋아하는 것이 2개 이상 맞을 때는 가장 높은 1개만 사용", "zhHans": "・有2个以上喜欢的东西相符时，只使用分数最高的1个", "zhHant": "・有2個以上喜歡的東西相符時，只使用分數最高的1個"}
-    ,{"ja": "・苦手な属性をふくむ家具は0点", "en": "• Furniture with a disliked attribute scores 0 points", "ko": "• 싫어하는 속성이 포함된 가구는 0점", "zhHans": "・含有讨厌属性的家具为0分", "zhHant": "・含有討厭屬性的家具為0分"}
-    ,{"ja": "・ひこうタイプは、「とまり木」「木のすばこ」が2倍(合う好物がなくても2点)", "en": "• For Flying-type Pokémon, \"Perch\" and \"Wooden birdhouse\" count double (2 points even if no favorite matches)", "ko": "• 비행타입은 '횃대'와 '새집'이 2배(맞는 좋아하는 것이 없어도 2점)", "zhHans": "・飞行属性的宝可梦，「栖木」「木制鸟巢箱」为2倍（即使没有相符的喜欢的东西也有2分）", "zhHant": "・飛行屬性的寶可夢，「棲木」「木製鳥巢箱」為2倍（即使沒有相符的喜歡的東西也有2分）"}
-    ,{"ja": "→ えらんだポケモン全員分を足したものが、その家具の点", "en": "→ The sum for all the Pokémon you chose is that furniture's points", "ko": "→ 선택한 포켓몬 전원의 점수를 더한 것이 그 가구의 점수", "zhHans": "→ 将所选全部宝可梦的分数相加，就是该家具的得分", "zhHant": "→ 將所選全部寶可夢的分數相加，就是該家具的得分"}
-    ,{"ja": "一致度(家具ごと、0〜1)", "en": "Fit (per furniture, 0–1)", "ko": "적합도(가구별, 0~1)", "zhHans": "一致度（每件家具，0～1）", "zhHant": "一致度（每件家具，0～1）"}
-    ,{"ja": "家具の点 ÷ (5 × えらんだ匹数)　※1をこえたら1", "en": "Furniture points ÷ (5 × number of Pokémon chosen)  *capped at 1", "ko": "가구의 점수 ÷ (5 × 선택한 마릿수)　※1을 넘으면 1", "zhHans": "家具得分 ÷ (5 × 所选宝可梦数量)　※超过1时按1计算", "zhHant": "家具得分 ÷ (5 × 所選寶可夢數量)　※超過1時以1計算"}
-    ,{"ja": "・名前はちがっても中身がほぼ同じ家具は、1グループとして1回だけ数え、グループの中でいちばん点の高い家具を使う", "en": "• Furniture that is nearly the same apart from its name is counted once as a single group, using the highest-scoring furniture in the group", "ko": "• 이름은 달라도 내용이 거의 같은 가구는 1개 그룹으로 1번만 세며, 그룹 안에서 점수가 가장 높은 가구를 사용", "zhHans": "・名称不同但内容几乎相同的家具，作为1组只计算1次，并使用组内得分最高的家具", "zhHant": "・名稱不同但內容幾乎相同的家具，視為1組只計算1次，並使用組內得分最高的家具"}
-    ,{"ja": "マッチ度(画面に出る％)", "en": "Match rate (the % shown on screen)", "ko": "일치도(화면에 표시되는 %)", "zhHans": "匹配度（画面上显示的%）", "zhHant": "契合度（畫面上顯示的%）"}
-    ,{"ja": "(必要レベル × 一致度)の合計 ÷ 必要レベルの合計", "en": "Sum of (Required level × Fit) ÷ Sum of Required levels", "ko": "(필요 레벨 × 적합도)의 합계 ÷ 필요 레벨의 합계", "zhHans": "(所需等级 × 一致度)的总和 ÷ 所需等级的总和", "zhHant": "(所需等級 × 一致度)的總和 ÷ 所需等級的總和"}
-    ,{"ja": "順位を決める点", "en": "Ranking score", "ko": "순위를 정하는 점수", "zhHans": "决定排名的分数", "zhHant": "決定排名的分數"}
-    ,{"ja": "√(A × B) × C × C × 0.85をD回掛けた数", "en": "√(A × B) × C × C × (0.85 multiplied D times)", "ko": "√(A × B) × C × C × 0.85를 D번 곱한 수", "zhHans": "√(A × B) × C × C × 0.85连乘D次的数", "zhHant": "√(A × B) × C × C × 0.85連乘D次的數"}
-    ,{"ja": "A = (必要レベル × 順位用の一致度 × 順位用の一致度)の合計 ÷ 必要レベルの合計", "en": "A = Sum of (Required level × Ranking fit × Ranking fit) ÷ Sum of Required levels", "ko": "A = (필요 레벨 × 순위용 적합도 × 순위용 적합도)의 합계 ÷ 필요 레벨의 합계", "zhHans": "A = (所需等级 × 排名用一致度 × 排名用一致度)的总和 ÷ 所需等级的总和", "zhHant": "A = (所需等級 × 排名用一致度 × 排名用一致度)的總和 ÷ 所需等級的總和"}
-    ,{"ja": "B = (必要レベル × 順位用の一致度 × 順位用の一致度)の合計 ÷ 全施設の中での最大値", "en": "B = Sum of (Required level × Ranking fit × Ranking fit) ÷ the largest such sum among all facilities", "ko": "B = (필요 레벨 × 순위용 적합도 × 순위용 적합도)의 합계 ÷ 전체 시설 중 최댓값", "zhHans": "B = (所需等级 × 排名用一致度 × 排名用一致度)的总和 ÷ 所有设施中的最大值", "zhHant": "B = (所需等級 × 排名用一致度 × 排名用一致度)的總和 ÷ 所有設施中的最大值"}
-    ,{"ja": "C = この施設に好きな家具があるポケモンの数 ÷ えらんだ匹数", "en": "C = Number of Pokémon that like some furniture in this facility ÷ number of Pokémon chosen", "ko": "C = 이 시설에 좋아하는 가구가 있는 포켓몬의 수 ÷ 선택한 마릿수", "zhHans": "C = 在该设施中有喜欢的家具的宝可梦数量 ÷ 所选宝可梦数量", "zhHant": "C = 在該設施中有喜歡的家具的寶可夢數量 ÷ 所選寶可夢數量"}
-    ,{"ja": "D = ⚠(好きな環境に合わない家具)がつく、おすすめ家具グループの数", "en": "D = Number of recommended furniture groups marked with ⚠ (furniture that doesn't suit an Ideal Habitat)", "ko": "D = ⚠(좋아하는 환경에 맞지 않는 가구)가 붙는 추천 가구 그룹의 수", "zhHans": "D = 带有⚠（不符合喜欢的环境的家具）的推荐家具组的数量", "zhHant": "D = 帶有⚠（不符合喜歡的環境的家具）的推薦家具組的數量"}
-    ,{"ja": "※順位用の一致度 = 家具の点 ÷ (5 × 4 × えらんだ匹数)", "en": "*Ranking fit = Furniture points ÷ (5 × 4 × number of Pokémon chosen)", "ko": "※순위용 적합도 = 가구의 점수 ÷ (5 × 4 × 선택한 마릿수)", "zhHans": "※排名用一致度 = 家具得分 ÷ (5 × 4 × 所选宝可梦数量)", "zhHant": "※排名用一致度 = 家具得分 ÷ (5 × 4 × 所選寶可夢數量)"}
-    ,{"ja": "家具からポケモン診断はどうやってポケモンを選出してるの？", "en": "How does the Furniture → Pokémon Finder choose Pokémon?", "ko": "가구로 포켓몬 진단은 포켓몬을 어떻게 고르나요?", "zhHans": "「从家具诊断宝可梦」是怎么选出宝可梦的？", "zhHant": "「從傢俱診斷寶可夢」是怎麼選出寶可夢的？"}
-    ,{"ja": "えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。", "en": "Pokémon are listed higher the more of your chosen furniture has attributes matching their favorites. A Pokémon is not shown if even one piece of furniture has an attribute it dislikes. Pokémon with furniture that doesn't suit their Ideal Habitat are marked with ⚠ and ranked lower. Pokémon ranked in the top 3 places are shown.", "ko": "선택한 가구 중에서, 좋아하는 것의 속성이 붙은 가구의 수가 많은 포켓몬일수록 위에 표시합니다. 싫어하는 속성의 가구가 하나라도 있는 포켓몬은 표시되지 않습니다. 좋아하는 환경에 맞지 않는 가구가 있는 포켓몬은 ⚠를 붙여 순위를 낮춥니다. 상위 3위까지 표시됩니다.", "zhHans": "在所选的家具中，带有喜欢的东西的属性的家具越多，该宝可梦就显示在越上面。只要有1件带有讨厌属性的家具，该宝可梦就不会显示。如果有不符合喜欢的环境的家具，该宝可梦会被标上⚠，并降低排名。显示排名前3名的宝可梦。", "zhHant": "在所選的家具中，帶有喜歡的東西的屬性的家具越多，該寶可夢就顯示在越上面。只要有1件帶有討厭屬性的家具，該寶可夢就不會顯示。如果有不符合喜歡的環境的家具，該寶可夢會被標上⚠，並降低排名。顯示排名前3名的寶可夢。"}
-    ,{"ja": "プライバシーポリシー", "en": "Privacy Policy", "ko": "개인정보처리방침", "zhHans": "隐私权政策", "zhHant": "隱私權政策"}
-    ,{"ja": "ツールにもどる", "en": "Back to the tool", "ko": "도구로 돌아가기", "zhHans": "返回工具", "zhHant": "返回工具"}
-    ,{"ja": "「ぽこあ施設診断」(以下「当サイト」)での、閲覧者の情報の取り扱いについて説明します。", "en": "This page explains how visitor information is handled on Pokopia Facility Finder (\"this site\").", "ko": "'포코피아 시설 진단'(이하 '본 사이트')에서 방문자의 정보를 어떻게 다루는지 설명합니다.", "zhHans": "本页说明「Pokopia 设施诊断」（以下称“本网站”）如何处理访问者的信息。", "zhHant": "本頁說明「Pokopia 設施診斷」（以下稱「本網站」）如何處理訪客的資訊。"}
-    ,{"ja": "広告の配信について", "en": "About advertising", "ko": "광고 게재에 대하여", "zhHans": "关于广告投放", "zhHant": "關於廣告放送"}
-    ,{"ja": "外部に送信される情報", "en": "Information sent to external services", "ko": "외부로 전송되는 정보", "zhHans": "发送到外部的信息", "zhHant": "傳送至外部的資訊"}
-    ,{"ja": "ブラウザに保存する情報", "en": "Information stored in your browser", "ko": "브라우저에 저장되는 정보", "zhHans": "保存在浏览器中的信息", "zhHant": "儲存在瀏覽器中的資訊"}
-    ,{"ja": "運営者が取得しない情報", "en": "Information the operator does not collect", "ko": "운영자가 수집하지 않는 정보", "zhHans": "运营者不会获取的信息", "zhHant": "營運者不會取得的資訊"}
-    ,{"ja": "お問い合わせ", "en": "Contact", "ko": "문의", "zhHans": "联系方式", "zhHant": "聯絡方式"}
-    ,{"ja": "プライバシーポリシーの変更", "en": "Changes to this Privacy Policy", "ko": "개인정보처리방침의 변경", "zhHans": "隐私权政策的变更", "zhHant": "隱私權政策的變更"}
-    ,{"ja": "当サイトは、Googleの広告サービス「Google AdSense」のコードを設置しています。審査の状況などにより、広告が表示されない場合があります。", "en": "This site includes code for Google AdSense, Google's advertising service. Ads may not be displayed, depending on factors such as the review status.", "ko": "본 사이트에는 Google의 광고 서비스 'Google 애드센스'의 코드가 설치되어 있습니다. 심사 상황 등에 따라 광고가 표시되지 않을 수 있습니다.", "zhHans": "本网站设置了 Google 的广告服务“Google AdSense”的代码。根据审核情况等，广告可能不会显示。", "zhHant": "本網站設置了 Google 的廣告服務「Google AdSense」的程式碼。視審查情況等，廣告可能不會顯示。"}
-    ,{"ja": "Googleなどの第三者配信事業者は、Cookie(クッキー。ブラウザに保存される小さなデータ)を使用して、閲覧者が当サイトや他のウェブサイトに過去にアクセスした際の情報にもとづいて、広告を配信します。", "en": "Third party vendors, including Google, use cookies (small pieces of data stored in your browser) to serve ads based on a user's prior visits to this website or other websites.", "ko": "Google 및 서드 파티 공급업체는 쿠키(브라우저에 저장되는 작은 데이터)를 사용해 사용자가 이전에 본 사이트 또는 다른 웹사이트에 방문한 기록을 토대로 광고를 게재합니다.", "zhHans": "第三方供应商（包括 Google）会根据用户之前访问本网站或其他网站的记录，利用 Cookie（保存在浏览器中的小型数据）来投放广告。", "zhHant": "第三方供應商（包括 Google）會使用 Cookie（儲存在瀏覽器中的小型資料），根據使用者先前在本網站（或其他網站）上瀏覽的內容放送廣告。"}
-    ,{"ja": "Googleが広告Cookieを使用することにより、Googleやそのパートナーは、閲覧者が当サイトや他のサイトにアクセスした際の情報にもとづいて、適切な広告を表示できます。", "en": "Google's use of advertising cookies enables it and its partners to serve ads to users based on their visits to this site and/or other sites on the Internet.", "ko": "Google의 광고 쿠키 사용으로 Google과 파트너는 사용자의 본 사이트 방문 및/또는 인터넷상의 다른 사이트 방문 기록을 토대로 광고를 게재할 수 있습니다.", "zhHans": "通过使用广告 Cookie，Google 及其合作伙伴可以根据用户访问本网站和/或互联网上其他网站的记录来投放广告。", "zhHant": "Google 及合作夥伴會利用廣告 Cookie，根據使用者在本網站和/或其他網站瀏覽的內容，對他們放送合適的廣告。"}
-    ,{"ja": "閲覧者は、Googleの{a}広告設定{/a}で、パーソナライズド広告(閲覧者に合わせて選ばれる広告)を無効にできます。", "en": "Users may opt out of personalized advertising (ads chosen to suit each user) by visiting {a}Ads Settings{/a}.", "ko": "사용자는 {a}광고 설정{/a}에서 개인 맞춤 광고(사용자에게 맞추어 선택되는 광고)를 거부할 수 있습니다.", "zhHans": "用户可以访问{a}广告设置{/a}来选择停用个性化广告（根据用户情况选择的广告）。", "zhHant": "使用者可前往「{a}廣告設定{/a}」停用個人化廣告（依使用者情況選擇的廣告）。"}
-    ,{"ja": "{a}www.aboutads.info{/a} にアクセスすると、パーソナライズド広告に使われる第三者配信事業者のCookieを無効にできます。", "en": "Alternatively, users can opt out of a third-party vendor's use of cookies for personalized advertising by visiting {a}www.aboutads.info{/a}.", "ko": "{a}www.aboutads.info{/a}에 방문하면 개인 맞춤 광고를 위한 서드 파티 공급업체의 쿠키 사용을 거부할 수 있습니다.", "zhHans": "访问 {a}www.aboutads.info{/a}，可以选择停用第三方供应商用于个性化广告的 Cookie。", "zhHant": "前往 {a}www.aboutads.info{/a}，可選擇停用第三方供應商用於個人化廣告的 Cookie。"}
-    ,{"ja": "欧州経済領域(EEA)・英国・スイスから閲覧した場合は、広告のためのCookieなどの利用について、同意を確認するメッセージが表示されます。", "en": "If you visit from the European Economic Area (EEA), the United Kingdom, or Switzerland, a message is shown asking for your consent to the use of cookies and similar technologies for advertising.", "ko": "유럽 경제 지역(EEA), 영국, 스위스에서 방문한 경우, 광고를 위한 쿠키 등의 사용에 대한 동의를 확인하는 메시지가 표시됩니다.", "zhHans": "如果您从欧洲经济区（EEA）、英国或瑞士访问，将显示一条消息，就广告用途的 Cookie 等的使用征求您的同意。", "zhHant": "如果您從歐洲經濟區（EEA）、英國或瑞士瀏覽，將顯示一則訊息，就廣告用途的 Cookie 等的使用徵求您的同意。"}
-    ,{"ja": "Googleによる情報の使い方は、{a}Google のサービスを使用するサイトやアプリから収集した情報の Google による使用{/a}をご覧ください。", "en": "For how Google uses information, see {a}How Google uses information from sites or apps that use our services{/a}.", "ko": "Google의 정보 사용 방식은 {a}Google이 Google 서비스를 사용하는 웹사이트 또는 앱의 정보를 사용하는 방법{/a}을 참고해 주세요.", "zhHans": "关于 Google 如何使用信息，请参阅{a}Google 如何利用从使用 Google 服务的网站和应用中收集的信息{/a}。", "zhHant": "關於 Google 如何使用資訊，請參閱{a}Google 如何運用來自採用 Google 服務的網站和應用程式的資訊{/a}。"}
-    ,{"ja": "当サイトを開くと、閲覧者のブラウザから、次の3つのサービスへ情報が送信されます。", "en": "When you open this site, your browser sends information to the following three services.", "ko": "본 사이트를 열면 방문자의 브라우저에서 다음 3가지 서비스로 정보가 전송됩니다.", "zhHans": "打开本网站时，访问者的浏览器会向以下3项服务发送信息。", "zhHant": "開啟本網站時，訪客的瀏覽器會向以下3項服務傳送資訊。"}
-    ,{"ja": "送信先", "en": "Recipient", "ko": "전송 대상", "zhHans": "发送对象", "zhHant": "傳送對象"}
-    ,{"ja": "送信される情報", "en": "Information sent", "ko": "전송되는 정보", "zhHans": "发送的信息", "zhHant": "傳送的資訊"}
-    ,{"ja": "利用目的", "en": "Purpose", "ko": "이용 목적", "zhHans": "使用目的", "zhHant": "使用目的"}
-    ,{"ja": "閲覧したページのアドレス、IPアドレス、Cookieなどの識別子、ブラウザや端末の情報", "en": "The address (URL) of the page you viewed, your IP address, identifiers such as cookies, and information about your browser and device", "ko": "방문한 페이지의 주소, IP 주소, 쿠키 등의 식별자, 브라우저 및 기기 정보", "zhHans": "所浏览页面的网址、IP 地址、Cookie 等标识符、浏览器和设备的信息", "zhHant": "所瀏覽頁面的網址、IP 位址、Cookie 等識別碼、瀏覽器和裝置的資訊"}
-    ,{"ja": "広告の配信、広告の効果測定、不正行為の防止", "en": "Serving ads, measuring ad effectiveness, and preventing fraud", "ko": "광고 게재, 광고 효과 측정, 부정행위 방지", "zhHans": "投放广告、衡量广告效果、防止欺诈行为", "zhHant": "放送廣告、評估廣告成效、防止詐欺行為"}
-    ,{"ja": "IPアドレス、ブラウザや端末の情報、当サイトのアドレス", "en": "Your IP address, information about your browser and device, and the address of this site", "ko": "IP 주소, 브라우저 및 기기 정보, 본 사이트의 주소", "zhHans": "IP 地址、浏览器和设备的信息、本网站的网址", "zhHant": "IP 位址、瀏覽器和裝置的資訊、本網站的網址"}
-    ,{"ja": "文字の書体(フォント)の表示", "en": "Displaying fonts (typefaces)", "ko": "글꼴(폰트) 표시", "zhHans": "显示文字的字体", "zhHant": "顯示文字的字型"}
-    ,{"ja": "IPアドレス、ブラウザや端末の情報、閲覧したページのアドレス", "en": "Your IP address, information about your browser and device, and the address (URL) of the page you viewed", "ko": "IP 주소, 브라우저 및 기기 정보, 방문한 페이지의 주소", "zhHans": "IP 地址、浏览器和设备的信息、所浏览页面的网址", "zhHant": "IP 位址、瀏覽器和裝置的資訊、所瀏覽頁面的網址"}
-    ,{"ja": "当サイトの公開(ページの配信)、安全対策", "en": "Hosting this site (delivering its pages) and security", "ko": "본 사이트의 공개(페이지 전송), 보안 대책", "zhHans": "发布本网站（传送网页）、安全措施", "zhHant": "發布本網站（傳送網頁）、安全措施"}
-    ,{"ja": "各社での情報の取り扱いは、{a}Google のプライバシーポリシー{/a}、{b}GitHub の一般プライバシー ステートメント{/b}をご覧ください。", "en": "For how each company handles information, see the {a}Google Privacy Policy{/a} and the {b}GitHub General Privacy Statement{/b}.", "ko": "각 회사의 정보 취급에 대해서는 {a}Google 개인정보처리방침{/a}과 {b}GitHub의 개인정보처리방침{/b}을 참고해 주세요.", "zhHans": "各公司对信息的处理方式，请参阅 {a}Google 隐私权政策{/a}和 {b}GitHub 的隐私声明{/b}。", "zhHant": "各公司對資訊的處理方式，請參閱 {a}Google 隱私權政策{/a}和 {b}GitHub 的隱私權聲明{/b}。"}
-    ,{"ja": "当サイトは、使いやすくするために、次の3つを閲覧者のブラウザの中(ローカルストレージ)に保存します。これらは、運営者や外部には送信されません。", "en": "To make the site easier to use, this site stores the following three items in your browser (local storage). They are not sent to the operator or to any external party.", "ko": "본 사이트는 사용 편의를 위해 다음 3가지를 방문자의 브라우저 안(로컬 스토리지)에 저장합니다. 이 정보는 운영자나 외부로 전송되지 않습니다.", "zhHans": "为了方便使用，本网站会将以下3项内容保存在访问者的浏览器中（本地存储）。这些内容不会发送给运营者或外部。", "zhHant": "為了方便使用，本網站會將以下3項內容儲存在訪客的瀏覽器中（本機儲存空間）。這些內容不會傳送給營運者或外部。"}
-    ,{"ja": "表示する言語の設定", "en": "Your display language setting", "ko": "표시 언어 설정", "zhHans": "显示语言的设置", "zhHant": "顯示語言的設定"}
-    ,{"ja": "最後に使った診断の種類(施設診断・家具からポケモン診断)", "en": "The finder you used last (Facility Finder or Furniture → Pokémon Finder)", "ko": "마지막으로 사용한 진단의 종류(시설 진단 · 가구로 포켓몬 진단)", "zhHans": "最后使用的诊断种类（设施诊断、「从家具诊断宝可梦」）", "zhHant": "最後使用的診斷種類（設施診斷、「從傢俱診斷寶可夢」）"}
-    ,{"ja": "読み終えたお知らせの記録", "en": "A record of the news items you have read", "ko": "읽은 공지사항의 기록", "zhHans": "已读公告的记录", "zhHant": "已讀公告的記錄"}
-    ,{"ja": "えらんだポケモンや家具、診断の結果は、保存も送信もしていません。", "en": "The Pokémon and furniture you choose, and the results, are neither stored nor sent.", "ko": "선택한 포켓몬과 가구, 진단 결과는 저장하지도 전송하지도 않습니다.", "zhHans": "您选择的宝可梦和家具以及诊断结果，既不会保存，也不会发送。", "zhHant": "您選擇的寶可夢和傢俱以及診斷結果，既不會儲存，也不會傳送。"}
-    ,{"ja": "ブラウザの設定で当サイトのデータを削除すると、保存した情報は消えます。", "en": "If you delete this site's data in your browser settings, the stored information is erased.", "ko": "브라우저 설정에서 본 사이트의 데이터를 삭제하면 저장된 정보는 지워집니다.", "zhHans": "在浏览器的设置中删除本网站的数据后，已保存的信息就会消失。", "zhHant": "在瀏覽器的設定中刪除本網站的資料後，已儲存的資訊就會消失。"}
-    ,{"ja": "当サイトには、氏名やメールアドレスなどを入力する欄、会員登録、アクセス解析はありません。運営者が、閲覧者個人を特定できる情報を取得することはありません。", "en": "This site has no fields for entering your name, email address, or similar details, no user registration, and no access analytics. The operator does not obtain information that can identify individual visitors.", "ko": "본 사이트에는 이름이나 이메일 주소 등을 입력하는 칸, 회원 가입, 접속 분석이 없습니다. 운영자가 방문자 개인을 식별할 수 있는 정보를 수집하는 일은 없습니다.", "zhHans": "本网站没有填写姓名、电子邮件地址等的输入栏，没有会员注册，也没有访问分析。运营者不会获取能够识别访问者个人的信息。", "zhHant": "本網站沒有填寫姓名、電子郵件地址等的輸入欄，沒有會員註冊，也沒有流量分析。營運者不會取得能夠識別訪客個人的資訊。"}
-    ,{"ja": "ご意見や不具合の報告は、作成者のX(旧Twitter)までお願いします。", "en": "Please send feedback and bug reports to the creator on X (formerly Twitter).", "ko": "의견이나 오류 신고는 제작자의 X(구 Twitter)로 보내 주세요.", "zhHans": "意见及问题反馈，请通过作者的 X（原 Twitter）联系。", "zhHant": "意見及問題回報，請透過作者的 X（原 Twitter）聯絡。"}
-    ,{"ja": "お問い合わせで受け取った情報は、返信や対応のためだけに使います。", "en": "Information received through inquiries is used only to reply and respond.", "ko": "문의를 통해 받은 정보는 답변과 대응을 위해서만 사용합니다.", "zhHans": "通过咨询收到的信息，仅用于回复和处理。", "zhHant": "透過洽詢收到的資訊，僅用於回覆和處理。"}
-    ,{"ja": "内容を変更することがあります。変更したときは、このページでお知らせします。", "en": "This policy may be changed. Any changes will be announced on this page.", "ko": "내용을 변경할 수 있습니다. 변경한 경우에는 이 페이지에서 알려 드립니다.", "zhHans": "内容可能会变更。变更时，将在本页面告知。", "zhHant": "內容可能會變更。變更時，將在本頁面告知。"}
-    ,{"ja": "制定日", "en": "Effective date", "ko": "제정일", "zhHans": "制定日期", "zhHant": "制定日期"}
-    ,{"ja": "選んだポケモンの好きな家具一覧が表示されます。", "en": "A list of furniture the selected Pokémon like will be shown.", "ko": "선택한 포켓몬이 좋아하는 가구 목록이 표시됩니다.", "zhHans": "会显示所选宝可梦喜欢的家具列表。", "zhHant": "會顯示所選寶可夢喜歡的家具列表。"}
+    {"ja": "施設診断の使い方", "en": "How to use Facility Finder", "ko": "시설 진단 사용법", "zhHans": "设施诊断使用方法", "zhHant": "設施診斷使用方法"},
+    {"ja": "住まわせたい1～4匹のポケモンを選択して、「施設を診断する」のボタンを押します。", "en": "Select 1 to 4 Pokémon you want to house, then press the \"Find facilities\" button.", "ko": "살게 하고 싶은 포켓몬을 1~4마리 선택한 뒤 '시설 진단하기' 버튼을 누르세요.", "zhHans": "选择1～4只想让它们居住的宝可梦，然后按下「诊断设施」按钮。", "zhHant": "選擇1～4隻想讓牠們居住的寶可夢，然後按下「診斷設施」按鈕。"},
+    {"ja": "おすすめの施設が上位8つまで表示されます。4位以降の施設の詳細は「＋詳細」ボタンで見ることができます。", "en": "Up to 8 recommended facilities are shown. You can see the details of facilities ranked 4th and below with the \"+ Details\" button.", "ko": "추천 시설이 최대 8개까지 표시됩니다. 4위 이하 시설의 상세 내용은 '+ 상세' 버튼으로 볼 수 있어요.", "zhHans": "最多会显示8个推荐设施。第4名及以后的设施详情，可通过「＋详情」按钮查看。", "zhHant": "最多會顯示8個推薦設施。第4名及之後的設施詳情，可透過「＋詳情」按鈕查看。"},
+    {"ja": "ボタンを押すと、施設の名前や家具の名前をコピーできます。", "en": "Press this button to copy the facility names or furniture names.", "ko": "버튼을 누르면 시설 이름이나 가구 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制设施名称或家具名称。", "zhHant": "按下此按鈕即可複製設施名稱或家具名稱。"},
+    {"ja": "選んだポケモンの好きな家具一覧が表示されます。", "en": "A list of furniture the selected Pokémon like will be shown.", "ko": "선택한 포켓몬이 좋아하는 가구 목록이 표시됩니다.", "zhHans": "会显示所选宝可梦喜欢的家具列表。", "zhHant": "會顯示所選寶可夢喜歡的家具列表。"},
+    {"ja": "ボタンを押すと、家具の名前をコピーできます。", "en": "Press this button to copy the furniture names.", "ko": "버튼을 누르면 가구 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制家具名称。", "zhHant": "按下此按鈕即可複製家具名稱。"},
+    {"ja": "家具からポケモン診断の使い方", "en": "How to use Furniture → Pokémon Finder", "ko": "가구로 포켓몬 진단 사용법", "zhHans": "「从家具诊断宝可梦」使用方法", "zhHant": "「從家具診斷寶可夢」使用方法"},
+    {"ja": "家具を1～12個選択して、「ポケモンを診断する」のボタンを押します。", "en": "Select 1 to 12 pieces of furniture, then press the \"Find Pokémon\" button.", "ko": "가구를 1~12개 선택하고 '포켓몬을 진단한다' 버튼을 누릅니다.", "zhHans": "选择1~12件家具，然后按下「诊断宝可梦」按钮。", "zhHant": "選擇1~12件家具，然後按下「診斷寶可夢」按鈕。"},
+    {"ja": "選択した家具を好きなポケモンが表示されます。", "en": "The Pokémon who like the furniture you selected will be shown.", "ko": "선택한 가구를 좋아하는 포켓몬이 표시됩니다.", "zhHans": "会显示喜欢所选家具的宝可梦。", "zhHant": "會顯示喜歡所選家具的寶可夢。"},
+    {"ja": "ボタンを押すと、ポケモンの名前をコピーできます。", "en": "Press this button to copy the Pokémon names.", "ko": "버튼을 누르면 포켓몬 이름을 복사할 수 있습니다.", "zhHans": "按下此按钮即可复制宝可梦名称。", "zhHant": "按下此按鈕即可複製寶可夢名稱。"},
+    {"ja": "テーブルなどは無いのですか？", "en": "Are there no tables or similar furniture?", "ko": "테이블 같은 가구는 없나요?", "zhHans": "没有桌子之类的家具吗？", "zhHant": "沒有桌子之類的家具嗎？"},
+    {"ja": "ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！", "en": "Pokémon only have preferences for furniture in the \"Toys,\" \"Decorations,\" and \"Relaxation\" categories, so this tool only shows those. Furniture that doesn't belong to any of these categories, such as tables, will make them happy no matter which one you place!", "ko": "포켓몬이 좋아하는 것은 '장난감', '장식', '휴식' 가구뿐이라서, 이 도구에서는 그것들만 표시하고 있어요. 테이블처럼 '장난감', '장식', '휴식' 중 어디에도 속하지 않는 가구는 어떤 것을 놓아도 좋아해 준답니다!", "zhHans": "宝可梦们喜欢的只有「玩具」「装饰」「休息」类的家具，所以本工具只显示这些。像桌子这样不属于「玩具」「装饰」「休息」任何一类的家具，无论放哪一个，它们都会很开心哦！", "zhHant": "寶可夢們喜歡的只有「玩具」「裝飾」「休息」類的家具，所以本工具只顯示這些。像桌子這樣不屬於「玩具」「裝飾」「休息」任何一類的家具，無論放哪一個，牠們都會很開心喔！"},
+    {"ja": "ここに載っている家具じゃなきゃダメなの？", "en": "Does it have to be the furniture listed here?", "ko": "여기에 나와 있는 가구가 아니면 안 되나요?", "zhHans": "一定要是这里列出的家具吗？", "zhHant": "一定要是這裡列出的家具嗎？"},
+    {"ja": "そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。", "en": "Not at all. It's easy to make Pokémon more comfortable, so feel free to place any furniture you like.", "ko": "그렇지 않아요. 포켓몬이 지내기 편하게 만드는 건 간단하니, 좋아하는 가구를 놓아도 괜찮아요.", "zhHans": "并不是的。提升宝可梦的居住舒适度很简单，所以放你喜欢的家具就可以了。", "zhHant": "並不是的。提升寶可夢的居住舒適度很簡單，所以放你喜歡的家具就可以了。"},
+    {"ja": "このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。", "en": "If you want to build something as a home for Pokémon but don't know what kind of home to make, I hope this tool can be a helpful reference.", "ko": "이 도구는 '포켓몬의 집으로 뭔가 만들고 싶은데, 어떤 집을 만들어야 할지 모르겠다'는 분들께 참고가 되면 좋겠어요.", "zhHans": "如果你想为宝可梦打造一个家，却不知道该建成什么样，希望本工具能为你提供一些参考。", "zhHant": "如果你想為寶可夢打造一個家，卻不知道該建成什麼樣，希望本工具能為你提供一些參考。"},
+    {"ja": "各施設の配点はどうやって決めているの？", "en": "How are the points for each facility decided?", "ko": "각 시설의 배점은 어떻게 정하나요?", "zhHans": "各设施的配分是怎么决定的？", "zhHant": "各設施的配分是怎麼決定的？"},
+    {"ja": "施設ごとに、その施設らしい家具をえらび、家具1つずつに、その施設にとっての重要さを3段階の「必要レベル」(1〜3)で設定しています。", "en": "For each facility, we choose furniture that suits it, and give each piece a \"Required level\" from 1 to 3 that shows how important it is to that facility.", "ko": "시설마다 그 시설에 어울리는 가구를 고르고, 가구 하나하나에 그 시설에서의 중요도를 3단계의 '필요 레벨'(1~3)로 설정해 두었습니다.", "zhHans": "我们为每个设施挑选了符合该设施特色的家具，并为每件家具设定了3个等级的「所需等级」（1～3），表示它对该设施的重要程度。", "zhHant": "我們為每個設施挑選了符合該設施特色的家具，並為每件家具設定了3個等級的「所需等級」（1～3），表示它對該設施的重要程度。"},
+    {"ja": "診断では、えらんだポケモンの好物と家具の属性が合うほど、その家具に点が入ります(ポケモン図鑑の「好きなもの」を見れる画面で、上のほうに載っているものほど点数が高く、下に載っているものほど点数が低くなります)。めずらしい属性で合ったときは高く、ありふれた属性で合ったときは低く数えます。苦手な属性をふくむ家具は、そのポケモンについては0点です。", "en": "In the diagnosis, a piece of furniture earns points when its attributes match the favorites of the Pokémon you chose (on the Pokédex screen that shows a Pokémon's \"Favorites\", items listed higher are worth more points and items listed lower are worth fewer). A match on a rare attribute counts for more, and a match on a common attribute counts for less. Furniture with an attribute a Pokémon dislikes scores 0 points for that Pokémon.", "ko": "진단에서는 선택한 포켓몬이 좋아하는 것과 가구의 속성이 맞을수록 그 가구에 점수가 들어갑니다(포켓몬 도감에서 '좋아하는 것'을 볼 수 있는 화면에서, 위쪽에 실린 것일수록 점수가 높고 아래쪽에 실린 것일수록 점수가 낮아집니다). 드문 속성으로 맞으면 높게, 흔한 속성으로 맞으면 낮게 계산합니다. 싫어하는 속성이 포함된 가구는 그 포켓몬에 대해서는 0점입니다.", "zhHans": "诊断时，所选宝可梦喜欢的东西与家具的属性越相符，该家具的得分就越高（在宝可梦图鉴中可以查看「喜欢的东西」的画面里，排在越上面的分数越高，排在越下面的分数越低）。与稀有属性相符时分数较高，与常见属性相符时分数较低。含有讨厌属性的家具，对该宝可梦来说是0分。", "zhHant": "診斷時，所選寶可夢喜歡的東西與家具的屬性越相符，該家具的得分就越高（在寶可夢圖鑑中可以查看「喜歡的東西」的畫面裡，排在越上面的分數越高，排在越下面的分數越低）。與稀有屬性相符時分數較高，與常見屬性相符時分數較低。含有討厭屬性的家具，對該寶可夢來說是0分。"},
+    {"ja": "家具の点に必要レベルを掛けて合計し、満点に対する割合を「マッチ度」として表示しています。順位は、マッチ度のほかに、えらんだポケモン全員の好みに合っているかなども加えて決めているため、マッチ度の順と入れかわることがあります。", "en": "We multiply each furniture's points by its Required level, add them up, and show the share of the maximum possible total as the \"Match rate\". The ranking also takes into account things like whether the facility suits all of the Pokémon you chose, so it may differ from the order of Match rates.", "ko": "가구의 점수에 필요 레벨을 곱해 합산하고, 만점에 대한 비율을 '일치도'로 표시합니다. 순위는 일치도 외에 선택한 포켓몬 모두의 취향에 맞는지 등도 더해서 정하기 때문에, 일치도 순서와 달라질 수 있습니다.", "zhHans": "将家具的得分乘以所需等级后相加，并把它占满分的比例显示为「匹配度」。排名除了匹配度之外，还会考虑是否符合所选全部宝可梦的喜好等因素，因此可能与匹配度的顺序不同。", "zhHant": "將家具的得分乘以所需等級後相加，並把它占滿分的比例顯示為「契合度」。排名除了契合度之外，還會考慮是否符合所選全部寶可夢的喜好等因素，因此可能與契合度的順序不同。"},
+    {"ja": "算出式を表示", "en": "Show formula", "ko": "계산식 보기", "zhHans": "显示计算公式", "zhHant": "顯示計算公式"},
+    {"ja": "家具の点(ポケモン1匹ごと)", "en": "Furniture points (per Pokémon)", "ko": "가구의 점수(포켓몬 1마리당)", "zhHans": "家具得分（每只宝可梦）", "zhHant": "家具得分（每隻寶可夢）"},
+    {"ja": "好物の点 × レア度", "en": "Favorite points × Rarity", "ko": "좋아하는 것의 점수 × 희귀도", "zhHans": "喜欢的东西的分数 × 稀有度", "zhHant": "喜歡的東西的分數 × 稀有度"},
+    {"ja": "・好物の点：好物（図鑑表示の上から順に、5・4・3・2・1点）", "en": "• Favorite points: 5, 4, 3, 2, 1 points for the favorites in the order shown in the Pokédex, from the top", "ko": "• 좋아하는 것의 점수: 좋아하는 것(도감에 표시된 위에서부터 순서대로 5·4·3·2·1점)", "zhHans": "・喜欢的东西的分数：喜欢的东西（按图鉴显示从上到下的顺序，依次为5、4、3、2、1分）", "zhHant": "・喜歡的東西的分數：喜歡的東西（依圖鑑顯示由上到下的順序，依序為5、4、3、2、1分）"},
+    {"ja": "・レア度 = √(30 ÷ その属性をもつ家具の数)　※0.4〜4の範囲におさめる", "en": "• Rarity = √(30 ÷ number of furniture with that attribute)  *kept within 0.4–4", "ko": "• 희귀도 = √(30 ÷ 그 속성을 가진 가구의 수)　※0.4~4 범위로 제한", "zhHans": "・稀有度 = √(30 ÷ 拥有该属性的家具数量)　※限制在0.4～4的范围内", "zhHant": "・稀有度 = √(30 ÷ 擁有該屬性的家具數量)　※限制在0.4～4的範圍內"},
+    {"ja": "・好物が2つ以上合うときは、いちばん高い1つだけを使う", "en": "• If two or more favorites match, only the highest one is used", "ko": "• 좋아하는 것이 2개 이상 맞을 때는 가장 높은 1개만 사용", "zhHans": "・有2个以上喜欢的东西相符时，只使用分数最高的1个", "zhHant": "・有2個以上喜歡的東西相符時，只使用分數最高的1個"},
+    {"ja": "・苦手な属性をふくむ家具は0点", "en": "• Furniture with a disliked attribute scores 0 points", "ko": "• 싫어하는 속성이 포함된 가구는 0점", "zhHans": "・含有讨厌属性的家具为0分", "zhHant": "・含有討厭屬性的家具為0分"},
+    {"ja": "・ひこうタイプは、「とまり木」「木のすばこ」が2倍(合う好物がなくても2点)", "en": "• For Flying-type Pokémon, \"Perch\" and \"Wooden birdhouse\" count double (2 points even if no favorite matches)", "ko": "• 비행타입은 '횃대'와 '새집'이 2배(맞는 좋아하는 것이 없어도 2점)", "zhHans": "・飞行属性的宝可梦，「栖木」「木制鸟巢箱」为2倍（即使没有相符的喜欢的东西也有2分）", "zhHant": "・飛行屬性的寶可夢，「棲木」「木製鳥巢箱」為2倍（即使沒有相符的喜歡的東西也有2分）"},
+    {"ja": "→ えらんだポケモン全員分を足したものが、その家具の点", "en": "→ The sum for all the Pokémon you chose is that furniture's points", "ko": "→ 선택한 포켓몬 전원의 점수를 더한 것이 그 가구의 점수", "zhHans": "→ 将所选全部宝可梦的分数相加，就是该家具的得分", "zhHant": "→ 將所選全部寶可夢的分數相加，就是該家具的得分"},
+    {"ja": "一致度(家具ごと、0〜1)", "en": "Fit (per furniture, 0–1)", "ko": "적합도(가구별, 0~1)", "zhHans": "一致度（每件家具，0～1）", "zhHant": "一致度（每件家具，0～1）"},
+    {"ja": "家具の点 ÷ (5 × えらんだ匹数)　※1をこえたら1", "en": "Furniture points ÷ (5 × number of Pokémon chosen)  *capped at 1", "ko": "가구의 점수 ÷ (5 × 선택한 마릿수)　※1을 넘으면 1", "zhHans": "家具得分 ÷ (5 × 所选宝可梦数量)　※超过1时按1计算", "zhHant": "家具得分 ÷ (5 × 所選寶可夢數量)　※超過1時以1計算"},
+    {"ja": "・名前はちがっても中身がほぼ同じ家具は、1グループとして1回だけ数え、グループの中でいちばん点の高い家具を使う", "en": "• Furniture that is nearly the same apart from its name is counted once as a single group, using the highest-scoring furniture in the group", "ko": "• 이름은 달라도 내용이 거의 같은 가구는 1개 그룹으로 1번만 세며, 그룹 안에서 점수가 가장 높은 가구를 사용", "zhHans": "・名称不同但内容几乎相同的家具，作为1组只计算1次，并使用组内得分最高的家具", "zhHant": "・名稱不同但內容幾乎相同的家具，視為1組只計算1次，並使用組內得分最高的家具"},
+    {"ja": "マッチ度(画面に出る％)", "en": "Match rate (the % shown on screen)", "ko": "일치도(화면에 표시되는 %)", "zhHans": "匹配度（画面上显示的%）", "zhHant": "契合度（畫面上顯示的%）"},
+    {"ja": "(必要レベル × 一致度)の合計 ÷ 必要レベルの合計", "en": "Sum of (Required level × Fit) ÷ Sum of Required levels", "ko": "(필요 레벨 × 적합도)의 합계 ÷ 필요 레벨의 합계", "zhHans": "(所需等级 × 一致度)的总和 ÷ 所需等级的总和", "zhHant": "(所需等級 × 一致度)的總和 ÷ 所需等級的總和"},
+    {"ja": "順位を決める点", "en": "Ranking score", "ko": "순위를 정하는 점수", "zhHans": "决定排名的分数", "zhHant": "決定排名的分數"},
+    {"ja": "√(A × B) × C × C × 0.85をD回掛けた数", "en": "√(A × B) × C × C × (0.85 multiplied D times)", "ko": "√(A × B) × C × C × 0.85를 D번 곱한 수", "zhHans": "√(A × B) × C × C × 0.85连乘D次的数", "zhHant": "√(A × B) × C × C × 0.85連乘D次的數"},
+    {"ja": "A = (必要レベル × 順位用の一致度 × 順位用の一致度)の合計 ÷ 必要レベルの合計", "en": "A = Sum of (Required level × Ranking fit × Ranking fit) ÷ Sum of Required levels", "ko": "A = (필요 레벨 × 순위용 적합도 × 순위용 적합도)의 합계 ÷ 필요 레벨의 합계", "zhHans": "A = (所需等级 × 排名用一致度 × 排名用一致度)的总和 ÷ 所需等级的总和", "zhHant": "A = (所需等級 × 排名用一致度 × 排名用一致度)的總和 ÷ 所需等級的總和"},
+    {"ja": "B = (必要レベル × 順位用の一致度 × 順位用の一致度)の合計 ÷ 全施設の中での最大値", "en": "B = Sum of (Required level × Ranking fit × Ranking fit) ÷ the largest such sum among all facilities", "ko": "B = (필요 레벨 × 순위용 적합도 × 순위용 적합도)의 합계 ÷ 전체 시설 중 최댓값", "zhHans": "B = (所需等级 × 排名用一致度 × 排名用一致度)的总和 ÷ 所有设施中的最大值", "zhHant": "B = (所需等級 × 排名用一致度 × 排名用一致度)的總和 ÷ 所有設施中的最大值"},
+    {"ja": "C = この施設に好きな家具があるポケモンの数 ÷ えらんだ匹数", "en": "C = Number of Pokémon that like some furniture in this facility ÷ number of Pokémon chosen", "ko": "C = 이 시설에 좋아하는 가구가 있는 포켓몬의 수 ÷ 선택한 마릿수", "zhHans": "C = 在该设施中有喜欢的家具的宝可梦数量 ÷ 所选宝可梦数量", "zhHant": "C = 在該設施中有喜歡的家具的寶可夢數量 ÷ 所選寶可夢數量"},
+    {"ja": "D = ⚠(好きな環境に合わない家具)がつく、おすすめ家具グループの数", "en": "D = Number of recommended furniture groups marked with ⚠ (furniture that doesn't suit an Ideal Habitat)", "ko": "D = ⚠(좋아하는 환경에 맞지 않는 가구)가 붙는 추천 가구 그룹의 수", "zhHans": "D = 带有⚠（不符合喜欢的环境的家具）的推荐家具组的数量", "zhHant": "D = 帶有⚠（不符合喜歡的環境的家具）的推薦家具組的數量"},
+    {"ja": "※順位用の一致度 = 家具の点 ÷ (5 × 4 × えらんだ匹数)", "en": "*Ranking fit = Furniture points ÷ (5 × 4 × number of Pokémon chosen)", "ko": "※순위용 적합도 = 가구의 점수 ÷ (5 × 4 × 선택한 마릿수)", "zhHans": "※排名用一致度 = 家具得分 ÷ (5 × 4 × 所选宝可梦数量)", "zhHant": "※排名用一致度 = 家具得分 ÷ (5 × 4 × 所選寶可夢數量)"},
+    {"ja": "家具からポケモン診断はどうやってポケモンを選出してるの？", "en": "How does the Furniture → Pokémon Finder choose Pokémon?", "ko": "가구로 포켓몬 진단은 포켓몬을 어떻게 고르나요?", "zhHans": "「从家具诊断宝可梦」是怎么选出宝可梦的？", "zhHant": "「從家具診斷寶可夢」是怎麼選出寶可夢的？"},
+    {"ja": "えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。", "en": "Pokémon are listed higher the more of your chosen furniture has attributes matching their favorites. A Pokémon is not shown if even one piece of furniture has an attribute it dislikes. Pokémon with furniture that doesn't suit their Ideal Habitat are marked with ⚠ and ranked lower. Pokémon ranked in the top 3 places are shown.", "ko": "선택한 가구 중에서, 좋아하는 것의 속성이 붙은 가구의 수가 많은 포켓몬일수록 위에 표시합니다. 싫어하는 속성의 가구가 하나라도 있는 포켓몬은 표시되지 않습니다. 좋아하는 환경에 맞지 않는 가구가 있는 포켓몬은 ⚠를 붙여 순위를 낮춥니다. 상위 3위까지 표시됩니다.", "zhHans": "在所选的家具中，带有喜欢的东西的属性的家具越多，该宝可梦就显示在越上面。只要有1件带有讨厌属性的家具，该宝可梦就不会显示。如果有不符合喜欢的环境的家具，该宝可梦会被标上⚠，并降低排名。显示排名前3名的宝可梦。", "zhHant": "在所選的家具中，帶有喜歡的東西的屬性的家具越多，該寶可夢就顯示在越上面。只要有1件帶有討厭屬性的家具，該寶可夢就不會顯示。如果有不符合喜歡的環境的家具，該寶可夢會被標上⚠，並降低排名。顯示排名前3名的寶可夢。"}
   ],
   "attrs": [
     {"ja": "あそびば", "en": "Play spaces", "ko": "놀이 공간", "zhHans": "游乐区", "zhHant": "遊樂區"},

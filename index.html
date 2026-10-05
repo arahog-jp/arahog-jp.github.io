@@ -277,7 +277,9 @@
   /* 「このツールについて」の3つのまとまりは、間に1行ぶんのすきまをあける
      (2つ目のまとまりは、中に表を入れるため、pではなく div にしている) */
   .about-card .about-p{ font-size:12.5px; line-height:1.9; color:var(--text); margin:0; }
-  .about-card p + .about-p, .about-card .about-p + p, .about-card p + p{ margin-top:1.9em; }
+  .about-card p + .about-p, .about-card .about-p + p, .about-card p + p, .about-card .about-p + .about-p{ margin-top:1.9em; }
+  /* 「このツールについて」の中の見出し(Excelの「このツールについて」シートで、種類を「見出し」にした行) */
+  .about-h{ font-weight:800; }
   /* 「家具属性の検証について ＋詳細」のボタンと、開いたときの表 */
   .about-more{
     display:inline; padding:0; border:none; background:none; text-align:left;
@@ -298,6 +300,12 @@
   .verify-table th{ background:var(--surface-alt); font-weight:800; color:var(--text-muted); }
   .verify-table th:first-child, .verify-table td:first-child{ width:4.5em; border-right:1px solid var(--border); font-variant-numeric:tabular-nums; }
   .verify-table tr:last-child td{ border-bottom:none; }
+  /* 「＋詳細」で開く枠の中の、見出しと文(Excelの「Ver.検証管理」シートなどで、種類を「見出し」「文」にした行)。表が2つ以上になったときは、あいだを少しあける */
+  .verify-h{ font-size:12px; font-weight:800; line-height:1.6; color:var(--text-muted); margin:8px 0 4px; }
+  .verify-note{ font-size:12px; line-height:1.7; margin:4px 0; }
+  .verify-gap{ height:.6em; }
+  .verify-panel > :first-child{ margin-top:0; }
+  .verify-table + .verify-table{ margin-top:8px; }
   /* お知らせ: 上部に一時的に出す小さなバナー(×で消すと、以後は出ない) と、お知らせの一覧 */
   .news-banner{
     max-width:720px; margin:10px auto 0;
@@ -321,6 +329,9 @@
   .news-item + .news-item{ margin-top:1.1em; }
   .news-date{ font-size:11px; font-weight:700; color:var(--text-faint); font-variant-numeric:tabular-nums; }
   .news-text{ font-size:12.5px; line-height:1.9; color:var(--text); }
+  /* お知らせの一覧の中の、見出しとすきま(Excelの「お知らせ」シートで、種類を「見出し」「すきま」にした行) */
+  .news-h{ font-size:12.5px; font-weight:800; line-height:1.7; color:var(--text-muted); }
+  .news-gap{ height:.6em; }
   /* Q&A の小窓: 文章が長いので、小窓の中だけスクロールできるようにする(✕ボタンは動かさない) */
   /* スクロールバーは、小窓の右の余白の中(中身の右はしから13px右)に出す。スマホでは、スクロールバーが中身の上に重なって出るため、
      中身の右はしに置いたボタン(Q&A の「＋」「－」の印など)と重ならないようにしている(中身の幅は、これまでと同じ)。
@@ -339,6 +350,8 @@
   .how-item + .how-item{ margin-top:1.3em; }
   .how-h{ font-size:12.5px; font-weight:800; line-height:1.7; color:var(--primary-strong); }
   .how-p{ font-size:12.5px; line-height:1.9; color:var(--text); margin:.15em 0 0; }
+  /* 「すきま」で分けた、2つ目からの文のまとまり */
+  .how-p + .how-p{ margin-top:.7em; }
   /* 使い方の中に出す、「家具名をコピー」ボタンと同じ見た目の小さなマーク(押せない、説明用) */
   .how-ico{ display:inline-flex; align-items:center; justify-content:center; width:26px; height:20px; margin:0 3px; vertical-align:middle; position:relative; top:-1px; border:1px solid var(--border); border-radius:7px; background:var(--surface); color:var(--text-muted); }
   .how-ico svg{ width:13px; height:13px; display:block; }
@@ -373,6 +386,7 @@
   .qa-body{ flex:1; min-width:0; }
   .qa-para{ display:block; }
   .qa-para + .qa-para{ margin-top:.55em; }
+  .qa-para + .fm-step, .fm-step + .qa-para{ margin-top:.55em; }
   .formula-toggle{
     display:inline-block; margin-top:.8em; padding:3px 12px; border-radius:999px;
     border:1.5px solid var(--border); background:var(--surface);
@@ -995,15 +1009,16 @@
   <div class="about-card" role="dialog" aria-modal="true" aria-label="このツールについて" data-i18n-aria="このツールについて">
     <button type="button" class="about-close" id="aboutCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
     <div class="qa-scroll">
+    <!-- 変換ページ用の目印【このツールについて：ここから】(この行と、下の「ここまで」の行は、消さない・書きかえない。あいだの行は、変換ページ〔ツールデータ変換.html〕が、Excelの「このツールについて」シートから作り直すので、手で直さずに、Excelを直す)(検証の表は、「Ver.検証管理」シートから作る) -->
     <p>
-      <span data-i18n="非公式のファンツール" data-ja="このツールは非公式のファンツールです。">このツールは非公式のファンツールです。</span><br>
+      <span data-i18n="このツールは非公式のファンツールです。">このツールは非公式のファンツールです。</span><br>
       <span data-i18n="作成者">作成者</span><span class="colon">：</span><a href="https://x.com/arahog" target="_blank" rel="noopener noreferrer" title="新乃ほぐす (@arahog) / X">新乃ほぐす(@arahog)</a><br>
       <span data-i18n="改善要望・不具合報告は作成者までお願いします。">改善要望・不具合報告は作成者までお願いします。</span>
     </p>
     <div class="about-p">
-      <span data-i18n="共同検証者" data-ja="家具属性の共同検証者様">家具属性の共同検証者様</span><span class="colon">：</span>ヨシオ(@yoshiosumabura)<span data-only-ja>様</span><br>
-      <button type="button" class="about-more" id="verifyToggle" aria-expanded="false" aria-controls="verifyPanel"><span data-i18n="家具属性の検証について">家具属性の検証について</span><span class="about-more-mark" id="verifyMark">＋詳細</span></button><br>
-      <div class="verify-panel" id="verifyPanel" hidden>
+      <span data-i18n="家具属性の共同検証者様">家具属性の共同検証者様</span><span class="colon">：</span>ヨシオ(@yoshiosumabura)<span data-only-ja>様</span><br>
+      <button type="button" class="about-more fold-btn" aria-expanded="false" aria-controls="aboutFold1"><span data-i18n="家具属性の検証について">家具属性の検証について</span><span class="about-more-mark">＋詳細</span></button><br>
+      <div class="verify-panel fold-panel" id="aboutFold1" hidden>
         <table class="verify-table">
           <thead><tr><th>Ver.</th><th data-i18n="検証者">検証者</th></tr></thead>
           <tbody>
@@ -1019,7 +1034,10 @@
       <span data-i18n="ツールの診断結果・スクリーンショットは自由にご利用いただけます。">ツールの診断結果・スクリーンショットは自由にご利用いただけます。</span><br>
       <span data-i18n="その際、当ツールを利用した旨を記載していただけると、うれしいです。">その際、当ツールを利用した旨を記載していただけると、うれしいです。</span>
     </p>
-    <p><a href="privacy.html" data-i18n="プライバシーポリシー">プライバシーポリシー</a></p>
+    <p>
+      <a href="privacy.html" data-i18n="プライバシーポリシー">プライバシーポリシー</a>
+    </p>
+    <!-- 変換ページ用の目印【このツールについて：ここまで】 -->
     </div>
   </div>
 </div>
@@ -1030,6 +1048,7 @@
     <button type="button" class="about-close" id="howCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
     <div class="qa-scroll">
       <div class="qa-title" data-i18n="使い方">使い方</div>
+      <!-- 変換ページ用の目印【使い方：ここから】(この行と、下の「ここまで」の行は、消さない・書きかえない。あいだの行は、変換ページ〔ツールデータ変換.html〕が、Excelの「使い方」シートから作り直すので、手で直さずに、Excelを直す) -->
       <div class="how-group-title" data-i18n="施設診断の使い方">施設診断の使い方</div>
       <div class="how-item">
         <div class="how-h">① <span data-i18n="ポケモンをえらぶ">ポケモンをえらぶ</span></div>
@@ -1052,6 +1071,7 @@
         <div class="how-h">② <span data-i18n="診断結果">診断結果</span></div>
         <p class="how-p"><span data-i18n="選択した家具を好きなポケモンが表示されます。">選択した家具を好きなポケモンが表示されます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、ポケモンの名前をコピーできます。">ボタンを押すと、ポケモンの名前をコピーできます。</span></p>
       </div>
+      <!-- 変換ページ用の目印【使い方：ここまで】 -->
     </div>
   </div>
 </div>
@@ -1078,12 +1098,17 @@
 
 <!-- Q&A の小窓(⋮メニューの「Q&A」から開く) -->
 <!-- 開け閉めする形：はじめは「Q.」の行だけが並び、「Q.」の行(右端に「＋」の丸い印)を押すと、その下の「A.」が開く(もう一度押すと閉じる)。
-     Q&Aを足すときは、ほかの qa-item と同じ形(「Q.」は button の qa-q で、最後に qa-pm の印。「A.」は hidden を付けた qa-a)で書く。開け閉めのプログラムは、足さなくてよい。 -->
+     Q&Aを足すときは、Excelの「Q&A」シートに行を足して、変換ページで作り直す(HTMLの形は、「Q.」は button の qa-q で、最後に qa-pm の印。「A.」は hidden を付けた qa-a)。開け閉めのプログラムは、足さなくてよい。 -->
 <div class="about-overlay" id="qaOverlay" hidden>
   <div class="about-card" role="dialog" aria-modal="true" aria-label="Q&amp;A">
     <button type="button" class="about-close" id="qaCloseBtn" aria-label="閉じる" data-i18n-aria="閉じる">✕</button>
     <div class="qa-scroll">
       <div class="qa-title">Q&amp;A</div>
+      <!-- 計算のしかたを変えたときの注意：
+           ・配点のしくみ(下のほうの scoreFurniture・computeFacilityScoresV2 など)を変えたときは、「各施設の配点はどうやって決めているの？」の説明と算出式を、
+           ・家具からポケモン診断の、ポケモンの選び方(下のほうの bestLikeMatchWeighted・renderFurnResults・computeFurnEnv など)を変えたときは、「家具からポケモン診断はどうやってポケモンを選出してるの？」の説明を、
+           Excelの「Q&A」シート(日本語の文と、その行の翻訳)で直して、変換ページで index.html と lang.js を作り直すこと -->
+      <!-- 変換ページ用の目印【Q&A：ここから】(この行と、下の「ここまで」の行は、消さない・書きかえない。あいだの行は、変換ページ〔ツールデータ変換.html〕が、Excelの「Q&A」シートから作り直すので、手で直さずに、Excelを直す) -->
       <div class="qa-item">
         <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="テーブルなどは無いのですか？">テーブルなどは無いのですか？</span><span class="qa-pm" aria-hidden="true"></span></button>
         <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text" data-i18n="ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！">ポケモン達が好む対象は、「おもちゃ」「かざりつけ」「きゅうけい」の家具のみなので、このツールではそれらのみ表示しています。テーブルなどの「おもちゃ」「かざりつけ」「きゅうけい」のどれにも属さない家具は、どれを置いても喜んでくれますよ！</span></div>
@@ -1092,15 +1117,14 @@
         <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="ここに載っている家具じゃなきゃダメなの？">ここに載っている家具じゃなきゃダメなの？</span><span class="qa-pm" aria-hidden="true"></span></button>
         <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text"><span data-i18n="そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。">そんなことはありません。ポケモンの住み心地は簡単に上がりますので、好きな家具を置いて良いと思います。</span><br><span data-i18n="このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。">このツールは、「ポケモンの家として何か作りたいけれど、どんな家を作ればいいのか分からない」そんな方の参考になれば嬉しいです。</span></span></div>
       </div>
-      <!-- 配点のしくみ。計算のしかた(下のほうの scoreFurniture・computeFacilityScoresV2 など)を変えたときは、この説明と算出式、lang.js と Excel「言語(その他)」の訳も、合わせて直すこと -->
       <div class="qa-item">
         <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="各施設の配点はどうやって決めているの？">各施設の配点はどうやって決めているの？</span><span class="qa-pm" aria-hidden="true"></span></button>
         <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><div class="qa-text qa-body">
           <span class="qa-para" data-i18n="施設ごとに、その施設らしい家具をえらび、家具1つずつに、その施設にとっての重要さを3段階の「必要レベル」(1〜3)で設定しています。">施設ごとに、その施設らしい家具をえらび、家具1つずつに、その施設にとっての重要さを3段階の「必要レベル」(1〜3)で設定しています。</span>
           <span class="qa-para" data-i18n="診断では、えらんだポケモンの好物と家具の属性が合うほど、その家具に点が入ります(ポケモン図鑑の「好きなもの」を見れる画面で、上のほうに載っているものほど点数が高く、下に載っているものほど点数が低くなります)。めずらしい属性で合ったときは高く、ありふれた属性で合ったときは低く数えます。苦手な属性をふくむ家具は、そのポケモンについては0点です。">診断では、えらんだポケモンの好物と家具の属性が合うほど、その家具に点が入ります(ポケモン図鑑の「好きなもの」を見れる画面で、上のほうに載っているものほど点数が高く、下に載っているものほど点数が低くなります)。めずらしい属性で合ったときは高く、ありふれた属性で合ったときは低く数えます。苦手な属性をふくむ家具は、そのポケモンについては0点です。</span>
           <span class="qa-para" data-i18n="家具の点に必要レベルを掛けて合計し、満点に対する割合を「マッチ度」として表示しています。順位は、マッチ度のほかに、えらんだポケモン全員の好みに合っているかなども加えて決めているため、マッチ度の順と入れかわることがあります。">家具の点に必要レベルを掛けて合計し、満点に対する割合を「マッチ度」として表示しています。順位は、マッチ度のほかに、えらんだポケモン全員の好みに合っているかなども加えて決めているため、マッチ度の順と入れかわることがあります。</span>
-          <button type="button" class="formula-toggle" id="formulaToggle" aria-expanded="false" aria-controls="formulaPanel">＋算出式を表示</button>
-          <div class="formula-panel" id="formulaPanel" hidden>
+          <button type="button" class="formula-toggle fold-btn" aria-expanded="false" aria-controls="qaFold1" data-fold-label="算出式を表示">＋算出式を表示</button>
+          <div class="formula-panel fold-panel" id="qaFold1" hidden>
             <div class="fm-step">
               <div class="fm-h">① <span data-i18n="家具の点(ポケモン1匹ごと)">家具の点(ポケモン1匹ごと)</span></div>
               <div class="fm-eq">= <span data-i18n="好物の点 × レア度">好物の点 × レア度</span></div>
@@ -1132,11 +1156,11 @@
           </div>
         </div></div>
       </div>
-      <!-- 家具からポケモン診断の、ポケモンの選び方。計算のしかた(下のほうの bestLikeMatchWeighted・renderFurnResults・computeFurnEnv など)を変えたときは、この説明と、lang.js と Excel「言語(その他)」の訳も、合わせて直すこと -->
       <div class="qa-item">
         <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="家具からポケモン診断はどうやってポケモンを選出してるの？">家具からポケモン診断はどうやってポケモンを選出してるの？</span><span class="qa-pm" aria-hidden="true"></span></button>
         <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text" data-i18n="えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。">えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。</span></div>
       </div>
+      <!-- 変換ページ用の目印【Q&A：ここまで】 -->
     </div>
   </div>
 </div>
@@ -2516,9 +2540,11 @@
   // 新しいお知らせは、下の NEWS の「いちばん上」に足します(新しい順に並べる)。
   //   id     : ほかと重ならない名前(例: "20260930-fix")。この名前で「読んだ」を覚えるので、あとから変えない。
   //   date   : 「お知らせ」の一覧に出す日付(例: "2026.9.21")。バナーには日付を出さない。
-  //   text   : 日本語の文。他の言語の翻訳は lang.js の "ui" と、Excelの「言語(その他)」に足す。
+  //   text   : 日本語の文。他の言語の翻訳は、Excelの「お知らせ」シートの、その行の翻訳の列に入れる(変換ページが、lang.js の "ui" に足す)。
   //   banner : false にすると、バナー(サイト上部の一時的な表示)には出さず、一覧にだけ出す。省略すると出す。
   // バナーには、まだ「×」で消していないお知らせのうち、いちばん新しい1件だけを出す。
+  // お知らせのほかに、見出し・文・すきまの行も入れられる(Excelの「お知らせ」シートで、種類を「見出し」「文」「すきま」にした行。一覧にだけ出て、バナーには出ない)。
+  //   { kind:"h", text:"見出しの文" } / { kind:"p", text:"文" } / { kind:"gap" }   ※ id・date は付けない。並べた順に、一覧に出る。
   const NEWS = [
     { id:"20261002-score-tuning", date:"2026.10.2", text:"各施設への得点配分メカニズムを微調整しました。" },
     { id:"20260921-release", date:"2026.9.21", text:"リリースしました。", banner:false },
@@ -2533,7 +2559,7 @@
     return newsReadMemory.slice();
   }
   function markNewsRead(){
-    const ids = NEWS.map(n => n.id);
+    const ids = NEWS.filter(n => n.id).map(n => n.id);
     newsReadMemory = ids.slice();
     try {
       const old = JSON.parse(localStorage.getItem(NEWS_READ_KEY) || "[]");
@@ -2545,11 +2571,28 @@
   const newsBannerText = document.getElementById("newsBannerText");
   const newsListEl = document.getElementById("newsList");
   function renderNews(){
-    newsListEl.innerHTML = NEWS.map(n =>
-      '<div class="news-item"><div class="news-date">' + esc(n.date) + '</div><div class="news-text">' + esc(tr(n.text)) + '</div></div>'
-    ).join("");
+    // お知らせ1件を、1つのまとまり(news-item)にする。「見出し」は、すぐ下のお知らせと同じまとまりの上に、「文」「すきま」は、すぐ上のお知らせと同じまとまりの下に入る。
+    let h = "", open = false, headOnly = false;
+    NEWS.forEach(n => {
+      if (!n) return;
+      if (n.kind === "h") {
+        if (open) h += '</div>';
+        h += '<div class="news-item"><div class="news-h">' + esc(tr(n.text)) + '</div>';
+        open = true; headOnly = true;
+      } else if (n.kind === "p" || n.kind === "gap") {
+        if (!open) { h += '<div class="news-item">'; open = true; headOnly = true; }
+        h += (n.kind === "gap") ? '<div class="news-gap"></div>' : '<div class="news-text">' + esc(tr(n.text)) + '</div>';
+      } else {
+        if (open && !headOnly) { h += '</div>'; open = false; }
+        if (!open) { h += '<div class="news-item">'; open = true; }
+        headOnly = false;
+        h += '<div class="news-date">' + esc(n.date) + '</div><div class="news-text">' + esc(tr(n.text)) + '</div>';
+      }
+    });
+    if (open) h += '</div>';
+    newsListEl.innerHTML = h;
     const read = getNewsRead();
-    const latest = NEWS.find(n => n.banner !== false && !read.includes(n.id));
+    const latest = NEWS.find(n => n.id && n.banner !== false && !read.includes(n.id));
     if (latest) {
       newsBannerText.textContent = tr(latest.text);
       newsBanner.hidden = false;
@@ -2562,30 +2605,33 @@
     newsBanner.hidden = true;
   });
 
-  // 「家具属性の検証について ＋詳細」(「このツールについて」の中)
-  const verifyToggle = document.getElementById("verifyToggle");
-  const verifyPanel = document.getElementById("verifyPanel");
-  const verifyMark = document.getElementById("verifyMark");
-  function updateVerifyMark(){
-    verifyMark.textContent = verifyPanel.hidden ? detailOpenLabel() : detailCloseLabel();
+  // ===== 押すと開く枠(開閉ボタン) =====
+  // 「このツールについて」の「家具属性の検証について ＋詳細」、Q&A の「＋算出式を表示」など。
+  // HTMLでは、ボタンに class="fold-btn" と aria-controls="開く枠のid" を付け、開く枠に class="fold-panel" と hidden を付ける。
+  // この形のボタンは、いくつあっても、下のプログラムがまとめて扱う(ボタンを足しても、プログラムを足す必要はない)。
+  //   ・ボタンの中に about-more-mark(丸い枠の印)があるとき：印の文字を「＋詳細」⇄「－閉じる」に切りかえる。
+  //   ・ないとき：ボタンの文字を「＋(data-fold-label の文)」⇄「－たたむ」に切りかえる(診断結果のボタンと、表記をそろえている)。
+  function foldPanelOf(btn){ return document.getElementById(btn.getAttribute("aria-controls") || ""); }
+  function updateFoldBtn(btn){
+    const panel = foldPanelOf(btn);
+    const isOpen = !!panel && !panel.hidden;
+    const mark = btn.querySelector(".about-more-mark");
+    if (mark) mark.textContent = isOpen ? detailCloseLabel() : detailOpenLabel();
+    else btn.textContent = isOpen ? collapseLabel() : (isEastAsian() ? "＋" : "+ ") + tr(btn.getAttribute("data-fold-label") || "");
   }
-  verifyToggle.addEventListener("click", () => {
-    verifyPanel.hidden = !verifyPanel.hidden;
-    verifyToggle.setAttribute("aria-expanded", verifyPanel.hidden ? "false" : "true");
-    updateVerifyMark();
-  });
-
-  // Q&A の「＋算出式を表示」(「各施設の配点はどうやって決めているの？」の中)。
-  // 開いたあとの文言は、診断結果のボタンと表記をそろえて「－たたむ」(collapseLabel)にしている。
-  const formulaToggle = document.getElementById("formulaToggle");
-  const formulaPanel = document.getElementById("formulaPanel");
-  function updateFormulaToggle(){
-    formulaToggle.textContent = formulaPanel.hidden ? (isEastAsian() ? "＋" : "+ ") + tr('算出式を表示') : collapseLabel();
+  function setFoldOpen(btn, open){
+    const panel = foldPanelOf(btn);
+    if (!panel) return;
+    panel.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    updateFoldBtn(btn);
   }
-  formulaToggle.addEventListener("click", () => {
-    formulaPanel.hidden = !formulaPanel.hidden;
-    formulaToggle.setAttribute("aria-expanded", formulaPanel.hidden ? "false" : "true");
-    updateFormulaToggle();
+  function updateAllFoldBtns(){ document.querySelectorAll(".fold-btn").forEach(updateFoldBtn); }
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest ? e.target.closest(".fold-btn") : null;
+    if (!btn) return;
+    const panel = foldPanelOf(btn);
+    if (panel) setFoldOpen(btn, panel.hidden);
   });
 
   // Q&A の開け閉め。はじめは「Q.」の行だけが並び、「Q.」の行を押すと、その下の「A.」が開く(もう一度押すと閉じる)。
@@ -2613,9 +2659,7 @@
   // Q&A の小窓を開くたびに、すべて閉じた状態(「Q.」の行だけが並んだ状態)に戻す
   function resetQa(){
     qaOverlay.querySelectorAll(".qa-item").forEach(item => setQaItemOpen(item, false));
-    formulaPanel.hidden = true;
-    formulaToggle.setAttribute("aria-expanded", "false");
-    updateFormulaToggle();
+    qaOverlay.querySelectorAll(".fold-btn").forEach(btn => setFoldOpen(btn, false));
     const sc = qaOverlay.querySelector(".qa-scroll");
     if (sc) sc.scrollTop = 0;
   }
@@ -2767,8 +2811,7 @@
     document.querySelectorAll("[data-only-ja]").forEach(el => { el.hidden = currentLang !== "ja"; });
     // 名前を並べるときの区切り(日本語・中国語は「、」、英語・韓国語は「, 」)
     document.querySelectorAll(".name-sep").forEach(el => { el.textContent = (currentLang === "en" || currentLang === "ko") ? ", " : "、"; });
-    updateVerifyMark();
-    updateFormulaToggle();
+    updateAllFoldBtns();
     renderNews();
     buildLangMenu();
   }

@@ -845,13 +845,11 @@
     background:var(--surface); border:1px solid var(--border);
     font-size:12.5px; line-height:1.7; color:var(--text);
   }
-  .env-note .env-conflict{ margin-top:2px; color:var(--accent-strong); font-weight:700; }
-  .env-warn{ margin-top:3px; font-size:11px; line-height:1.6; font-weight:700; color:var(--accent-strong); }
   .env-warn-mark{ margin-left:3px; font-weight:800; color:var(--accent-strong); cursor:help; }
   /* 「⚠」の注意の吹き出し(2026年10月11日に追加)。
      パソコンでは、⚠にマウスを乗せると、ブラウザの説明(title)が出る。
      スマートフォンでは、⚠をタップすると、この吹き出しが出て、2.5秒で自然に消える(setupWarnTips)。
-     対象は、.env-warn-mark(施設診断)と .kari-env-warn(仮住まいシミュレータ)。⚠の印を新しく作るときは、title を付けて、このどちらかのクラスにすること */
+     対象は、.env-warn-mark(施設診断・家具からポケモン診断。warnMarkHtml で作る)と .kari-env-warn(仮住まいシミュレータ)。⚠の印を新しく作るときは、title を付けて、このどちらかのクラスにすること */
   .env-warn-mark, .kari-env-warn{ position:relative; -webkit-tap-highlight-color:transparent; }
   /* 指で押しやすいよう、見た目は変えずに、押せる範囲だけを広げる */
   .env-warn-mark::after, .kari-env-warn::after{ content:""; position:absolute; inset:-8px -6px; }
@@ -942,6 +940,8 @@
   /* 「家具からポケモン診断」の結果: 名前のすぐ右に、好きな環境の楕円を出す */
   .legend-row .name-row{ display:flex; align-items:center; gap:6px; min-width:0; }
   .legend-row .name-row .name{ flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  /* 名前のすぐ右の⚠(家具からポケモン診断)。名前が省略されても、⚠は消えないよう、名前の枠の外に置いている */
+  .legend-row .name-row > .env-warn-mark{ flex:none; margin-left:-3px; }
   .legend-row .tags{ margin-top:4px; display:flex; flex-wrap:wrap; gap:4px; }
   .legend-row .tags span{ font-size:10px; padding:2px 7px; border-radius:999px; background:var(--primary-soft); color:var(--primary-strong); font-weight:700; }
   .legend-row .tags span.dislike{ background:var(--accent-soft); color:var(--accent-strong); }
@@ -1669,12 +1669,27 @@
   function envWarnMark(f, picks){
     const who = envWarnPicks(f, picks);
     if (!who.length) return "";
-    const t = esc(who.map(envWarnText).join(" / "));
-    return '<span class="env-warn-mark" title="' + t + '" aria-label="' + t + '">⚠</span>';
+    return warnMarkHtml(envWarnTextsGrouped(who));
   }
-  // 家具の下に出す、⚠の理由の行
-  function envWarnLines(f, picks){
-    return envWarnPicks(f, picks).map(p => '<div class="env-warn">' + esc(envWarnText(p)) + '</div>').join("");
+  // 同じ環境が好きなポケモンを、1つの文にまとめる(2026年10月11日に追加)
+  // 例：「⚠ ラビフット・エースバーン・ヒバニーは「あたたかい」の環境が好みです」(名前のあいだは listSep()。日本語は「・」)
+  // 2匹以上のときは、英語の動詞の形が変わる(prefers → prefer)ので、「（2匹以上のとき）」の文を使う(日本語の文は、1匹のときと同じ)。
+  // 好きな環境がちがうポケモンは、環境ごとに別の文にして、吹き出しでは「 / 」でつなぐ。
+  function envWarnTextsGrouped(who){
+    const byEnv = new Map();
+    who.forEach(p => { if (!byEnv.has(p.env)) byEnv.set(p.env, []); byEnv.get(p.env).push(p); });
+    return Array.from(byEnv, ([env, ps]) => ps.length === 1
+      ? envWarnText(ps[0])
+      : tr('⚠ {name}は「{env}」の環境が好みです（2匹以上のとき）',
+          { name: ps.map(p => pName(p.name)).join(listSep()), env: tr(env) },
+          '⚠ {name}は「{env}」の環境が好みです'));
+  }
+  // 小さな⚠の印。texts(注意の文の配列)は、パソコンはマウスを乗せると、スマートフォンはタップすると、吹き出しで出る(setupWarnTips)。
+  // 2026年10月11日に、それまで文で出していた⚠(家具の下の行・家具からポケモン診断の行・「両立できません」の行)も、すべてこの印にした。
+  function warnMarkHtml(texts){
+    if (!texts || !texts.length) return "";
+    const t = esc(texts.join(" / "));
+    return '<span class="env-warn-mark" title="' + t + '" aria-label="' + t + '">⚠</span>';
   }
   // ===== 「⚠」の吹き出し(2026年10月11日に追加) =====
   // スマートフォン(指やペンでのタップ)で⚠を押すと、title の文を、⚠の上(上に場所がなければ下)に、小さな吹き出しで出し、2.5秒で消す。
@@ -1748,16 +1763,17 @@
     const noteText = envs.length === 1
       ? tr('このメンバーは{env}の環境が好きです。（環境が1つのとき）', { env: joined }, 'このメンバーは{env}の環境が好きです。'.replace('{env}', joined))
       : tr('このメンバーは{env}の環境が好きです。', { env: joined });
-    let h = '<div class="env-note">' + esc(noteText);
+    // 両立できない組み合わせがあるときは、文の右に⚠の印を出す(吹き出しで「⚠ AとBの好きな環境は、同じ住処では両立できません」)
+    const conflicts = [];
     ENV_CONFLICTS.forEach(([x, y]) => {
       const a = picks.filter(p => p.env === x), b = picks.filter(p => p.env === y);
       if (!a.length || !b.length) return;
-      h += '<div class="env-conflict">⚠ ' + esc(tr('{a}と{b}の好きな環境は、同じ住処では両立できません', {
+      conflicts.push('⚠ ' + tr('{a}と{b}の好きな環境は、同じ住処では両立できません', {
         a: a.map(p => pName(p.name)).join(listSep()),
         b: b.map(p => pName(p.name)).join(listSep())
-      })) + '</div>';
+      }));
     });
-    return h + '</div>';
+    return '<div class="env-note">' + esc(noteText) + warnMarkHtml(conflicts) + '</div>';
   }
 
   const DEFAULT_PICK = ["デカヌチャン","パピモッチ","バウッツェル","ピカチュウ"];
@@ -2208,9 +2224,8 @@
       htmlParts.push(
         '<div class="furn-dex-item">' +
           '<div style="flex:1;min-width:0;">' +
-            '<div class="fname-row"><div class="fname">' + fnameLabel + '</div>' + furnEnvTagHtml + '</div>' +
+            '<div class="fname-row"><div class="fname">' + fnameLabel + envWarnMark(r.furniture, picks) + '</div>' + furnEnvTagHtml + '</div>' +
             '<div class="who">' + whoHtml + '</div>' +
-            envWarnLines(r.furniture, picks) +
           '</div>' +
           '<span class="recipe-badge ' + recipeClass + '">' + recipeLabel + '</span>' +
         '</div>'
@@ -2354,7 +2369,6 @@
           }
           text += '</div>';
           text += '<div class="rp">' + pokemonPills + '<span style="white-space:nowrap;">' + esc(tr('が好き')) + '</span></div>';
-          text += envWarnLines(first.scored.furniture, picks);
           if (others.length > 0) {
             text += '<span class="more-list" hidden>' + esc(tr('ほかの候補：')) + (isEastAsian() ? '' : ' ') + others.map(m => esc(fName(m.name)) + envWarnMark(m.scored.furniture, picks)).join(listSep()) + '</span>';
           }
@@ -2716,15 +2730,15 @@
           '<div class="legend-row">' +
             '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
             '<div style="min-width:0;flex:1;">' +
+              // 名前の右の⚠：吹き出しの文の例「⚠ ヨマワルは「くらい」の環境が好みです（照明：ランタン・デスクライト）」
               '<div class="name-row pk-row"><div class="name">' + esc(pName(p.name)) + '</div>' +
+                warnMarkHtml(r.warns.map(w => envWarnText(p) + parenOpen() + tr(w.cat) + colon() + countedNames(w.items) + parenClose())) +
                 pokeHabitatTags(p) +
               '</div>' +
               '<div class="tags">' +
                 p.likes.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +
                 (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
               '</div>' +
-              // 例：「⚠ ヨマワルは「くらい」の環境が好みです（照明：ランタン・デスクライト）」
-              r.warns.map(w => '<div class="env-warn">' + esc(envWarnText(p) + parenOpen() + tr(w.cat) + colon() + countedNames(w.items) + parenClose()) + '</div>').join("") +
             '</div>' +
           '</div>';
       });

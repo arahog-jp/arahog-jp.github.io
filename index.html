@@ -3162,13 +3162,13 @@
         const likers = pl.members.filter(p => kariLikesUsable(p, f));
         const hasRecipe = f.recipe === true;
         const recipeLabel = f.recipe !== null ? (hasRecipe ? tr('レシピあり') : tr('レシピなし')) : tr('レシピ不明');
-        const sizeLabel = it.cat === "きゅうけい" ? parenOpen() + esc(tr('サイズ')) + sp() + (f.size != null ? f.size : esc(tr('不明'))) + parenClose() : '';
+        // きゅうけい家具の右の「（サイズ4）」は、2026年10月11日に出さないことにした(家具は、サイズも見て選んでいる)
         const envTag = (f.env && f.env.length) ? '<span class="env-tag">' + f.env.map(c => esc(tr(FURN_CAT_ENV[c] || c))).join(listSep()) + '</span>' : '';
         // 1行目：分類(おもちゃ・かざりつけ・きゅうけい)の見出し。2行目から：家具名など
         html += '<div class="furn-dex-item kari-furn-item">' +
           '<div class="kari-cat-row"><span class="kari-cat">' + esc(tr(it.cat)) + '</span>' + '<span class="recipe-badge ' + (hasRecipe ? 'yes' : 'no') + '">' + recipeLabel + '</span></div>' +
           '<div style="flex:1;min-width:0;">' +
-            '<div class="fname-row"><div class="fname">' + esc(fName(f.name)) + sizeLabel + '</div>' + envTag + '</div>' +
+            '<div class="fname-row"><div class="fname">' + esc(fName(f.name)) + '</div>' + envTag + '</div>' +
             (likers.length ? '<div class="who">' + likers.map(p => '<span>' + esc(pName(p.name)) + '</span>').join("") + '<span class="who-like">' + esc(tr('が好き')) + '</span></div>' : '') +
           '</div>' +
         '</div>';

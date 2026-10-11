@@ -156,6 +156,52 @@
     --hero-wash:rgba(18,23,42,.30);
   }
 
+  /* ---------- 「仮住まいシミュレータ」の配色(ごく淡いターコイズ×サーモンピンク。2026年10月11日に追加) ----------
+     家具からポケモン診断と同じしくみで、仮住まいシミュレータの画面を表示しているあいだだけ、
+     body に "mode-kari" というクラスを付けて、色を上書きする。
+     昼間(ライトモード)は、背景(--bg)などを、ごく淡いターコイズ(青緑)にして、
+     主な色(--primary)を落ち着いたターコイズ、アクセント(--accent)をサーモンピンクにする。
+     夜間(ダークモード)は、ほかの2つのツールと同じ黒に近い背景に戻し、主な色・アクセントだけを、
+     暗い背景で見やすい、明るいターコイズとサーモンピンクにする。 */
+  body.mode-kari{
+    --bg:#EAF7F5;
+    --surface-alt:#DDF1EE;
+    --border:#C6E6E1;
+    --primary:#2B8C86;
+    --primary-strong:#1D6964;
+    --primary-soft:#D6EFEB;
+    --accent:#EE8274;
+    --accent-strong:#D2604F;
+    --accent-soft:#FDE3DE;
+    --hero-wash:rgba(234,247,245,.42);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) body.mode-kari{
+      --bg:#12172A;
+      --surface-alt:#242C4C;
+      --border:#333C63;
+      --primary:#7ED3CC;
+      --primary-strong:#A9E4DF;
+      --primary-soft:#1C3A3C;
+      --accent:#F59C90;
+      --accent-strong:#F8B9AF;
+      --accent-soft:#3D2626;
+      --hero-wash:rgba(18,23,42,.30);
+    }
+  }
+  :root[data-theme="dark"] body.mode-kari{
+    --bg:#12172A;
+    --surface-alt:#242C4C;
+    --border:#333C63;
+    --primary:#7ED3CC;
+    --primary-strong:#A9E4DF;
+    --primary-soft:#1C3A3C;
+    --accent:#F59C90;
+    --accent-strong:#F8B9AF;
+    --accent-soft:#3D2626;
+    --hero-wash:rgba(18,23,42,.30);
+  }
+
   *{box-sizing:border-box;}
   /* html にも --bg を敷いておく。PC の大きい画面だと、本文の高さが画面の高さより
      短くて、body の下に隙間ができることがあるので、その隙間も夜は暗く見えるように。
@@ -346,6 +392,20 @@
   /* 使い方の小窓: 「施設診断の使い方」「家具からポケモン診断の使い方」のグループ見出し */
   .how-group-title{ font-size:12.5px; font-weight:800; line-height:1.6; color:var(--text-muted); margin:0 0 10px; }
   .how-group-title-2nd{ margin-top:1.8em; padding-top:1.4em; border-top:1px solid var(--border); }
+  /* 使い方は、開け閉めする形(2026年10月11日に変更)。はじめはグループ見出しだけが並び、見出しを押すと、その中身が開く。
+     変換ページが作る HTML(how-group-title と how-item)は、そのままにして、開いたときに、プログラム(setupHowFold)が、
+     グループごとに how-fold で囲んで、見出しを押せるボタン(how-toggle。右端に Q&A と同じ「＋」「－」の印)にする。 */
+  #howOverlay .how-fold{ border-top:1px solid var(--border); padding:9px 0; }
+  #howOverlay .how-fold:last-child{ border-bottom:1px solid var(--border); }
+  .how-toggle{
+    width:100%; display:flex; align-items:flex-start; gap:.5em; margin:0; padding:0; border:none; background:none;
+    font-family:inherit; text-align:left; cursor:pointer; -webkit-tap-highlight-color:transparent;
+    font-size:12.5px; font-weight:800; line-height:1.9; color:var(--text);
+  }
+  .how-toggle .how-toggle-text{ flex:1; min-width:0; }
+  .how-toggle[aria-expanded="true"] .qa-pm::after{ display:none; }
+  .how-toggle:active .qa-pm{ background:var(--surface-alt); }
+  .how-body{ padding:8px 0 4px; }
   /* 使い方の小窓: 見出し(①ポケモンをえらぶ など)と、その説明 */
   .how-item + .how-item{ margin-top:1.3em; }
   .how-h{ font-size:12.5px; font-weight:800; line-height:1.7; color:var(--primary-strong); }
@@ -972,6 +1032,50 @@
   }
   .recipe-badge.yes{ background:var(--accent-soft); color:var(--accent-strong); }
   .recipe-badge.no{ background:var(--surface-alt); color:var(--text-faint); }
+  /* ---------- 仮住まいシミュレータの結果(仮住まいのまとまり) ---------- */
+  .kari-summary{ font-size:13.5px; font-weight:800; color:var(--text); margin:0 0 12px; }
+  .kari-list{ display:flex; flex-direction:column; gap:14px; }
+  .kari-house{
+    border-radius:var(--radius-lg); border:1.5px solid var(--primary);
+    background:linear-gradient(160deg, var(--primary-soft) 0%, var(--surface) 60%);
+    padding:14px; box-shadow:var(--shadow);
+  }
+  .kari-head{ display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-bottom:10px; }
+  .kari-no{ font-family:"M PLUS Rounded 1c",sans-serif; font-weight:800; font-size:16px; color:var(--primary-strong); margin-right:2px; }
+  .kari-head .env-tag{
+    flex:none; font-size:10.5px; font-weight:700; line-height:1.5;
+    padding:1px 9px; border-radius:999px; white-space:nowrap;
+    border:1px solid #F1E3B3; background:#FFF8E1; color:#8A6A1C;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .kari-head .env-tag{ border-color:#5A4B22; background:#3A331C; color:#F3DE9A; }
+  }
+  :root[data-theme="dark"] .kari-head .env-tag{ border-color:#5A4B22; background:#3A331C; color:#F3DE9A; }
+  .kari-head .kari-count{ margin-left:auto; font-size:11.5px; font-weight:700; color:var(--text-faint); }
+  .kari-members, .kari-furn{ display:flex; flex-direction:column; gap:7px; }
+  .kari-sub{
+    font-size:11.5px; font-weight:800; color:var(--primary-strong);
+    margin:12px 2px 6px; display:flex; align-items:center; justify-content:space-between; gap:8px;
+  }
+  .kari-cat{
+    flex:none; align-self:flex-start; margin-top:1px;
+    font-size:10px; font-weight:800; padding:2px 8px; border-radius:999px; white-space:nowrap;
+    background:var(--accent-soft); color:var(--accent-strong);
+  }
+  /* 「好きな環境を考慮する」のチェックボックス(① の「仮住まいをつくる」の上の行) */
+  .kari-env-opt{ margin-top:14px; display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:var(--text); cursor:pointer; user-select:none; }
+  .kari-env-opt input{ width:17px; height:17px; margin:0; accent-color:var(--primary); cursor:pointer; }
+  .kari-env-opt + .cta-row{ margin-top:10px; }
+  /* 好きな環境を考慮しないときに、同居できない環境が入った家の、環境の楕円の右に出す⚠ */
+  .kari-env-warn{ font-size:12px; font-weight:800; color:var(--accent-strong); cursor:help; }
+  /* 「家具リストを出力」(すべての仮住まいの家具を、数をまとめてコピーする)。上は「② シミュレーション結果」の行の右端、下は結果のいちばん下 */
+  .kari-list-copy-bottom{ display:flex; justify-content:flex-end; margin-top:14px; }
+  .furn-dex-item .who span.who-like{ background:none; padding:2px 0; color:var(--text-muted); }
+  /* Q&A の「＋厳選家具一覧」で開く表 */
+  table.kari-pick-table{ width:100%; border-collapse:collapse; margin-top:6px; font-size:11.5px; }
+  table.kari-pick-table th{ text-align:left; font-weight:800; color:var(--primary-strong); border-bottom:1.5px solid var(--border); padding:4px 6px; }
+  table.kari-pick-table td{ padding:4px 6px; border-bottom:1px solid var(--border); vertical-align:top; }
+  table.kari-pick-table tr:last-child td{ border-bottom:none; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8975014206367755"
@@ -991,6 +1095,7 @@
     <div class="menu-dropdown" id="menuDropdown" hidden>
       <button type="button" class="menu-item" id="switchToFurnitureMenuItem" data-i18n="家具からポケモン診断に切り替え">家具からポケモン診断に切り替え</button>
       <button type="button" class="menu-item" id="switchToFacilityMenuItem" data-i18n="施設診断に切り替え" hidden>施設診断に切り替え</button>
+      <button type="button" class="menu-item" id="switchToKariMenuItem" data-i18n="仮住まいシミュレータに切り替え">仮住まいシミュレータに切り替え</button>
       <button type="button" class="menu-item" id="aboutMenuItem" data-i18n="このツールについて">このツールについて</button>
       <button type="button" class="menu-item" id="howMenuItem" data-i18n="使い方">使い方</button>
       <button type="button" class="menu-item" id="newsMenuItem" data-i18n="お知らせ">お知らせ</button>
@@ -1072,6 +1177,15 @@
       <div class="how-item">
         <div class="how-h">② <span data-i18n="診断結果">診断結果</span></div>
         <p class="how-p"><span data-i18n="選択した家具を好きなポケモンが表示されます。">選択した家具を好きなポケモンが表示されます。</span><br><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="ボタンを押すと、ポケモンの名前をコピーできます。">ボタンを押すと、ポケモンの名前をコピーできます。</span></p>
+      </div>
+      <div class="how-group-title how-group-title-2nd" data-i18n="仮住まいシミュレータの使い方">仮住まいシミュレータの使い方</div>
+      <div class="how-item">
+        <div class="how-h">① <span data-i18n="ポケモンをえらぶ">ポケモンをえらぶ</span></div>
+        <p class="how-p" data-i18n="1〜20匹までの仮住まいを作りたいポケモンを選ぶと、ポケモンを4匹1セットの仮住まいにまとめ、それぞれの仮住まいのポケモンが好む家具の中から置くべき家具を選んでくれます。">1〜20匹までの仮住まいを作りたいポケモンを選ぶと、ポケモンを4匹1セットの仮住まいにまとめ、それぞれの仮住まいのポケモンが好む家具の中から置くべき家具を選んでくれます。</p>
+      </div>
+      <div class="how-item">
+        <div class="how-h">② <span data-i18n="シミュレーション結果">シミュレーション結果</span></div>
+        <p class="how-p"><span class="how-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span data-i18n="「家具リストを出力」のボタンを押すと、必要な家具とその数の情報をコピーできます。">「家具リストを出力」のボタンを押すと、必要な家具とその数の情報をコピーできます。</span></p>
       </div>
       <!-- 変換ページ用の目印【使い方：ここまで】 -->
     </div>
@@ -1161,6 +1275,22 @@
       <div class="qa-item">
         <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="家具からポケモン診断はどうやってポケモンを選出してるの？">家具からポケモン診断はどうやってポケモンを選出してるの？</span><span class="qa-pm" aria-hidden="true"></span></button>
         <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text" data-i18n="えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。">えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。</span></div>
+      </div>
+      <div class="qa-item">
+        <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="仮住まいシミュレータの家具はどうやって選んでいるの？">仮住まいシミュレータの家具はどうやって選んでいるの？</span><span class="qa-pm" aria-hidden="true"></span></button>
+        <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><div class="qa-text qa-body">
+          <span class="qa-para"><span data-i18n="別の仮住まいで使った家具をそのまま使えるように、より多くのポケモンが好む家具を12種類厳選し、その中から最適な組み合わせを優先的に選ぶようにしています。">別の仮住まいで使った家具をそのまま使えるように、より多くのポケモンが好む家具を12種類厳選し、その中から最適な組み合わせを優先的に選ぶようにしています。</span><br><span data-i18n="これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)">これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)</span><br><span data-i18n="これらの中から好みの家具を選べないポケモンについては、全ての家具から選ばれます。">これらの中から好みの家具を選べないポケモンについては、全ての家具から選ばれます。</span></span>
+          <button type="button" class="formula-toggle fold-btn" aria-expanded="false" aria-controls="qaFold2" data-fold-label="厳選家具一覧">＋厳選家具一覧</button>
+          <div class="formula-panel fold-panel" id="qaFold2" hidden>
+            <div class="fm-step">
+              <div class="fm-li" data-i18n="・おもちゃ・かざりつけ・きゅうけいの、厳選家具12種類です。">・おもちゃ・かざりつけ・きゅうけいの、厳選家具12種類です。</div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+      <div class="qa-item">
+        <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="仮住まいシミュレータで住み心地はどのくらい上がるの？">仮住まいシミュレータで住み心地はどのくらい上がるの？</span><span class="qa-pm" aria-hidden="true"></span></button>
+        <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text" data-i18n="環境を整えて、好きな味の食べものをあげたときに、全員が「めちゃイイ感じ」以上になることをめざした組み合わせです。">環境を整えて、好きな味の食べものをあげたときに、全員が「めちゃイイ感じ」以上になることをめざした組み合わせです。</span></div>
       </div>
       <!-- 変換ページ用の目印【Q&A：ここまで】 -->
     </div>
@@ -1262,6 +1392,42 @@
   </section>
 </div>
 
+<div id="kariView" hidden>
+  <div class="hero">
+    <div class="hero-banner">
+      <picture>
+        <source srcset="画像保管庫/banner-dark.png" media="(prefers-color-scheme: dark)">
+        <img src="画像保管庫/banner-bright.png" alt="">
+      </picture>
+      <div class="scrim" aria-hidden="true"></div>
+      <h1><span data-i18n="えらんだポケモンの">えらんだポケモンの</span><br><span data-i18n="仮住まいを">仮住まいを</span><br><span data-i18n="シミュレーションします">シミュレーションします</span></h1>
+    </div>
+    <p data-i18n="1〜20匹までの仮住まいを作りたいポケモンを選ぶと、ポケモンを4匹1セットの仮住まいにまとめ、それぞれの仮住まいのポケモンが好む家具の中から置くべき家具を選んでくれます。">1〜20匹までの仮住まいを作りたいポケモンを選ぶと、ポケモンを4匹1セットの仮住まいにまとめ、それぞれの仮住まいのポケモンが好む家具の中から置くべき家具を選んでくれます。</p>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>① <span data-i18n="ポケモンをえらぶ">ポケモンをえらぶ</span></h2>
+      <span class="count" id="kariSelectedCount">0 / 20 匹</span>
+    </div>
+    <div class="picker-grid" id="kariPickerGrid"></div>
+    <label class="kari-env-opt"><input type="checkbox" id="kariEnvChk" checked><span data-i18n="好きな環境を考慮する">好きな環境を考慮する</span></label>
+    <div class="cta-row">
+      <button class="primary" id="kariRunBtn">✨ <span data-i18n="仮住まいをつくる">仮住まいをつくる</span></button>
+      <button class="ghost" id="kariResetBtn" data-i18n="えらび直す">えらび直す</button>
+      <span class="hint" id="kariSampleHint" data-i18n="※ サンプルとして8匹を仮選択済みです">※ サンプルとして8匹を仮選択済みです</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>② <span data-i18n="シミュレーション結果">シミュレーション結果</span></h2>
+      <span class="dex-copy-wrap fac-names-copy" id="kariListCopyWrap" hidden><span class="dex-copy-msg fac-copy-label" aria-live="polite" data-i18n="家具リストを出力">家具リストを出力</span><button type="button" class="dex-copy-btn" id="kariListCopyBtn" data-kari-list="1" data-i18n-aria="家具リストを出力" data-i18n-title="家具リストを出力" aria-label="家具リストを出力" title="家具リストを出力"></button></span>
+    </div>
+    <div id="kariResultBody"></div>
+  </section>
+</div>
+
 </main>
 <!-- プライバシーポリシー(privacy.html)へのリンク。AdSense(広告)を使うために必要なので、消さないこと。 -->
 <footer class="site-footer"><a href="privacy.html" data-i18n="プライバシーポリシー">プライバシーポリシー</a></footer>
@@ -1289,7 +1455,7 @@
     facilities: buildMap(HAS_LANG && LANG.facilities)
   };
   let currentLang = "ja";
-  // "facility" = 施設診断、"furniture" = 家具からポケモン診断。⋮メニューの切り替えで変わる。
+  // "facility" = 施設診断、"furniture" = 家具からポケモン診断、"kari" = 仮住まいシミュレータ。⋮メニューの切り替えで変わる。
   let currentMode = "facility";
   const missingSet = new Set();
   function lookup(kind, ja){
@@ -1361,11 +1527,11 @@
     }
     return codes.includes("en") ? "en" : "ja";
   }
-  // 前回選んでいたツール(施設診断/家具からポケモン診断)を、ブラウザに覚えておいて、次に開いたときも同じ方を出す
+  // 前回選んでいたツール(施設診断/家具からポケモン診断/仮住まいシミュレータ)を、ブラウザに覚えておいて、次に開いたときも同じ方を出す
   function detectMode(){
     try {
       const saved = localStorage.getItem("pokopiaMode");
-      if (saved === "furniture" || saved === "facility") return saved;
+      if (saved === "furniture" || saved === "facility" || saved === "kari") return saved;
     } catch (e) {}
     return "facility";
   }
@@ -2553,6 +2719,421 @@
     renderResults();
   });
 
+  // ===== 仮住まいシミュレータ(⋮メニューの「仮住まいシミュレータに切り替え」で開く、3つ目のツール) =====
+  // 1〜20匹のポケモンを選ぶと、①好きな環境ごとに、1戸4匹までの仮住まいにまとめ(共存できる環境なら、2つまで同じ家に混ぜて、戸数をできるだけ少なくする)、
+  // ②仮住まいごとに、おもちゃ・かざりつけ・きゅうけいを1つずつ選ぶ。
+  // 家具は、厳選した12種類(下の KARI_PICKS)の中から、その家の、いちばん多くのポケモンが好きなものを選ぶ。
+  // 家の中に、厳選家具の中には好きな家具が1つもないポケモンがいて、ほかの家具なら、より多くのポケモンの好物にできるときだけ、すべての家具から選ぶ。
+  // (厳選家具かどうかは、画面には出さない。Q&A にだけ書く。2026年10月11日に変更)
+  // 「好きな環境を考慮する」のチェックを外したときは、環境を気にせず、同居できない環境もひとまとめにする(その家の環境の楕円の右に⚠)。
+  // 好きな環境と両立しない家具(例：くらいの家の照明、乾そうしているの家の潤い)と、家の中のだれかの苦手な属性をもつ家具は、選ばない。
+  // 家具の選び方・厳選家具を変えたときは、Excelの「Q&A」シートの「仮住まいシミュレータで同じ家具ばかり出るのはなぜ？」の説明も直すこと。
+  // (厳選家具は、住み心地の検証〔2026年10月〕で選んだ「共通セット」のおもちゃ・かざりつけ7種類と、作りやすい(作りやすさレベル3・サイズ4)きゅうけい5種類)
+  const KARI_MAX = 20;
+  const KARI_CATS = ["おもちゃ", "かざりつけ", "きゅうけい"];
+  const KARI_PICKS = {
+    "おもちゃ": ["あみものキット", "アンティークどけい", "とびこえタイヤ", "シンク"],
+    "かざりつけ": ["かざりざら", "木のすばこ", "ミニはつでんマシン"],
+    "きゅうけい": ["キュートなベッド", "ナチュラルなベッド", "リゾートなハンモック", "モンスターボールベッド", "ポップなベッド"]
+  };
+  // 好きな属性で、使えるサイズのきゅうけい家具が、家の中のだれにもないときに置く、きゅうけい家具
+  const KARI_FALLBACK_BED = "モンスターボールベッド";
+  // 仮住まいを並べる順番(この順番で「仮住まい1」「仮住まい2」…と番号を振る)
+  const KARI_ENV_ORDER = ["あかるい", "あたたかい", "うるおっている", "くらい", "すずしい", "乾そうしている"];
+  // 家具の選び方の重み。住み心地の検証で、「めちゃイイ感じ」以上に、いちばん効いたのは、好物のきゅうけい家具だったため、きゅうけいを重くしている。
+  const KARI_WEIGHT = { "おもちゃ": 1, "かざりつけ": 1, "きゅうけい": 3 };
+  const DEFAULT_KARI_PICK = ["デカヌチャン", "パピモッチ", "バウッツェル", "ピカチュウ", "コダック", "ヨマワル", "ヤミラミ", "アーボ"];
+  let selectedKari = DEFAULT_KARI_PICK.map(n => selectablePokemons.find(x => x.name === n)).filter(Boolean);
+  let showKariSampleHint = true;
+  const kariPickerGrid = document.getElementById("kariPickerGrid");
+  const kariSelectedCount = document.getElementById("kariSelectedCount");
+  const kariResultBody = document.getElementById("kariResultBody");
+  let kariCopyNames = [];  // 仮住まいごとの家具名(コピーボタン用)
+  let kariListLines = [];  // 「家具リストを出力」でコピーする行(すべての仮住まいの家具を、数をまとめたもの)
+  const kariEnvChk = document.getElementById("kariEnvChk");
+  const kariListCopyWrap = document.getElementById("kariListCopyWrap");
+  const kariListCopyBtn = document.getElementById("kariListCopyBtn");
+  kariListCopyBtn.innerHTML = COPY_ICON;
+  function updateKariSampleHint(){
+    const el = document.getElementById("kariSampleHint");
+    if (el) el.hidden = !showKariSampleHint;
+  }
+  const kariFurnByCat = {};
+  KARI_CATS.forEach(c => { kariFurnByCat[c] = furniture.filter(f => f.usage === c); });
+  // 厳選家具の名前が data.js から消えたり、名前が変わったりしたときに、気づけるようにする
+  KARI_CATS.forEach(c => KARI_PICKS[c].forEach(n => {
+    if (!furnByName.has(n)) console.warn("[仮住まい] 厳選家具が data.js に見つかりません: " + n);
+  }));
+  // 厳選家具が、だれかの「苦手」に当たるようになったら(新しいポケモンが増えたときなど)、気づけるようにする(候補からは、家ごとに自動で外す)
+  KARI_CATS.forEach(c => KARI_PICKS[c].forEach(n => {
+    const f = furnByName.get(n);
+    if (!f) return;
+    const who = selectablePokemons.filter(p => p.dislike && f.attrs.includes(p.dislike));
+    if (who.length) console.warn("[仮住まい] 厳選家具「" + n + "」が、苦手な属性に当たるポケモンがいます: " + who.map(p => p.name).join("・"));
+  }));
+  function envConflict(a, b){ return ENV_CONFLICTS.some(([x, y]) => (a === x && b === y) || (a === y && b === x)); }
+  // そのポケモンが、その家具を好きか(好物の属性が1つ以上あり、苦手な属性がない)
+  function kariLikes(p, f){
+    if (p.dislike && f.attrs.includes(p.dislike)) return false;
+    return p.likes.some(a => f.attrs.includes(a));
+  }
+  // きゅうけい家具を使えるサイズか(家具のサイズが、ポケモンのサイズ以上)
+  function kariFits(p, f){
+    if (f.usage !== "きゅうけい") return true;
+    if (f.size == null || p.size == null) return true;
+    return f.size >= p.size;
+  }
+  function kariLikesUsable(p, f){ return kariLikes(p, f) && kariFits(p, f); }
+  // その家に置いてよい家具か(だれかの苦手な属性がない・好きな環境と両立しない環境を作らない・きゅうけいは全員が使えるサイズ)
+  function kariFurnOk(f, members, envs){
+    if (members.some(p => p.dislike && f.attrs.includes(p.dislike))) return false;
+    if ((f.env || []).some(cat => { const e = FURN_CAT_ENV[cat]; return e && envs.some(x => envConflict(x, e)); })) return false;
+    if (f.usage === "きゅうけい" && members.some(p => !kariFits(p, f))) return false;
+    return true;
+  }
+  const kariLikeCount = (f, members) => members.filter(p => kariLikesUsable(p, f)).length;
+  // 1つの家の、1つの分類(おもちゃ など)の家具を選ぶ
+  function kariPickItem(cat, members, envs){
+    const pickNames = KARI_PICKS[cat];
+    const cands = kariFurnByCat[cat].filter(f => kariFurnOk(f, members, envs));
+    const curated = pickNames.map(n => furnByName.get(n)).filter(f => f && cands.includes(f));
+    let best = null, bestN = -1;
+    curated.forEach(f => { const n = kariLikeCount(f, members); if (n > bestN) { best = f; bestN = n; } });
+    let isCurated = true;
+    // 厳選家具の中に、好きな家具が1つもないポケモンがいるときだけ、すべての家具から選ぶ(ほかの家具のほうが、より多くのポケモンの好物にできるときだけ使う)
+    const someoneLacks = members.some(p => !curated.some(f => kariLikesUsable(p, f)));
+    if (bestN < members.length && someoneLacks) {
+      let alt = null, altN = bestN;
+      cands.forEach(f => {
+        if (curated.includes(f)) return;
+        const n = kariLikeCount(f, members);
+        if (n > altN || (alt && n === altN && altBetter(f, alt))) { alt = f; altN = n; }
+      });
+      if (alt && altN > bestN) { best = alt; bestN = altN; isCurated = false; }
+    }
+    // きゅうけい：だれも好きなものがないときは、モンスターボールベッドにする
+    if (cat === "きゅうけい" && bestN <= 0) {
+      const fb = furnByName.get(KARI_FALLBACK_BED);
+      if (fb) { best = fb; bestN = 0; isCurated = true; }
+    }
+    return { cat, f: best, n: Math.max(0, bestN), curated: isCurated };
+    // 同じ数なら、レシピのある家具 → (きゅうけいは)大きい家具 → 名前順
+    function altBetter(a, b){
+      const ra = a.recipe === true ? 1 : 0, rb = b.recipe === true ? 1 : 0;
+      if (ra !== rb) return ra > rb;
+      if (cat === "きゅうけい" && (a.size || 0) !== (b.size || 0)) return (a.size || 0) > (b.size || 0);
+      return a.name.localeCompare(b.name, "ja") < 0;
+    }
+  }
+  function kariHouseEnvs(members){ return KARI_ENV_ORDER.filter(e => members.some(p => p.env === e)); }
+  // 家の環境の中に、同居できない組み合わせ(ENV_CONFLICTS の×)があるか
+  function kariEnvsConflict(envs){
+    for (let i = 0; i < envs.length; i++) for (let j = i + 1; j < envs.length; j++) if (envConflict(envs[i], envs[j])) return true;
+    return false;
+  }
+  function kariPlanHouse(members){
+    const envs = kariHouseEnvs(members);
+    const items = KARI_CATS.map(c => kariPickItem(c, members, envs));
+    const score = items.reduce((s, it) => s + KARI_WEIGHT[it.cat] * it.n + (it.curated ? 0.01 : 0), 0);
+    // 好きな環境を考慮しないときの入れかえ用：同居できない組み合わせ・環境の数が多い家は、少しだけ点を下げる(家具の好みが同じなら、近い環境どうしをまとめる)
+    let pairs = 0;
+    for (let i = 0; i < envs.length; i++) for (let j = i + 1; j < envs.length; j++) if (envConflict(envs[i], envs[j])) pairs++;
+    const looseScore = score - 0.5 * pairs - 0.05 * Math.max(0, envs.length - 1);
+    return { members, envs, items, score, looseScore, conflict: pairs > 0 };
+  }
+  // 戸数がいちばん少なくなる、環境の組み合わせを求める(1戸4匹まで・1戸に環境2つまで・共存できる環境だけ)
+  // counts：KARI_ENV_ORDER の順の匹数。返り値：家ごとの {環境: 匹数} の一覧
+  function kariMinHouses(counts){
+    const memo = new Map();
+    function solve(c){
+      const key = c.join(",");
+      if (memo.has(key)) return memo.get(key);
+      const i = c.findIndex(x => x > 0);
+      if (i < 0) { const r = { h: 0, mix: 0, list: [] }; memo.set(key, r); return r; }
+      let best = null;
+      const consider = (house, isMix) => {
+        const next = c.slice();
+        Object.keys(house).forEach(k => { next[+k] -= house[k]; });
+        const sub = solve(next);
+        const cand = { h: sub.h + 1, mix: sub.mix + (isMix ? 1 : 0), list: [house].concat(sub.list) };
+        if (!best || cand.h < best.h || (cand.h === best.h && cand.mix < best.mix)) best = cand;
+      };
+      for (let a = Math.min(4, c[i]); a >= 1; a--) {
+        consider({ [i]: a }, false);
+        if (a < 4) {
+          for (let j = i + 1; j < c.length; j++) {
+            if (!c[j] || envConflict(KARI_ENV_ORDER[i], KARI_ENV_ORDER[j])) continue;
+            for (let b = Math.min(4 - a, c[j]); b >= 1; b--) consider({ [i]: a, [j]: b }, true);
+          }
+        }
+      }
+      memo.set(key, best);
+      return best;
+    }
+    return solve(counts).list;
+  }
+  // 選んだポケモンを、仮住まいにまとめる
+  // useEnv：「好きな環境を考慮する」にチェックがあるとき true
+  function kariBuildHouses(picks, useEnv){
+    const envIdx = e => { const k = KARI_ENV_ORDER.indexOf(e); return k < 0 ? 99 : k; };
+    let houses;
+    if (useEnv) {
+      const byEnv = KARI_ENV_ORDER.map(e => picks.filter(p => p.env === e).sort((a, b) => a.name.localeCompare(b.name, "ja")));
+      const others = picks.filter(p => !KARI_ENV_ORDER.includes(p.env));  // 好きな環境が空のポケモン(念のため)
+      const plan = kariMinHouses(byEnv.map(l => l.length));
+      // はじめは、環境ごとに順番に入れる
+      const queues = byEnv.map(l => l.slice());
+      houses = plan.map(h => {
+        const m = [];
+        Object.keys(h).forEach(k => { for (let t = 0; t < h[k]; t++) m.push(queues[+k].shift()); });
+        return m;
+      });
+      others.forEach(p => {
+        let h = houses.find(m => m.length < 4);
+        if (!h) { h = []; houses.push(h); }
+        h.push(p);
+      });
+    } else {
+      // 好きな環境を考慮しないとき：環境の順に並べて、4匹ずつに分ける(戸数は、匹数÷4の切り上げ)
+      const sorted = picks.slice().sort((a, b) => (envIdx(a.env) - envIdx(b.env)) || a.name.localeCompare(b.name, "ja"));
+      houses = [];
+      for (let i = 0; i < sorted.length; i += 4) houses.push(sorted.slice(i, i + 4));
+    }
+    // ポケモンどうしを、家のあいだで入れかえて、家具の好みが合う組み合わせに近づける(戸数は変わらない)。
+    // 好きな環境を考慮するときは、同じ環境のポケモンどうしだけを入れかえる(家ごとの環境も変わらない)。
+    const val = pl => useEnv ? pl.score : pl.looseScore;
+    let plans = houses.map(kariPlanHouse);
+    for (let pass = 0; pass < 30; pass++) {
+      let improved = false;
+      for (let a = 0; a < houses.length; a++) {
+        for (let b = a + 1; b < houses.length; b++) {
+          for (let i = 0; i < houses[a].length; i++) {
+            for (let j = 0; j < houses[b].length; j++) {
+              const p = houses[a][i], q = houses[b][j];
+              if (useEnv && p.env !== q.env) continue;
+              const ma = houses[a].slice(), mb = houses[b].slice();
+              ma[i] = q; mb[j] = p;
+              const pa = kariPlanHouse(ma), pb = kariPlanHouse(mb);
+              if (val(pa) + val(pb) > val(plans[a]) + val(plans[b]) + 1e-9) {
+                houses[a] = ma; houses[b] = mb; plans[a] = pa; plans[b] = pb; improved = true;
+              }
+            }
+          }
+        }
+      }
+      if (!improved) break;
+    }
+    // 並べる順番：あかるい→あたたかい→うるおっている→くらい→すずしい→乾そうしている(環境が2つの家は、1つ目の環境の、1つだけの家のうしろ)
+    plans.forEach(pl => {
+      pl.members.sort((x, y) => (envIdx(x.env) - envIdx(y.env)) || x.name.localeCompare(y.name, "ja"));
+    });
+    plans.sort((x, y) => {
+      const xa = envIdx(x.envs[0]), ya = envIdx(y.envs[0]);
+      if (xa !== ya) return xa - ya;
+      if (x.envs.length !== y.envs.length) return x.envs.length - y.envs.length;
+      for (let k = 1; k < x.envs.length; k++) { const d = envIdx(x.envs[k]) - envIdx(y.envs[k]); if (d) return d; }
+      return 0;
+    });
+    return plans;
+  }
+
+  function renderKariSlots(){
+    kariPickerGrid.innerHTML = "";
+    const slots = selectedKari.slice();
+    if (slots.length < KARI_MAX) slots.push(null);
+    slots.forEach((p, idx) => {
+      const slot = document.createElement("div");
+      slot.className = "slot" + (p ? " filled" : "");
+      if (p) {
+        slot.innerHTML =
+          '<div class="chip-card">' +
+            '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
+            '<div style="min-width:0;flex:1;">' +
+              '<div class="name-row pk-row"><div class="name">' + esc(pName(p.name)) + '</div>' + pokeHabitatTags(p) + '</div>' +
+              '<div class="tags">' +
+                p.likes.map(t => '<span>' + esc(aName(t)) + '</span>').join("") +
+                (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<button class="clear-btn" data-idx="' + idx + '" aria-label="' + esc(tr('クリア')) + '">✕</button>';
+      } else {
+        slot.innerHTML =
+          '<span class="slot-num">POKÉMON ' + (idx + 1) + '</span>' +
+          '<input class="search" type="text" placeholder="' + esc(tr('ポケモン名で検索') + '…') + '" autocomplete="off">' +
+          '<div class="dropdown" hidden></div>';
+      }
+      kariPickerGrid.appendChild(slot);
+    });
+    kariPickerGrid.querySelectorAll(".clear-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedKari.splice(+btn.dataset.idx, 1);
+        showKariSampleHint = false;
+        updateKariSampleHint();
+        renderKariSlots();
+      });
+    });
+    kariPickerGrid.querySelectorAll("input.search").forEach(input => {
+      const dropdown = input.parentElement.querySelector(".dropdown");
+      function showResults(q){
+        const query = normSearch(norm(q).trim());
+        const usedNames = new Set(selectedKari.map(p => p.name));
+        let matches = selectablePokemons.filter(p => !usedNames.has(p.name) &&
+          (!query || normSearch(pName(p.name)).includes(query) || normSearch(p.name).includes(query)));
+        if (currentLang !== "ja") {
+          const col = getCollator();
+          matches = matches.slice().sort((a, b) => col.compare(pName(a.name), pName(b.name)));
+        }
+        dropdown.innerHTML = "";
+        if (matches.length === 0) {
+          dropdown.innerHTML = '<div class="empty">' + esc(tr('見つかりませんでした')) + '</div>';
+        } else {
+          matches.forEach(p => {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.innerHTML = '<span>' + esc(pName(p.name)) + '</span><small>' + p.likes.slice(0, 2).map(x => esc(aName(x))).join(listSep()) + '</small>';
+            b.addEventListener("mousedown", (e) => {
+              e.preventDefault();
+              if (selectedKari.length < KARI_MAX) selectedKari.push(p);
+              renderKariSlots();
+            });
+            dropdown.appendChild(b);
+          });
+        }
+        dropdown.hidden = false;
+      }
+      dropdown.addEventListener("mousedown", (e) => { e.preventDefault(); });
+      input.addEventListener("focus", () => showResults(input.value));
+      input.addEventListener("input", () => showResults(input.value));
+      input.addEventListener("blur", () => { setTimeout(() => { dropdown.hidden = true; }, 120); });
+    });
+    kariSelectedCount.textContent = tr('{n} / 20 匹', { n: selectedKari.length });
+  }
+
+  function renderKariResults(){
+    const picks = selectedKari.slice();
+    if (picks.length === 0) {
+      kariResultBody.innerHTML = '<div class="empty-state">' + esc(tr('まずはポケモンを1匹以上選んでください 🐾')) + '</div>';
+      kariListLines = [];
+      kariListCopyWrap.hidden = true;
+      return;
+    }
+    const plans = kariBuildHouses(picks, kariEnvChk.checked);
+    kariCopyNames = [];
+    kariListLines = kariFurnListLines(plans);
+    kariListCopyWrap.hidden = kariListLines.length === 0;
+    let html = '<p class="kari-summary">' + esc(tr('{n}匹を、{h}戸の仮住まいにまとめました。', { n: picks.length, h: plans.length })) + '</p>';
+    html += '<div class="kari-list">';
+    plans.forEach((pl, hi) => {
+      const copyNames = pl.items.map(it => fName(it.f.name));
+      kariCopyNames.push(copyNames);
+      const copyLabel = esc(tr('家具名をコピー'));
+      html += '<div class="kari-house">';
+      html += '<div class="kari-head"><span class="kari-no">' + esc(tr('仮住まい{n}', { n: hi + 1 })) + '</span>' +
+        pl.envs.map(e => '<span class="env-tag">' + esc(tr(e)) + '</span>').join("") +
+        (kariEnvsConflict(pl.envs) ? '<span class="kari-env-warn" title="' + esc(tr('⚠ 同居できない環境がふくまれています')) + '" aria-label="' + esc(tr('⚠ 同居できない環境がふくまれています')) + '">⚠</span>' : '') +
+        '<span class="kari-count">' + esc(tr('{n}匹', { n: pl.members.length })) + '</span></div>';
+      // 住むポケモン
+      html += '<div class="kari-members">';
+      pl.members.forEach(p => {
+        const warns = [];
+        // 好きな属性で、使えるサイズのきゅうけい家具が、どこにもないとき
+        if (!kariFurnByCat["きゅうけい"].some(f => kariLikesUsable(p, f))) warns.push(tr('⚠ 好きな属性で、使えるサイズのきゅうけい家具がありません'));
+        html += '<div class="legend-row">' +
+          '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
+          '<div style="min-width:0;flex:1;">' +
+            '<div class="name-row pk-row"><div class="name">' + esc(pName(p.name)) + '</div>' + pokeHabitatTags(p) + '</div>' +
+            '<div class="tags">' +
+              p.likes.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +
+              (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
+            '</div>' +
+            warns.map(w => '<div class="env-warn">' + esc(w) + '</div>').join("") +
+          '</div>' +
+        '</div>';
+      });
+      html += '</div>';
+      // 置く家具
+      html += '<div class="kari-sub"><span>' + esc(tr('置く家具')) + '</span>' +
+        '<span class="dex-copy-wrap"><span class="dex-copy-msg" aria-live="polite"></span>' +
+        '<button type="button" class="dex-copy-btn" data-kari="' + hi + '" title="' + copyLabel + '" aria-label="' + copyLabel + '">' + COPY_ICON + '</button></span></div>';
+      html += '<div class="kari-furn">';
+      pl.items.forEach(it => {
+        const f = it.f;
+        const likers = pl.members.filter(p => kariLikesUsable(p, f));
+        const hasRecipe = f.recipe === true;
+        const recipeLabel = f.recipe !== null ? (hasRecipe ? tr('レシピあり') : tr('レシピなし')) : tr('レシピ不明');
+        const sizeLabel = it.cat === "きゅうけい" ? parenOpen() + esc(tr('サイズ')) + sp() + (f.size != null ? f.size : esc(tr('不明'))) + parenClose() : '';
+        const envTag = (f.env && f.env.length) ? '<span class="env-tag">' + f.env.map(c => esc(tr(FURN_CAT_ENV[c] || c))).join(listSep()) + '</span>' : '';
+        html += '<div class="furn-dex-item">' +
+          '<span class="kari-cat">' + esc(tr(it.cat)) + '</span>' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div class="fname-row"><div class="fname">' + esc(fName(f.name)) + sizeLabel + '</div>' + envTag + '</div>' +
+            (likers.length ? '<div class="who">' + likers.map(p => '<span>' + esc(pName(p.name)) + '</span>').join("") + '<span class="who-like">' + esc(tr('が好き')) + '</span></div>' : '') +
+          '</div>' +
+          '<span class="recipe-badge ' + (hasRecipe ? 'yes' : 'no') + '">' + recipeLabel + '</span>' +
+        '</div>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div>';
+    // 結果のいちばん下にも、「家具リストを出力」を出す(上の「② シミュレーション結果」の行の右端と同じ)
+    const listLabel = esc(tr('家具リストを出力'));
+    html += '<div class="kari-list-copy-bottom"><span class="dex-copy-wrap fac-names-copy">' +
+      '<span class="dex-copy-msg fac-copy-label" aria-live="polite" data-i18n="家具リストを出力">' + listLabel + '</span>' +
+      '<button type="button" class="dex-copy-btn" data-kari-list="1" title="' + listLabel + '" aria-label="' + listLabel + '">' + COPY_ICON + '</button></span></div>';
+    kariResultBody.innerHTML = html;
+  }
+  // 「家具リストを出力」でコピーする行：すべての仮住まいの家具を集計して、「家具名　数」を1行に1つ。
+  // 並び順は、分類(おもちゃ・かざりつけ・きゅうけい)を分けずに、すべて家具名の順(日本語は五十音順。ほかの言語は、その言語の名前の、その言語での順)。
+  // 名前と数のあいだは、日本語・中国語は全角の空白、英語・韓国語は半角の空白。
+  function kariFurnListLines(plans){
+    const counts = new Map();
+    plans.forEach(pl => pl.items.forEach(it => {
+      const key = it.f.name;
+      const e = counts.get(key) || { f: it.f, cat: it.cat, n: 0 };
+      e.n++;
+      counts.set(key, e);
+    }));
+    const col = getCollator();
+    const gap = (currentLang === "en" || currentLang === "ko") ? " " : "\u3000";
+    return Array.from(counts.values())
+      .sort((a, b) => currentLang === "ja" ? a.f.name.localeCompare(b.f.name, "ja") : col.compare(fName(a.f.name), fName(b.f.name)))
+      .map(e => fName(e.f.name) + gap + e.n);
+  }
+  kariResultBody.addEventListener("click", (e) => {
+    const lb = e.target.closest(".dex-copy-btn[data-kari-list]");
+    if (lb) { copyNamesWithFeedback(lb, kariListLines); return; }
+    const btn = e.target.closest(".dex-copy-btn[data-kari]");
+    if (btn) copyNamesWithFeedback(btn, kariCopyNames[+btn.dataset.kari] || []);
+  });
+  kariListCopyBtn.addEventListener("click", () => copyNamesWithFeedback(kariListCopyBtn, kariListLines));
+  // 「好きな環境を考慮する」を切りかえたら、結果を作り直す
+  kariEnvChk.addEventListener("change", renderKariResults);
+  document.getElementById("kariRunBtn").addEventListener("click", renderKariResults);
+  document.getElementById("kariResetBtn").addEventListener("click", () => {
+    selectedKari = [];
+    showKariSampleHint = false;
+    updateKariSampleHint();
+    renderKariSlots();
+    renderKariResults();
+  });
+  // Q&A の「仮住まいシミュレータで同じ家具ばかり出るのはなぜ？」の、「＋厳選家具一覧」を開いたときに出す表。
+  // ボタンと枠は、変換ページが Excel の「Q&A」シートから作る(ボタンの文字「厳選家具一覧」が目印)。表の中身は、ここで KARI_PICKS から作る。
+  // (家具の名前を、いまの言語で出すため。厳選家具を変えれば、表も自動で変わる)
+  function renderKariPickTable(){
+    const btn = document.querySelector('#qaOverlay .fold-btn[data-fold-label="厳選家具一覧"]');
+    const panel = btn ? foldPanelOf(btn) : null;
+    if (!panel) return;
+    let tbl = panel.querySelector("table.kari-pick-table");
+    if (!tbl) { tbl = document.createElement("table"); tbl.className = "kari-pick-table"; panel.appendChild(tbl); }
+    const rows = Math.max.apply(null, KARI_CATS.map(c => KARI_PICKS[c].length));
+    let h = '<thead><tr>' + KARI_CATS.map(c => '<th>' + esc(tr(c)) + '</th>').join("") + '</tr></thead><tbody>';
+    for (let r = 0; r < rows; r++) {
+      h += '<tr>' + KARI_CATS.map(c => '<td>' + (KARI_PICKS[c][r] ? esc(fName(KARI_PICKS[c][r])) : '') + '</td>').join("") + '</tr>';
+    }
+    tbl.innerHTML = h + '</tbody>';
+  }
+
   // ヘッダー右上の「⋮」メニューと、「このツールについて」の小窓
   const menuBtn = document.getElementById("menuBtn");
   const menuDropdown = document.getElementById("menuDropdown");
@@ -2577,6 +3158,8 @@
   const furnitureViewEl = document.getElementById("furnitureView");
   const switchToFurnitureMenuItem = document.getElementById("switchToFurnitureMenuItem");
   const switchToFacilityMenuItem = document.getElementById("switchToFacilityMenuItem");
+  const switchToKariMenuItem = document.getElementById("switchToKariMenuItem");
+  const kariViewEl = document.getElementById("kariView");
 
   // ===== お知らせ =====
   // 新しいお知らせは、下の NEWS の「いちばん上」に足します(新しい順に並べる)。
@@ -2588,6 +3171,7 @@
   // お知らせのほかに、見出し・文・すきまの行も入れられる(Excelの「お知らせ」シートで、種類を「見出し」「文」「すきま」にした行。一覧にだけ出て、バナーには出ない)。
   //   { kind:"h", text:"見出しの文" } / { kind:"p", text:"文" } / { kind:"gap" }   ※ id・date は付けない。並べた順に、一覧に出る。
   const NEWS = [
+    { id:"20261011-1", date:"2026.10.11", text:"好きな味の表示と、仮住まいシミュレータを追加しました。" },
     { id:"20261002-score-tuning", date:"2026.10.2", text:"各施設への得点配分メカニズムを微調整しました。" },
     { id:"20260921-release", date:"2026.9.21", text:"リリースしました。", banner:false },
   ];
@@ -2717,8 +3301,53 @@
   function closeAbout(){
     aboutOverlay.hidden = true;
   }
+  // 使い方の小窓を、開け閉めする形にする(はじめはグループ見出しだけ。見出しを押すと、その中身が開く。2026年10月11日に追加)
+  // 変換ページが作る HTML(how-group-title と、そのあとの how-item)は、そのままにして、ここで、グループごとに how-fold で囲む。
+  (function setupHowFold(){
+    const titles = Array.from(howOverlay.querySelectorAll(".how-group-title"));
+    titles.forEach((t, i) => {
+      const fold = document.createElement("div");
+      fold.className = "how-fold";
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "how-toggle";
+      btn.setAttribute("aria-expanded", "false");
+      btn.setAttribute("aria-controls", "howBody" + (i + 1));
+      const label = document.createElement("span");
+      label.className = "how-toggle-text";
+      label.setAttribute("data-i18n", t.getAttribute("data-i18n") || t.textContent);
+      label.textContent = t.textContent;
+      const pm = document.createElement("span");
+      pm.className = "qa-pm";
+      pm.setAttribute("aria-hidden", "true");
+      btn.appendChild(label);
+      btn.appendChild(pm);
+      const body = document.createElement("div");
+      body.className = "how-body";
+      body.id = "howBody" + (i + 1);
+      body.hidden = true;
+      let n = t.nextElementSibling;
+      while (n && !n.classList.contains("how-group-title")) { const nx = n.nextElementSibling; body.appendChild(n); n = nx; }
+      t.replaceWith(fold);
+      fold.appendChild(btn);
+      fold.appendChild(body);
+      btn.addEventListener("click", () => {
+        const open = btn.getAttribute("aria-expanded") !== "true";
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        body.hidden = !open;
+      });
+    });
+  })();
+  function resetHow(){
+    howOverlay.querySelectorAll(".how-toggle").forEach(btn => {
+      btn.setAttribute("aria-expanded", "false");
+      const body = document.getElementById(btn.getAttribute("aria-controls"));
+      if (body) body.hidden = true;
+    });
+  }
   function openHow(){
     closeMenu();
+    resetHow();
     howOverlay.hidden = false;
   }
   function closeHow(){
@@ -2747,18 +3376,25 @@
     langOverlay.hidden = true;
   }
 
-  // ===== ツールの切り替え(⋮メニューのいちばん上。「施設診断」⇄「家具からポケモン診断」) =====
+  // ===== ツールの切り替え(⋮メニューのいちばん上。「施設診断」「家具からポケモン診断」「仮住まいシミュレータ」) =====
+  // ⋮メニューには、いま開いていない2つのツールへの切り替えを出す。
+  const MODE_TITLE = { facility: "ぽこあ施設診断", furniture: "ぽこあ家具診断", kari: "ぽこあ仮住まいシミュレータ" };
+  const MODE_SUB = { facility: "えらんだポケモンから、つくるべき施設をおすすめ", furniture: "えらんだ家具から、住みたがるポケモンをおすすめ", kari: "えらんだポケモンから、仮住まいと置く家具をおすすめ" };
   function setMode(mode){
-    currentMode = (mode === "furniture") ? "furniture" : "facility";
+    currentMode = (mode === "furniture" || mode === "kari") ? mode : "facility";
     try { localStorage.setItem("pokopiaMode", currentMode); } catch (e) {}
     // 家具からポケモン診断のあいだだけ、body に "mode-furniture" を付けて、配色をイエロー×ダークブルーにする
     document.body.classList.toggle("mode-furniture", currentMode === "furniture");
+    // 仮住まいシミュレータのあいだだけ、body に "mode-kari" を付けて、配色をターコイズ×サーモンピンクにする
+    document.body.classList.toggle("mode-kari", currentMode === "kari");
     facilityViewEl.hidden = currentMode !== "facility";
     furnitureViewEl.hidden = currentMode !== "furniture";
-    switchToFurnitureMenuItem.hidden = currentMode !== "facility";
-    switchToFacilityMenuItem.hidden = currentMode !== "furniture";
-    headerTitleEl.setAttribute("data-i18n", currentMode === "furniture" ? "ぽこあ家具診断" : "ぽこあ施設診断");
-    headerSubEl.setAttribute("data-i18n", currentMode === "furniture" ? "えらんだ家具から、住みたがるポケモンをおすすめ" : "えらんだポケモンから、つくるべき施設をおすすめ");
+    kariViewEl.hidden = currentMode !== "kari";
+    switchToFurnitureMenuItem.hidden = currentMode === "furniture";
+    switchToFacilityMenuItem.hidden = currentMode === "facility";
+    switchToKariMenuItem.hidden = currentMode === "kari";
+    headerTitleEl.setAttribute("data-i18n", MODE_TITLE[currentMode]);
+    headerSubEl.setAttribute("data-i18n", MODE_SUB[currentMode]);
     applyStaticText();
   }
   switchToFurnitureMenuItem.addEventListener("click", () => {
@@ -2769,6 +3405,11 @@
   switchToFacilityMenuItem.addEventListener("click", () => {
     closeMenu();
     setMode("facility");
+    window.scrollTo(0, 0);
+  });
+  switchToKariMenuItem.addEventListener("click", () => {
+    closeMenu();
+    setMode("kari");
     window.scrollTo(0, 0);
   });
 
@@ -2854,6 +3495,7 @@
     // 名前を並べるときの区切り(日本語・中国語は「、」、英語・韓国語は「, 」)
     document.querySelectorAll(".name-sep").forEach(el => { el.textContent = (currentLang === "en" || currentLang === "ko") ? ", " : "、"; });
     updateAllFoldBtns();
+    renderKariPickTable();
     renderNews();
     buildLangMenu();
   }
@@ -2867,6 +3509,8 @@
     renderResults();
     renderFurnSlots();
     renderFurnResults();
+    renderKariSlots();
+    renderKariResults();
   }
 
   currentLang = detectLang();
@@ -2876,9 +3520,12 @@
   renderResults();
   renderFurnSlots();
   renderFurnResults();
+  renderKariSlots();
+  renderKariResults();
   setMode(currentMode);
   updateSampleHint();
   updateFurnSampleHint();
+  updateKariSampleHint();
 })();
 </script>
 

@@ -1057,8 +1057,11 @@
     font-size:11.5px; font-weight:800; color:var(--primary-strong);
     margin:12px 2px 6px; display:flex; align-items:center; justify-content:space-between; gap:8px;
   }
+  /* 置く家具の1つ分。1行目に「おもちゃ」「かざりつけ」「きゅうけい」の見出し、2行目から家具名(2026年10月11日に、見出しを左から1行目へ変更) */
+  .kari-furn-item{ flex-wrap:wrap; row-gap:6px; }
+  .kari-cat-row{ flex:0 0 100%; display:flex; }
   .kari-cat{
-    flex:none; align-self:flex-start; margin-top:1px;
+    flex:none;
     font-size:10px; font-weight:800; padding:2px 8px; border-radius:999px; white-space:nowrap;
     background:var(--accent-soft); color:var(--accent-strong);
   }
@@ -3064,8 +3067,9 @@
         const recipeLabel = f.recipe !== null ? (hasRecipe ? tr('レシピあり') : tr('レシピなし')) : tr('レシピ不明');
         const sizeLabel = it.cat === "きゅうけい" ? parenOpen() + esc(tr('サイズ')) + sp() + (f.size != null ? f.size : esc(tr('不明'))) + parenClose() : '';
         const envTag = (f.env && f.env.length) ? '<span class="env-tag">' + f.env.map(c => esc(tr(FURN_CAT_ENV[c] || c))).join(listSep()) + '</span>' : '';
-        html += '<div class="furn-dex-item">' +
-          '<span class="kari-cat">' + esc(tr(it.cat)) + '</span>' +
+        // 1行目：分類(おもちゃ・かざりつけ・きゅうけい)の見出し。2行目から：家具名など
+        html += '<div class="furn-dex-item kari-furn-item">' +
+          '<div class="kari-cat-row"><span class="kari-cat">' + esc(tr(it.cat)) + '</span></div>' +
           '<div style="flex:1;min-width:0;">' +
             '<div class="fname-row"><div class="fname">' + esc(fName(f.name)) + sizeLabel + '</div>' + envTag + '</div>' +
             (likers.length ? '<div class="who">' + likers.map(p => '<span>' + esc(pName(p.name)) + '</span>').join("") + '<span class="who-like">' + esc(tr('が好き')) + '</span></div>' : '') +

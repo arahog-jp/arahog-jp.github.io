@@ -1052,6 +1052,8 @@
   }
   :root[data-theme="dark"] .kari-head .env-tag{ border-color:#5A4B22; background:#3A331C; color:#F3DE9A; }
   .kari-head .kari-count{ margin-left:auto; font-size:11.5px; font-weight:700; color:var(--text-faint); }
+  /* 「{n}匹」の右の、ポケモン名のコピーボタン。行の高さが、ボタンのぶんだけ広がらないよう、上下のマージンを負にしている */
+  .kari-head .kari-poke-copy{ margin:-3px 0; }
   .kari-members, .kari-furn{ display:flex; flex-direction:column; gap:7px; }
   .kari-sub{
     font-size:11.5px; font-weight:800; color:var(--primary-strong);
@@ -1059,7 +1061,14 @@
   }
   /* 置く家具の1つ分。1行目に「おもちゃ」「かざりつけ」「きゅうけい」の見出し、2行目から家具名(2026年10月11日に、見出しを左から1行目へ変更) */
   .kari-furn-item{ flex-wrap:wrap; row-gap:6px; }
-  .kari-cat-row{ flex:0 0 100%; display:flex; }
+  .kari-cat-row{ flex:0 0 100%; display:flex; justify-content:space-between; align-items:center; gap:8px; }  /* 右端に「レシピあり」などの印 */
+  /* 住むポケモン：名前だけを2列に並べる(2026年10月11日に変更) */
+  .kari-members-compact{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .kari-mem{ display:flex; align-items:center; gap:7px; min-width:0; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:6px 9px; }
+  .kari-mem .avatar{ width:24px; height:24px; border-radius:7px; flex:none; background:var(--primary-soft); color:var(--primary-strong); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; font-family:"M PLUS Rounded 1c",sans-serif; }
+  .kari-mem-name{ font-weight:700; font-size:12.5px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .kari-furn-item{ padding:8px 11px; }
+  .kari-mem-warn{ margin-top:6px; }
   .kari-cat{
     flex:none;
     font-size:10px; font-weight:800; padding:2px 8px; border-radius:999px; white-space:nowrap;
@@ -2752,6 +2761,7 @@
   const kariSelectedCount = document.getElementById("kariSelectedCount");
   const kariResultBody = document.getElementById("kariResultBody");
   let kariCopyNames = [];  // 仮住まいごとの家具名(コピーボタン用)
+  let kariCopyPokeNames = [];  // 仮住まいごとのポケモン名(「仮住まい1」の行の右端のコピーボタン用。2026年10月11日に追加)
   let kariListLines = [];  // 「家具リストを出力」でコピーする行(すべての仮住まいの家具を、数をまとめたもの)
   const kariEnvChk = document.getElementById("kariEnvChk");
   const kariListCopyWrap = document.getElementById("kariListCopyWrap");
@@ -3023,6 +3033,7 @@
     }
     const plans = kariBuildHouses(picks, kariEnvChk.checked);
     kariCopyNames = [];
+    kariCopyPokeNames = [];
     kariListLines = kariFurnListLines(plans);
     kariListCopyWrap.hidden = kariListLines.length === 0;
     let html = '<p class="kari-summary">' + esc(tr('{n}匹を、{h}戸の仮住まいにまとめました。', { n: picks.length, h: plans.length })) + '</p>';
@@ -3030,31 +3041,30 @@
     plans.forEach((pl, hi) => {
       const copyNames = pl.items.map(it => fName(it.f.name));
       kariCopyNames.push(copyNames);
+      kariCopyPokeNames.push(pl.members.map(p => pName(p.name)));
       const copyLabel = esc(tr('家具名をコピー'));
+      const pokeCopyLabel = esc(tr('ポケモン名をコピー'));
       html += '<div class="kari-house">';
       html += '<div class="kari-head"><span class="kari-no">' + esc(tr('仮住まい{n}', { n: hi + 1 })) + '</span>' +
         pl.envs.map(e => '<span class="env-tag">' + esc(tr(e)) + '</span>').join("") +
         (kariEnvsConflict(pl.envs) ? '<span class="kari-env-warn" title="' + esc(tr('⚠ 同居できない環境がふくまれています')) + '" aria-label="' + esc(tr('⚠ 同居できない環境がふくまれています')) + '">⚠</span>' : '') +
-        '<span class="kari-count">' + esc(tr('{n}匹', { n: pl.members.length })) + '</span></div>';
-      // 住むポケモン
-      html += '<div class="kari-members">';
+        '<span class="kari-count">' + esc(tr('{n}匹', { n: pl.members.length })) + '</span>' +
+        // 「{n}匹」の右：この仮住まいのポケモン名を、1行に1匹ずつコピーするボタン
+        '<span class="dex-copy-wrap kari-poke-copy"><span class="dex-copy-msg" aria-live="polite"></span>' +
+        '<button type="button" class="dex-copy-btn" data-kari-poke="' + hi + '" title="' + pokeCopyLabel + '" aria-label="' + pokeCopyLabel + '">' + COPY_ICON + '</button></span></div>';
+      // 住むポケモン(2026年10月11日に、名前だけを2列に並べる形に変更。好きな環境・味・属性は、ポケモンを選ぶところに出ているので、ここには出さない)
+      html += '<div class="kari-members kari-members-compact">';
+      const warnLines = [];
+      const noBedText = tr('⚠ 好きな属性で、使えるサイズのきゅうけい家具がありません');
       pl.members.forEach(p => {
-        const warns = [];
-        // 好きな属性で、使えるサイズのきゅうけい家具が、どこにもないとき
-        if (!kariFurnByCat["きゅうけい"].some(f => kariLikesUsable(p, f))) warns.push(tr('⚠ 好きな属性で、使えるサイズのきゅうけい家具がありません'));
-        html += '<div class="legend-row">' +
-          '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
-          '<div style="min-width:0;flex:1;">' +
-            '<div class="name-row pk-row"><div class="name">' + esc(pName(p.name)) + '</div>' + pokeHabitatTags(p) + '</div>' +
-            '<div class="tags">' +
-              p.likes.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +
-              (p.dislike ? '<span class="dislike">' + dislikeLabel() + esc(aName(p.dislike)) + '</span>' : '') +
-            '</div>' +
-            warns.map(w => '<div class="env-warn">' + esc(w) + '</div>').join("") +
-          '</div>' +
-        '</div>';
+        // 好きな属性で、使えるサイズのきゅうけい家具が、どこにもないときは、名前の右に⚠を出し、2列の下に、名前と注意の文を出す
+        const warn = !kariFurnByCat["きゅうけい"].some(f => kariLikesUsable(p, f));
+        if (warn) warnLines.push('<div class="env-warn kari-mem-warn"><b>' + esc(pName(p.name)) + '</b> ' + esc(noBedText) + '</div>');
+        html += '<div class="kari-mem"><div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
+          '<span class="kari-mem-name">' + esc(pName(p.name)) + '</span>' +
+          (warn ? '<span class="kari-env-warn" title="' + esc(noBedText) + '" aria-label="' + esc(noBedText) + '">⚠</span>' : '') + '</div>';
       });
-      html += '</div>';
+      html += '</div>' + warnLines.join("");
       // 置く家具
       html += '<div class="kari-sub"><span>' + esc(tr('置く家具')) + '</span>' +
         '<span class="dex-copy-wrap"><span class="dex-copy-msg" aria-live="polite"></span>' +
@@ -3069,12 +3079,11 @@
         const envTag = (f.env && f.env.length) ? '<span class="env-tag">' + f.env.map(c => esc(tr(FURN_CAT_ENV[c] || c))).join(listSep()) + '</span>' : '';
         // 1行目：分類(おもちゃ・かざりつけ・きゅうけい)の見出し。2行目から：家具名など
         html += '<div class="furn-dex-item kari-furn-item">' +
-          '<div class="kari-cat-row"><span class="kari-cat">' + esc(tr(it.cat)) + '</span></div>' +
+          '<div class="kari-cat-row"><span class="kari-cat">' + esc(tr(it.cat)) + '</span>' + '<span class="recipe-badge ' + (hasRecipe ? 'yes' : 'no') + '">' + recipeLabel + '</span></div>' +
           '<div style="flex:1;min-width:0;">' +
             '<div class="fname-row"><div class="fname">' + esc(fName(f.name)) + sizeLabel + '</div>' + envTag + '</div>' +
             (likers.length ? '<div class="who">' + likers.map(p => '<span>' + esc(pName(p.name)) + '</span>').join("") + '<span class="who-like">' + esc(tr('が好き')) + '</span></div>' : '') +
           '</div>' +
-          '<span class="recipe-badge ' + (hasRecipe ? 'yes' : 'no') + '">' + recipeLabel + '</span>' +
         '</div>';
       });
       html += '</div></div>';
@@ -3107,6 +3116,8 @@
   kariResultBody.addEventListener("click", (e) => {
     const lb = e.target.closest(".dex-copy-btn[data-kari-list]");
     if (lb) { copyNamesWithFeedback(lb, kariListLines); return; }
+    const pb = e.target.closest(".dex-copy-btn[data-kari-poke]");
+    if (pb) { copyNamesWithFeedback(pb, kariCopyPokeNames[+pb.dataset.kariPoke] || []); return; }
     const btn = e.target.closest(".dex-copy-btn[data-kari]");
     if (btn) copyNamesWithFeedback(btn, kariCopyNames[+btn.dataset.kari] || []);
   });

@@ -189,6 +189,7 @@ const LANG = {
     {"ja": "家具リストを出力", "en": "Copy furniture list", "ko": "가구 목록 출력", "zhHans": "输出家具清单", "zhHant": "輸出家具清單"},
     {"ja": "好きな環境を考慮する", "en": "Consider Ideal Habitats", "ko": "좋아하는 환경 고려하기", "zhHans": "考虑喜欢的环境", "zhHant": "考慮喜歡的環境"},
     {"ja": "⚠ 同居できない環境がふくまれています", "en": "⚠ Includes habitats that can't live together", "ko": "⚠ 함께 지낼 수 없는 환경이 포함되어 있습니다", "zhHans": "⚠ 包含无法共存的环境", "zhHant": "⚠ 包含無法共存的環境"},
+    {"ja": "ポケモン名をコピー", "en": "Copy Pokémon names", "ko": "포켓몬 이름 복사", "zhHans": "复制宝可梦名称", "zhHant": "複製寶可夢名稱"},
     {"ja": "リリースしました。", "en": "We've released the tool.", "ko": "출시했습니다.", "zhHans": "已正式发布。", "zhHant": "已正式發布。"},
     {"ja": "各施設への得点配分メカニズムを微調整しました。", "en": "We've fine-tuned how points are allocated to each facility.", "ko": "각 시설의 점수 배분 방식을 미세 조정했습니다.", "zhHans": "微调了各设施的得分分配机制。", "zhHant": "微調了各設施的得分分配機制。"},
     {"ja": "好きな味の表示と、仮住まいシミュレータを追加しました。", "en": "We've added favorite flavor display and the Temporary Home Simulator.", "ko": "좋아하는 맛 표시와 임시 거처 시뮬레이터를 추가했습니다.", "zhHans": "新增了喜欢的味道显示和临时住所模拟器。", "zhHant": "新增了喜歡的味道顯示和臨時住所模擬器。"},

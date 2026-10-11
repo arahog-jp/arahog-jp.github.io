@@ -848,6 +848,28 @@
   .env-note .env-conflict{ margin-top:2px; color:var(--accent-strong); font-weight:700; }
   .env-warn{ margin-top:3px; font-size:11px; line-height:1.6; font-weight:700; color:var(--accent-strong); }
   .env-warn-mark{ margin-left:3px; font-weight:800; color:var(--accent-strong); cursor:help; }
+  /* 「⚠」の注意の吹き出し(2026年10月11日に追加)。
+     パソコンでは、⚠にマウスを乗せると、ブラウザの説明(title)が出る。
+     スマートフォンでは、⚠をタップすると、この吹き出しが出て、2.5秒で自然に消える(setupWarnTips)。
+     対象は、.env-warn-mark(施設診断)と .kari-env-warn(仮住まいシミュレータ)。⚠の印を新しく作るときは、title を付けて、このどちらかのクラスにすること */
+  .env-warn-mark, .kari-env-warn{ position:relative; -webkit-tap-highlight-color:transparent; }
+  /* 指で押しやすいよう、見た目は変えずに、押せる範囲だけを広げる */
+  .env-warn-mark::after, .kari-env-warn::after{ content:""; position:absolute; inset:-8px -6px; }
+  .warn-tip{
+    position:fixed; z-index:2000; left:0; top:0;
+    max-width:min(280px, calc(100vw - 24px)); padding:7px 11px; border-radius:10px;
+    background:var(--text); color:var(--surface);
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","M PLUS Rounded 1c",sans-serif;
+    font-size:12px; font-weight:700; line-height:1.6; white-space:normal;
+    box-shadow:0 6px 18px rgba(0,0,0,.22);
+    opacity:0; transform:translateY(4px); transition:opacity .18s ease, transform .18s ease; pointer-events:none;
+  }
+  .warn-tip.show{ opacity:1; transform:translateY(0); }
+  .warn-tip::after{
+    content:""; position:absolute; left:var(--arrow-x, 50%); width:10px; height:10px; margin-left:-5px;
+    background:inherit; transform:rotate(45deg); bottom:-4px;
+  }
+  .warn-tip.below::after{ bottom:auto; top:-4px; }
   .furn-preview span.env-warn-mark{ padding:0; border:0; border-radius:0; background:none; font-size:inherit; color:var(--accent-strong); }
 
   /* 4位以降の詳細カードでは、🏆のうす絵柄は出さない */
@@ -1051,9 +1073,8 @@
     :root:not([data-theme="light"]) .kari-head .env-tag{ border-color:#5A4B22; background:#3A331C; color:#F3DE9A; }
   }
   :root[data-theme="dark"] .kari-head .env-tag{ border-color:#5A4B22; background:#3A331C; color:#F3DE9A; }
-  .kari-head .kari-count{ margin-left:auto; font-size:11.5px; font-weight:700; color:var(--text-faint); }
-  /* 「{n}匹」の右の、ポケモン名のコピーボタン。行の高さが、ボタンのぶんだけ広がらないよう、上下のマージンを負にしている */
-  .kari-head .kari-poke-copy{ margin:-3px 0; }
+  /* 行の右端の、ポケモン名のコピーボタン。行の高さが、ボタンのぶんだけ広がらないよう、上下のマージンを負にしている */
+  .kari-head .kari-poke-copy{ margin:-3px 0 -3px auto; }
   .kari-members, .kari-furn{ display:flex; flex-direction:column; gap:7px; }
   .kari-sub{
     font-size:11.5px; font-weight:800; color:var(--primary-strong);
@@ -1068,7 +1089,6 @@
   .kari-mem .avatar{ width:24px; height:24px; border-radius:7px; flex:none; background:var(--primary-soft); color:var(--primary-strong); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; font-family:"M PLUS Rounded 1c",sans-serif; }
   .kari-mem-name{ font-weight:700; font-size:12.5px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .kari-furn-item{ padding:8px 11px; }
-  .kari-mem-warn{ margin-top:6px; }
   .kari-cat{
     flex:none;
     font-size:10px; font-weight:800; padding:2px 8px; border-radius:999px; white-space:nowrap;
@@ -1080,8 +1100,6 @@
   .kari-env-opt + .cta-row{ margin-top:10px; }
   /* 好きな環境を考慮しないときに、同居できない環境が入った家の、環境の楕円の右に出す⚠ */
   .kari-env-warn{ font-size:12px; font-weight:800; color:var(--accent-strong); cursor:help; }
-  /* 「家具リストを出力」(すべての仮住まいの家具を、数をまとめてコピーする)。上は「② シミュレーション結果」の行の右端、下は結果のいちばん下 */
-  .kari-list-copy-bottom{ display:flex; justify-content:flex-end; margin-top:14px; }
   .furn-dex-item .who span.who-like{ background:none; padding:2px 0; color:var(--text-muted); }
   /* Q&A の「＋厳選家具一覧」で開く表 */
   table.kari-pick-table{ width:100%; border-collapse:collapse; margin-top:6px; font-size:11.5px; }
@@ -1654,6 +1672,59 @@
   function envWarnLines(f, picks){
     return envWarnPicks(f, picks).map(p => '<div class="env-warn">' + esc(envWarnText(p)) + '</div>').join("");
   }
+  // ===== 「⚠」の吹き出し(2026年10月11日に追加) =====
+  // スマートフォン(指やペンでのタップ)で⚠を押すと、title の文を、⚠の上(上に場所がなければ下)に、小さな吹き出しで出し、2.5秒で消す。
+  // パソコン(マウス)では、これまでどおり、マウスを乗せたときのブラウザの説明(title)を使うので、吹き出しは出さない。
+  // 画面をスクロールしたとき、ほかの場所をタップしたときも、吹き出しを消す。
+  const WARN_TIP_SELECTOR = ".env-warn-mark, .kari-env-warn";
+  const WARN_TIP_MS = 2500;
+  (function setupWarnTips(){
+    let tip = null, timer = null, lastPointer = "mouse";
+    function hideTip(){
+      clearTimeout(timer);
+      if (tip) tip.classList.remove("show");
+    }
+    function showTip(mark){
+      const text = mark.getAttribute("title") || mark.getAttribute("aria-label") || "";
+      if (!text) return;
+      if (!tip) {
+        tip = document.createElement("div");
+        tip.className = "warn-tip";
+        tip.setAttribute("role", "tooltip");
+        document.body.appendChild(tip);
+      }
+      tip.textContent = text;
+      tip.classList.remove("show", "below");
+      // 位置を決める(画面の左右からは12px以上離す)
+      const r = mark.getBoundingClientRect();
+      const w = tip.offsetWidth, h = tip.offsetHeight, gap = 8, edge = 12;
+      const cx = r.left + r.width / 2;
+      let left = Math.min(Math.max(cx - w / 2, edge), window.innerWidth - w - edge);
+      let top = r.top - h - gap;
+      if (top < edge) { top = r.bottom + gap; tip.classList.add("below"); }
+      tip.style.left = left + "px";
+      tip.style.top = top + "px";
+      tip.style.setProperty("--arrow-x", Math.min(Math.max(cx - left, 12), w - 12) + "px");
+      void tip.offsetWidth;  // 表示のアニメーションを、毎回はじめから動かすため
+      tip.classList.add("show");
+      clearTimeout(timer);
+      timer = setTimeout(hideTip, WARN_TIP_MS);
+    }
+    document.addEventListener("pointerdown", e => { lastPointer = e.pointerType || "mouse"; }, true);
+    document.addEventListener("click", e => {
+      const mark = e.target.closest && e.target.closest(WARN_TIP_SELECTOR);
+      if (mark && lastPointer !== "mouse") {
+        // ⚠のまわりのボタンなどが、いっしょに反応しないようにする
+        e.preventDefault();
+        e.stopPropagation();
+        showTip(mark);
+        return;
+      }
+      hideTip();
+    }, true);
+    document.addEventListener("scroll", hideTip, { passive: true, capture: true });  // 小窓の中のスクロールでも消す
+    window.addEventListener("resize", hideTip);
+  })();
   // 環境の名前をかっこで囲む(日本語は『』、中国語は「」、英語は""、韓国語は'')
   function quoteEnv(e){
     const n = tr(e);
@@ -3048,23 +3119,21 @@
       html += '<div class="kari-head"><span class="kari-no">' + esc(tr('仮住まい{n}', { n: hi + 1 })) + '</span>' +
         pl.envs.map(e => '<span class="env-tag">' + esc(tr(e)) + '</span>').join("") +
         (kariEnvsConflict(pl.envs) ? '<span class="kari-env-warn" title="' + esc(tr('⚠ 同居できない環境がふくまれています')) + '" aria-label="' + esc(tr('⚠ 同居できない環境がふくまれています')) + '">⚠</span>' : '') +
-        '<span class="kari-count">' + esc(tr('{n}匹', { n: pl.members.length })) + '</span>' +
-        // 「{n}匹」の右：この仮住まいのポケモン名を、1行に1匹ずつコピーするボタン
+        // 行の右端：この仮住まいのポケモン名を、1行に1匹ずつコピーするボタン(「{n}匹」の表示は、2026年10月11日になくした)
         '<span class="dex-copy-wrap kari-poke-copy"><span class="dex-copy-msg" aria-live="polite"></span>' +
         '<button type="button" class="dex-copy-btn" data-kari-poke="' + hi + '" title="' + pokeCopyLabel + '" aria-label="' + pokeCopyLabel + '">' + COPY_ICON + '</button></span></div>';
       // 住むポケモン(2026年10月11日に、名前だけを2列に並べる形に変更。好きな環境・味・属性は、ポケモンを選ぶところに出ているので、ここには出さない)
       html += '<div class="kari-members kari-members-compact">';
-      const warnLines = [];
       const noBedText = tr('⚠ 好きな属性で、使えるサイズのきゅうけい家具がありません');
       pl.members.forEach(p => {
-        // 好きな属性で、使えるサイズのきゅうけい家具が、どこにもないときは、名前の右に⚠を出し、2列の下に、名前と注意の文を出す
+        // 好きな属性で、使えるサイズのきゅうけい家具が、どこにもないときは、名前の右に⚠を出す
+        // (パソコンはマウスを乗せると、スマートフォンはタップすると、注意の文が出る。setupWarnTips)
         const warn = !kariFurnByCat["きゅうけい"].some(f => kariLikesUsable(p, f));
-        if (warn) warnLines.push('<div class="env-warn kari-mem-warn"><b>' + esc(pName(p.name)) + '</b> ' + esc(noBedText) + '</div>');
         html += '<div class="kari-mem"><div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
           '<span class="kari-mem-name">' + esc(pName(p.name)) + '</span>' +
           (warn ? '<span class="kari-env-warn" title="' + esc(noBedText) + '" aria-label="' + esc(noBedText) + '">⚠</span>' : '') + '</div>';
       });
-      html += '</div>' + warnLines.join("");
+      html += '</div>';
       // 置く家具
       html += '<div class="kari-sub"><span>' + esc(tr('置く家具')) + '</span>' +
         '<span class="dex-copy-wrap"><span class="dex-copy-msg" aria-live="polite"></span>' +
@@ -3089,11 +3158,6 @@
       html += '</div></div>';
     });
     html += '</div>';
-    // 結果のいちばん下にも、「家具リストを出力」を出す(上の「② シミュレーション結果」の行の右端と同じ)
-    const listLabel = esc(tr('家具リストを出力'));
-    html += '<div class="kari-list-copy-bottom"><span class="dex-copy-wrap fac-names-copy">' +
-      '<span class="dex-copy-msg fac-copy-label" aria-live="polite" data-i18n="家具リストを出力">' + listLabel + '</span>' +
-      '<button type="button" class="dex-copy-btn" data-kari-list="1" title="' + listLabel + '" aria-label="' + listLabel + '">' + COPY_ICON + '</button></span></div>';
     kariResultBody.innerHTML = html;
   }
   // 「家具リストを出力」でコピーする行：すべての仮住まいの家具を集計して、「家具名　数」を1行に1つ。

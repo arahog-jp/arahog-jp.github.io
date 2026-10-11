@@ -183,7 +183,6 @@ const LANG = {
     {"ja": "{n} / 20 匹", "en": "{n} / 20 Pokémon", "ko": "{n} / 20마리", "zhHans": "{n} / 20只", "zhHant": "{n} / 20隻"},
     {"ja": "{n}匹を、{h}戸の仮住まいにまとめました。", "en": "Grouped {n} Pokémon into {h} temporary homes.", "ko": "{n}마리를 {h}채의 임시 거처로 묶었습니다.", "zhHans": "已将{n}只宝可梦分成{h}户临时住所。", "zhHant": "已將{n}隻寶可夢分成{h}戶臨時住所。"},
     {"ja": "仮住まい{n}", "en": "Temporary home {n}", "ko": "임시 거처 {n}", "zhHans": "临时住所{n}", "zhHant": "臨時住所{n}"},
-    {"ja": "{n}匹", "en": "{n} Pokémon", "ko": "{n}마리", "zhHans": "{n}只", "zhHant": "{n}隻"},
     {"ja": "⚠ 好きな属性で、使えるサイズのきゅうけい家具がありません", "en": "⚠ There is no Relaxation furniture of a usable size with an attribute it likes", "ko": "⚠ 좋아하는 속성이면서 쓸 수 있는 크기의 휴식 가구가 없습니다", "zhHans": "⚠ 没有带喜欢属性、且尺寸可以使用的休息家具", "zhHant": "⚠ 沒有帶喜歡屬性、且尺寸可以使用的休息家具"},
     {"ja": "置く家具", "en": "Furniture to place", "ko": "놓을 가구", "zhHans": "要摆放的家具", "zhHant": "要擺放的家具"},
     {"ja": "家具リストを出力", "en": "Copy furniture list", "ko": "가구 목록 출력", "zhHans": "输出家具清单", "zhHant": "輸出家具清單"},

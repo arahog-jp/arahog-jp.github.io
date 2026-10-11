@@ -646,6 +646,8 @@
   .chip-card .tags span.dislike{
     background:var(--accent-soft); color:var(--accent-strong);
   }
+  /* ポケモンの名前・好きな環境・好きな味を、1行に並べる(2026年10月11日)。入りきらないときは、楕円を次の行に折り返す */
+  .chip-card .name-row.pk-row, .legend-row .name-row.pk-row{ flex-wrap:wrap; row-gap:2px; }
 
   .dropdown{
     position:absolute; left:0; right:0; top:calc(100% + 6px);
@@ -1374,6 +1376,24 @@
   const pokemons = DATA.pokemons.slice().sort(byJapaneseName);
   const furniture = DATA.furniture.slice().sort(byJapaneseName);
   const facilities = DATA.facilities;
+  // ===== 家具の環境数値(data.js の "envVal"。Excelの家具リストの「環境数値1」「環境数値2」) =====
+  // 暫定措置(2026年10月9日)：その環境を、ある程度よくできる家具だけを、その環境の家具として扱う。
+  //   照明は40以上、暖房は60以上、冷房は-60以下のとき(下の ENV_SHOW_MIN)。数値がない分類(潤い・庇など)や、
+  //   数値がまだ入っていない家具は、これまでどおり、その環境の家具として扱う。
+  // ここで、f.env を「基準を満たす分類だけ」に入れかえる。家具名の横の楕円・⚠・並び順は、すべてこの f.env を使う。
+  // 元の分類と数値は、f.envRaw([{cat:"照明", val:40}, …])に残す(家具からポケモン診断の気温の計算で使う)。
+  const ENV_SHOW_MIN = { "照明": 40, "暖房": 60, "冷房": -60 };
+  function envPasses(cat, val){
+    const t = ENV_SHOW_MIN[cat];
+    if (t === undefined || val === null || val === undefined) return true;
+    return t < 0 ? val <= t : val >= t;
+  }
+  DATA.furniture.forEach(f => {
+    const cats = f.env || [], vals = f.envVal || [];
+    f.envRaw = cats.map((c, i) => ({ cat: c, val: (vals[i] === undefined ? null : vals[i]) }));
+    const shown = f.envRaw.filter(e => envPasses(e.cat, e.val)).map(e => e.cat);
+    if (shown.length) f.env = shown; else delete f.env;
+  });
   // 「居住可否」が × のポケモン(data.js で "livable": false)は、空き家に住めないため、
   // ポケモン選択の候補には出しません。(データとしては残してあります)
   const selectablePokemons = pokemons.filter(p => p.livable !== false);
@@ -1424,6 +1444,7 @@
   // ・ENV_ORDER：環境を画面に並べる順番。
   // ・ENV_AVOID：その環境のポケモンが「置かれると住み心地が下がる」家具の分類。
   //   家具の分類は、data.js の家具の "env"(Excelの家具リストの「環境1」「環境2」)で判定します(両方とも使います。例：エアコンは暖房と冷房の両方)。
+  //   ただし、環境数値が基準(ENV_SHOW_MIN。照明は40以上)に届かない分類は、使いません(例：照明20のゲーミングチェアには⚠を付けない)。
   //   該当する家具には⚠マークを付けますが、候補からは外しません(「苦手」ほど強くないため)。
   //   タイプ相性で嫌がる家具(例：あたたかいポケモンと潤いの家具)は、「苦手」でカバーされているので、ここには書きません。
   // ・ENV_CONFLICTS：同じ住処で、同時には成り立たない環境の組み合わせ(「環境の共存」シートの×)。
@@ -1534,6 +1555,14 @@
     return tr('苦手') + ((currentLang === "zhHans" || currentLang === "zhHant") ? "：" : ": ");
   }
 
+  // ポケモンの名前の右に並べる、「好きな環境」と「好きな味」の楕円(施設診断のポケモン選択・家具からポケモン診断の結果で使う)
+  // 好きな味は data.js の "taste"(Excelのポケモンリストの「好きな味」)。画面には、ゲームの図鑑と同じ言い回しで出す
+  // (翻訳は「言語(その他)」シート。例：からい → Spicy flavors／매운맛／辣辣的)。空欄のポケモンには出さない。
+  function pokeHabitatTags(p){
+    return (p.env ? '<span class="env-tag" title="' + esc(tr('好きな環境')) + '">' + esc(tr(p.env)) + '</span>' : '') +
+      (p.taste ? '<span class="env-tag" title="' + esc(tr('好きな味')) + '">' + esc(tr(p.taste)) + '</span>' : '');
+  }
+
   function renderSlots(){
     pickerGrid.innerHTML = "";
     selected.forEach((p, idx) => {
@@ -1545,8 +1574,8 @@
           '<div class="chip-card">' +
             '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
             '<div style="min-width:0;flex:1;">' +
-              '<div class="name-row"><div class="name">' + esc(pName(p.name)) + '</div>' +
-                (p.env ? '<span class="env-tag" title="' + esc(tr('好きな環境')) + '">' + esc(tr(p.env)) + '</span>' : '') +
+              '<div class="name-row pk-row"><div class="name">' + esc(pName(p.name)) + '</div>' +
+                pokeHabitatTags(p) +
               '</div>' +
               '<div class="tags">' +
                 p.likes.map(t => '<span>' + esc(aName(t)) + '</span>').join("") +
@@ -2185,6 +2214,7 @@
             '<div style="min-width:0;flex:1;">' +
               '<div class="name-row wrap"><div class="name">' + esc(fName(f.name)) + '</div>' +
                 // 家具が作る環境(照明→あかるい、冷房→すずしい、暖房→あたたかい、潤い→うるおっている)を、
+                // (環境数値が基準 ENV_SHOW_MIN に届かない分類は、f.env から外してあるので、出ない)
                 // 施設診断の「好きな環境」と同じクリーム色の楕円で出す(エアコンは「あたたかい・すずしい」)
                 ((f.env && f.env.length) ? '<span class="env-tag">' + f.env.map(c => esc(tr(FURN_CAT_ENV[c] || c))).join(listSep()) + '</span>' : '') +
               '</div>' +
@@ -2294,11 +2324,14 @@
   }
 
   // ===== 家具からポケモン診断：選んだ家具で、住処がどんな環境になるか =====
-  // ・照明の家具があれば「あかるい」、潤いの家具があれば「うるおっている」。
-  //   ただし、照明は家具ごとに明るさが違い、地下などでは1〜2個では「あかるい」にならないこともある(屋外の日の光でも変わる)。
+  // ・照明の家具(環境数値が40以上のもの)があれば「あかるい」、潤いの家具があれば「うるおっている」。
+  //   ただし、明るさは、家具の数値の合計に、日の光(最大90。屋根などで変わる)を足して決まるため、家具だけでは決められない。
   //   そのため、画面に「あかるい環境になります」とは出さず、「くらい」のポケモンに⚠を付けて、並び順を下げる(0.85倍)ことにだけ使う。
-  // ・気温は差し引きで決まる(2026年9月24日にゲームで確認)：暖房の家具1つ＝＋1、冷房1つ＝－2(冷房1つが暖房2つぶん)。
-  //   合計が＋なら「あたたかい」、－なら「すずしい」、0なら「ふつう」(どちらでもない)。
+  // ・気温は、家具の環境数値の合計で決まる(ccopediaさんのnote記事。2026年10月9日に、この決め方に変更)：
+  //   暖房はプラス(キャンドル+10、たきび+60など)、冷房はマイナス(かきごおり-10、れいぞうこ-60など)。
+  //   合計が+60以上なら「あたたかい」、-60以下なら「すずしい」、そのあいだなら「ふつう」(どちらでもない)。
+  //   気温の合計には、基準(ENV_SHOW_MIN)に届かない家具(キャンドル+10など)の数値も、そのまま足す(f.envRaw を使う)。
+  //   数値がまだ入っていない暖房・冷房の家具は、+60・-60として数える。
   // ・エアコン(data.js の env が「暖房」「冷房」の両方)は、冷房・暖房を切り替えられるので、どちらの設定でも
   //   同じ結果になるときだけ、その気温を「決まった環境」として扱う(設定しだいで変わるときは、気温は出さない)。
   // 家具の分類(data.js の家具の "env")と、その家具が作る環境の対応
@@ -2306,22 +2339,31 @@
   // 庇があっても、照明や立地(屋外かどうか)で「あかるい」環境は作れるので、「あかるい」が好きなポケモンに⚠を付けたり、
   // 並び順を下げたりはしない(下の computeFurnEnv では、庇は何も数えない)。
   const FURN_CAT_ENV = { "照明": "あかるい", "冷房": "すずしい", "暖房": "あたたかい", "潤い": "うるおっている", "庇": "くらい" };
+  const TEMP_WARM_MIN = 60;   // 気温の合計がこの数以上で「あたたかい」
+  const TEMP_COOL_MAX = -60;  // 気温の合計がこの数以下で「すずしい」
   function computeFurnEnv(picks){
     const has = (f, c) => !!(f.env && f.env.includes(c));
-    const isSwitch = f => has(f, "暖房") && has(f, "冷房");
+    // 元の分類(基準に届かないものもふくむ)の数値。数値がないときは、暖房+60・冷房-60として数える
+    const rawVal = (f, c) => {
+      const e = (f.envRaw || []).find(x => x.cat === c);
+      if (!e) return null;
+      return e.val !== null ? e.val : (c === "暖房" ? TEMP_WARM_MIN : TEMP_COOL_MAX);
+    };
+    const isSwitch = f => rawVal(f, "暖房") !== null && rawVal(f, "冷房") !== null;
+    const tempOf = f => (rawVal(f, "暖房") || 0) + (rawVal(f, "冷房") || 0);
     const lights = picks.filter(f => has(f, "照明"));
     const humid = picks.filter(f => has(f, "潤い"));
-    const heaters = picks.filter(f => has(f, "暖房") && !isSwitch(f));
-    const coolers = picks.filter(f => has(f, "冷房") && !isSwitch(f));
+    const heaters = picks.filter(f => !isSwitch(f) && tempOf(f) > 0);
+    const coolers = picks.filter(f => !isSwitch(f) && tempOf(f) < 0);
     const switches = picks.filter(isSwitch);
-    const base = heaters.length - 2 * coolers.length;
-    const tMax = base + switches.length;      // エアコンを全部「暖房」にしたとき
-    const tMin = base - 2 * switches.length;  // エアコンを全部「冷房」にしたとき
+    const base = heaters.concat(coolers).reduce((n, f) => n + tempOf(f), 0);
+    const tMax = switches.reduce((n, f) => n + rawVal(f, "暖房"), base);  // エアコンを全部「暖房」にしたとき
+    const tMin = switches.reduce((n, f) => n + rawVal(f, "冷房"), base);  // エアコンを全部「冷房」にしたとき
     const envs = [];
     const causes = {};
     if (lights.length) { envs.push("あかるい"); causes["あかるい"] = { cat: "照明", items: lights }; }
-    if (tMin > 0) { envs.push("あたたかい"); causes["あたたかい"] = { cat: "暖房", items: heaters.concat(switches) }; }
-    else if (tMax < 0) { envs.push("すずしい"); causes["すずしい"] = { cat: "冷房", items: coolers.concat(switches) }; }
+    if (tMin >= TEMP_WARM_MIN) { envs.push("あたたかい"); causes["あたたかい"] = { cat: "暖房", items: heaters.concat(switches) }; }
+    else if (tMax <= TEMP_COOL_MAX) { envs.push("すずしい"); causes["すずしい"] = { cat: "冷房", items: coolers.concat(switches) }; }
     if (humid.length) { envs.push("うるおっている"); causes["うるおっている"] = { cat: "潤い", items: humid }; }
     return { envs: ENV_ORDER.filter(e => envs.includes(e)), causes, hasSwitch: switches.length > 0 };
   }
@@ -2421,8 +2463,8 @@
           '<div class="legend-row">' +
             '<div class="avatar">' + esc(firstChar(pName(p.name))) + '</div>' +
             '<div style="min-width:0;flex:1;">' +
-              '<div class="name-row"><div class="name">' + esc(pName(p.name)) + '</div>' +
-                (p.env ? '<span class="env-tag" title="' + esc(tr('好きな環境')) + '">' + esc(tr(p.env)) + '</span>' : '') +
+              '<div class="name-row pk-row"><div class="name">' + esc(pName(p.name)) + '</div>' +
+                pokeHabitatTags(p) +
               '</div>' +
               '<div class="tags">' +
                 p.likes.map(a => '<span>' + esc(aName(a)) + '</span>').join("") +

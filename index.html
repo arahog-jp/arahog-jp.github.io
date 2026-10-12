@@ -1309,7 +1309,7 @@
       <div class="qa-item">
         <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="仮住まいシミュレータの家具はどうやって選んでいるの？">仮住まいシミュレータの家具はどうやって選んでいるの？</span><span class="qa-pm" aria-hidden="true"></span></button>
         <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><div class="qa-text qa-body">
-          <span class="qa-para"><span data-i18n="別の仮住まいで使った家具をそのまま使えるように、より多くのポケモンが好む家具を12種類厳選し、その中から最適な組み合わせを優先的に選ぶようにしています。">別の仮住まいで使った家具をそのまま使えるように、より多くのポケモンが好む家具を12種類厳選し、その中から最適な組み合わせを優先的に選ぶようにしています。</span><br><span data-i18n="これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)">これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)</span><br><span data-i18n="これらの中から好みの家具を選べないポケモンについては、全ての家具から選ばれます。">これらの中から好みの家具を選べないポケモンについては、全ての家具から選ばれます。</span></span>
+          <span class="qa-para"><span data-i18n="きゅうけい家具は、住むポケモン全員が好きで、全員が使えるサイズのものを選びます。全員が好きなものがないときは、好きなポケモンがいちばん多いものを選びます。">きゅうけい家具は、住むポケモン全員が好きで、全員が使えるサイズのものを選びます。全員が好きなものがないときは、好きなポケモンがいちばん多いものを選びます。</span><br><span data-i18n="おもちゃとかざりつけは、どのポケモンにとっても、どちらかが好物になるように選びます。好きなきゅうけい家具がないポケモンには、両方とも好物になるように選びます。">おもちゃとかざりつけは、どのポケモンにとっても、どちらかが好物になるように選びます。好きなきゅうけい家具がないポケモンには、両方とも好物になるように選びます。</span><br><span data-i18n="隣の仮住まいに、その属性が苦手なポケモンが住むこともあるため、いずれかのポケモンの苦手な属性がある家具は選びません。">隣の仮住まいに、その属性が苦手なポケモンが住むこともあるため、いずれかのポケモンの苦手な属性がある家具は選びません。</span><br><span data-i18n="別の仮住まいで使った家具をそのまま使えるように、より多くのポケモンが好む家具を12種類厳選し、この条件を満たせるときは、その中から優先的に選ぶようにしています。">別の仮住まいで使った家具をそのまま使えるように、より多くのポケモンが好む家具を12種類厳選し、この条件を満たせるときは、その中から優先的に選ぶようにしています。</span><br><span data-i18n="これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)">これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)</span><br><span data-i18n="条件が同じときは、レシピがあって、作りやすい家具を優先します。">条件が同じときは、レシピがあって、作りやすい家具を優先します。</span></span>
           <button type="button" class="formula-toggle fold-btn" aria-expanded="false" aria-controls="qaFold2" data-fold-label="厳選家具一覧">＋厳選家具一覧</button>
           <div class="formula-panel fold-panel" id="qaFold2" hidden>
             <div class="fm-step">
@@ -2823,12 +2823,17 @@
   // ===== 仮住まいシミュレータ(⋮メニューの「仮住まいシミュレータに切り替え」で開く、3つ目のツール) =====
   // 1〜20匹のポケモンを選ぶと、①好きな環境ごとに、1戸4匹までの仮住まいにまとめ(共存できる環境なら、2つまで同じ家に混ぜて、戸数をできるだけ少なくする)、
   // ②仮住まいごとに、おもちゃ・かざりつけ・きゅうけいを1つずつ選ぶ。
-  // 家具は、厳選した12種類(下の KARI_PICKS)の中から、その家の、いちばん多くのポケモンが好きなものを選ぶ。
-  // 家の中に、厳選家具の中には好きな家具が1つもないポケモンがいて、ほかの家具なら、より多くのポケモンの好物にできるときだけ、すべての家具から選ぶ。
+  // 家具の選び方(2026年10月12日に変更)：
+  //  ・きゅうけいは、好きなポケモンがいちばん多い(できれば全員が好きな)、全員が使えるサイズのものにする。
+  //  ・おもちゃ・かざりつけは、2つを組で選ぶ。きゅうけいが好物のポケモンは、2つのうちどちらかが好物、
+  //    きゅうけいが好物でないポケモンは、2つの両方が好物になるようにする(これを「満たす」と呼ぶ)。
+  //  ・比べる順番：①満たすポケモンの数 ②満たした度合い ③両方が厳選家具で、両方とも全員が好き ④おもちゃ・かざりつけの厳選家具の数
+  //    ⑤きゅうけいが厳選家具 ⑥おもちゃ・かざりつけを好きなポケモンの数の合計 ⑦レシピありの数 ⑧作りやすさレベルの合計(data.js の ease) ⑨名前順
+  //  ・選んだポケモンのだれかの苦手な属性をもつ家具は、候補から外す(となりの仮住まいに、その属性が苦手なポケモンが住むかもしれないため)。
   // (厳選家具かどうかは、画面には出さない。Q&A にだけ書く。2026年10月11日に変更)
   // 「好きな環境を考慮する」のチェックを外したときは、環境を気にせず、同居できない環境もひとまとめにする(その家の環境の楕円の右に⚠)。
   // 好きな環境と両立しない家具(例：くらいの家の照明、乾そうしているの家の潤い)と、家の中のだれかの苦手な属性をもつ家具は、選ばない。
-  // 家具の選び方・厳選家具を変えたときは、Excelの「Q&A」シートの「仮住まいシミュレータで同じ家具ばかり出るのはなぜ？」の説明も直すこと。
+  // 家具の選び方・厳選家具を変えたときは、Excelの「Q&A」シートの「仮住まいシミュレータの家具はどうやって選んでいるの？」の説明も直すこと。
   // (厳選家具は、住み心地の検証〔2026年10月〕で選んだ「共通セット」のおもちゃ・かざりつけ7種類と、作りやすい(作りやすさレベル3・サイズ4)きゅうけい5種類)
   const KARI_MAX = 20;
   const KARI_CATS = ["おもちゃ", "かざりつけ", "きゅうけい"];
@@ -2841,8 +2846,6 @@
   const KARI_FALLBACK_BED = "モンスターボールベッド";
   // 仮住まいを並べる順番(この順番で「仮住まい1」「仮住まい2」…と番号を振る)
   const KARI_ENV_ORDER = ["あかるい", "あたたかい", "うるおっている", "くらい", "すずしい", "乾そうしている"];
-  // 家具の選び方の重み。住み心地の検証で、「めちゃイイ感じ」以上に、いちばん効いたのは、好物のきゅうけい家具だったため、きゅうけいを重くしている。
-  const KARI_WEIGHT = { "おもちゃ": 1, "かざりつけ": 1, "きゅうけい": 3 };
   const DEFAULT_KARI_PICK = ["デカヌチャン", "パピモッチ", "バウッツェル", "ピカチュウ", "コダック", "ヨマワル", "ヤミラミ", "アーボ"];
   let selectedKari = DEFAULT_KARI_PICK.map(n => selectablePokemons.find(x => x.name === n)).filter(Boolean);
   let showKariSampleHint = true;
@@ -2893,50 +2896,85 @@
     if (f.usage === "きゅうけい" && members.some(p => !kariFits(p, f))) return false;
     return true;
   }
-  const kariLikeCount = (f, members) => members.filter(p => kariLikesUsable(p, f)).length;
-  // 1つの家の、1つの分類(おもちゃ など)の家具を選ぶ
-  function kariPickItem(cat, members, envs){
-    const pickNames = KARI_PICKS[cat];
-    const cands = kariFurnByCat[cat].filter(f => kariFurnOk(f, members, envs));
-    const curated = pickNames.map(n => furnByName.get(n)).filter(f => f && cands.includes(f));
-    let best = null, bestN = -1;
-    curated.forEach(f => { const n = kariLikeCount(f, members); if (n > bestN) { best = f; bestN = n; } });
-    let isCurated = true;
-    // 厳選家具の中に、好きな家具が1つもないポケモンがいるときだけ、すべての家具から選ぶ(ほかの家具のほうが、より多くのポケモンの好物にできるときだけ使う)
-    const someoneLacks = members.some(p => !curated.some(f => kariLikesUsable(p, f)));
-    if (bestN < members.length && someoneLacks) {
-      let alt = null, altN = bestN;
-      cands.forEach(f => {
-        if (curated.includes(f)) return;
-        const n = kariLikeCount(f, members);
-        if (n > altN || (alt && n === altN && altBetter(f, alt))) { alt = f; altN = n; }
-      });
-      if (alt && altN > bestN) { best = alt; bestN = altN; isCurated = false; }
-    }
-    // きゅうけい：だれも好きなものがないときは、モンスターボールベッドにする
-    if (cat === "きゅうけい" && bestN <= 0) {
-      const fb = furnByName.get(KARI_FALLBACK_BED);
-      if (fb) { best = fb; bestN = 0; isCurated = true; }
-    }
-    return { cat, f: best, n: Math.max(0, bestN), curated: isCurated };
-    // 同じ数なら、レシピのある家具 → (きゅうけいは)大きい家具 → 名前順
-    function altBetter(a, b){
-      const ra = a.recipe === true ? 1 : 0, rb = b.recipe === true ? 1 : 0;
-      if (ra !== rb) return ra > rb;
-      if (cat === "きゅうけい" && (a.size || 0) !== (b.size || 0)) return (a.size || 0) > (b.size || 0);
-      return a.name.localeCompare(b.name, "ja") < 0;
-    }
-  }
   function kariHouseEnvs(members){ return KARI_ENV_ORDER.filter(e => members.some(p => p.env === e)); }
   // 家の環境の中に、同居できない組み合わせ(ENV_CONFLICTS の×)があるか
   function kariEnvsConflict(envs){
     for (let i = 0; i < envs.length; i++) for (let j = i + 1; j < envs.length; j++) if (envConflict(envs[i], envs[j])) return true;
     return false;
   }
+  // 選んだポケモン(ツールで選べるポケモン全体)の、だれかの苦手な属性。これをもつ家具は、仮住まいには選ばない(2026年10月12日に追加)
+  const KARI_ALL_DISLIKES = new Set(selectablePokemons.map(p => p.dislike).filter(Boolean));
+  const kariIsCurated = f => !!(KARI_PICKS[f.usage] && KARI_PICKS[f.usage].includes(f.name));
+  // その家の候補(家に置いてよい家具で、だれかの苦手な属性をもたないもの)
+  function kariCands(cat, members, envs){
+    return kariFurnByCat[cat].filter(f => kariFurnOk(f, members, envs) && !f.attrs.some(a => KARI_ALL_DISLIKES.has(a)));
+  }
+  // その家具を好きなポケモンを、ビットの印(1匹目=1、2匹目=2、3匹目=4、4匹目=8)にする
+  function kariLikeMask(f, members){
+    let m = 0;
+    members.forEach((p, i) => { if (kariLikesUsable(p, f)) m |= (1 << i); });
+    return m;
+  }
+  const kariBits = x => { let c = 0; while (x) { c += x & 1; x >>= 1; } return c; };
+  // 作りやすさ：レシピありの家具ほど、作りやすさレベル(ease。0〜3)が高い家具ほど、よい
+  const kariEaseKey = f => f.recipe === true ? [1, (typeof f.ease === "number" ? f.ease : 0)] : [0, 0];
+  // 2つの点数の並び(配列)を、前から順に比べる。a のほうがよければ true
+  function kariBetter(a, b){
+    if (!b) return true;
+    for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] > b[i];
+    return false;
+  }
+  // 家具を、「好きなポケモンの印」と「厳選家具かどうか」が同じものどうしでまとめ、まとまりごとに、いちばん作りやすい家具(同じなら名前順)だけを残す
+  // (選び方の結果は変わらず、組み合わせを調べる数が、ぐっと減る)
+  function kariGroupCands(list, members){
+    const g = new Map();
+    list.forEach(f => {
+      const mask = kariLikeMask(f, members), cur = kariIsCurated(f);
+      const key = mask + "_" + (cur ? 1 : 0);
+      const o = g.get(key);
+      if (!o || kariBetter(kariEaseKey(f), kariEaseKey(o.f)) ||
+          (kariEaseKey(f).join() === kariEaseKey(o.f).join() && f.name.localeCompare(o.f.name, "ja") < 0)) g.set(key, { f, mask, cur });
+    });
+    return Array.from(g.values());
+  }
+  // 1つの家の、おもちゃ・かざりつけ・きゅうけいを、まとめて選ぶ
   function kariPlanHouse(members){
     const envs = kariHouseEnvs(members);
-    const items = KARI_CATS.map(c => kariPickItem(c, members, envs));
-    const score = items.reduce((s, it) => s + KARI_WEIGHT[it.cat] * it.n + (it.curated ? 0.01 : 0), 0);
+    const full = (1 << members.length) - 1;
+    // きゅうけい：好きなポケモンがいちばん多いもの(候補)
+    const bedAll = kariCands("きゅうけい", members, envs);
+    let bedMax = 0;
+    bedAll.forEach(f => { bedMax = Math.max(bedMax, kariBits(kariLikeMask(f, members))); });
+    let beds;
+    if (bedMax > 0) beds = kariGroupCands(bedAll.filter(f => kariBits(kariLikeMask(f, members)) === bedMax), members);
+    else {
+      // だれも好きなきゅうけい家具がないときは、モンスターボールベッドにする
+      const fb = furnByName.get(KARI_FALLBACK_BED);
+      beds = fb ? [{ f: fb, mask: 0, cur: kariIsCurated(fb) }] : [];
+    }
+    const toys = kariGroupCands(kariCands("おもちゃ", members, envs), members);
+    const decos = kariGroupCands(kariCands("かざりつけ", members, envs), members);
+    let best = null, bestKey = null;
+    beds.forEach(b => toys.forEach(t => decos.forEach(d => {
+      let sat = 0, pts = 0;
+      for (let i = 0; i < members.length; i++) {
+        const need = (b.mask >> i & 1) ? 1 : 2;  // きゅうけいが好物なら1つ、好物でなければ2つ
+        const got = (t.mask >> i & 1) + (d.mask >> i & 1);
+        if (got >= need) sat++;
+        pts += Math.min(need, got);
+      }
+      const curN = (t.cur ? 1 : 0) + (d.cur ? 1 : 0);
+      const bothAll = (curN === 2 && t.mask === full && d.mask === full) ? 1 : 0;
+      const et = kariEaseKey(t.f), ed = kariEaseKey(d.f), eb = kariEaseKey(b.f);
+      const key = [sat, pts, bothAll, curN, b.cur ? 1 : 0, kariBits(t.mask) + kariBits(d.mask), et[0] + ed[0] + eb[0], et[1] + ed[1] + eb[1]];
+      if (kariBetter(key, bestKey)) { best = { b, t, d }; bestKey = key; }
+    })));
+    const mk = (cat, x) => ({ cat, f: x.f, n: kariBits(x.mask), curated: x.cur });
+    const items = best ? [mk("おもちゃ", best.t), mk("かざりつけ", best.d), mk("きゅうけい", best.b)] : [];
+    // 家のあいだでポケモンを入れかえるときの点数：きゅうけいを好きな数 → 満たすポケモンの数 → 厳選家具の数 の順に重くする
+    const sat = bestKey ? bestKey[0] : 0, pts = bestKey ? bestKey[1] : 0;
+    const curCount = items.filter(it => it.curated).length;
+    const score = 100 * bedMax + 10 * sat + pts + 0.01 * curCount;
     // 好きな環境を考慮しないときの入れかえ用：同居できない組み合わせ・環境の数が多い家は、少しだけ点を下げる(家具の好みが同じなら、近い環境どうしをまとめる)
     let pairs = 0;
     for (let i = 0; i < envs.length; i++) for (let j = i + 1; j < envs.length; j++) if (envConflict(envs[i], envs[j])) pairs++;
@@ -3004,7 +3042,15 @@
     // ポケモンどうしを、家のあいだで入れかえて、家具の好みが合う組み合わせに近づける(戸数は変わらない)。
     // 好きな環境を考慮するときは、同じ環境のポケモンどうしだけを入れかえる(家ごとの環境も変わらない)。
     const val = pl => useEnv ? pl.score : pl.looseScore;
-    let plans = houses.map(kariPlanHouse);
+    // 同じ顔ぶれの家は、何度も計算しないように、結果を覚えておく(2026年10月12日に追加)
+    const planCache = new Map();
+    const planOf = m => {
+      const key = m.map(p => p.name).sort().join("\u0001");
+      if (!planCache.has(key)) planCache.set(key, kariPlanHouse(m));
+      const pl = planCache.get(key);
+      return Object.assign({}, pl, { members: m.slice() });
+    };
+    let plans = houses.map(planOf);
     for (let pass = 0; pass < 30; pass++) {
       let improved = false;
       for (let a = 0; a < houses.length; a++) {
@@ -3015,7 +3061,7 @@
               if (useEnv && p.env !== q.env) continue;
               const ma = houses[a].slice(), mb = houses[b].slice();
               ma[i] = q; mb[j] = p;
-              const pa = kariPlanHouse(ma), pb = kariPlanHouse(mb);
+              const pa = planOf(ma), pb = planOf(mb);
               if (val(pa) + val(pb) > val(plans[a]) + val(plans[b]) + 1e-9) {
                 houses[a] = ma; houses[b] = mb; plans[a] = pa; plans[b] = pb; improved = true;
               }

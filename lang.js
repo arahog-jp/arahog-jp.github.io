@@ -824,7 +824,13 @@ const LANG = {
     {"ja": "うきわ", "en": "Swim ring", "ko": "튜브", "zhHans": "游泳圈", "zhHant": "浮圈"},
     {"ja": "おおきなうきわ", "en": "Big swim ring", "ko": "커다란 튜브", "zhHans": "大游泳圈", "zhHant": "大浮圈"},
     {"ja": "ビーチバレーセット", "en": "Beach volleyball set", "ko": "비치발리볼 세트", "zhHans": "沙滩排球组合", "zhHant": "排球網組合"},
-    {"ja": "ぷかぷかライト", "en": "Floating lantern", "ko": "둥실둥실 라이트", "zhHans": "漂浮灯", "zhHant": "漂浮燈"}
+    {"ja": "ぷかぷかライト", "en": "Floating lantern", "ko": "둥실둥실 라이트", "zhHans": "漂浮灯", "zhHant": "漂浮燈"},
+    {"ja": "水力はつでんマシン", "en": "Waterwheel", "ko": "수력 발전 머신", "zhHans": "水力发电机", "zhHant": "水力發電機"},
+    {"ja": "風力はつでんマシン", "en": "Windmill", "ko": "풍력 발전 머신", "zhHans": "风力发电机", "zhHant": "風力發電機"},
+    {"ja": "ピカチュウふんすい", "en": "Pikachu fountain", "ko": "피카추 분수", "zhHans": "皮卡丘喷泉", "zhHant": "皮卡丘噴水池"},
+    {"ja": "つきよのダンスぞう", "en": "Moonlight dance statue", "ko": "달밤의 춤 동상", "zhHans": "月夜起舞像", "zhHant": "月夜起舞像"},
+    {"ja": "とけいだい", "en": "Clock tower", "ko": "시계탑", "zhHans": "钟塔", "zhHant": "鐘塔"},
+    {"ja": "火力はつでんマシン", "en": "Furnace", "ko": "화력 발전 머신", "zhHans": "火力发电机", "zhHant": "火力發電機"}
   ],
   "pokemon": [
     {"ja": "フシギダネ", "en": "Bulbasaur", "ko": "이상해씨", "zhHans": "妙蛙种子", "zhHant": "妙蛙種子"},

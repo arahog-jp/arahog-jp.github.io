@@ -193,6 +193,7 @@ const LANG = {
     {"ja": "リリースしました。", "en": "We've released the tool.", "ko": "출시했습니다.", "zhHans": "已正式发布。", "zhHant": "已正式發布。"},
     {"ja": "各施設への得点配分メカニズムを微調整しました。", "en": "We've fine-tuned how points are allocated to each facility.", "ko": "각 시설의 점수 배분 방식을 미세 조정했습니다.", "zhHans": "微调了各设施的得分分配机制。", "zhHant": "微調了各設施的得分分配機制。"},
     {"ja": "好きな味の表示と、仮住まいシミュレータを追加しました。", "en": "We've added favorite flavor display and the Temporary Home Simulator.", "ko": "좋아하는 맛 표시와 임시 거처 시뮬레이터를 추가했습니다.", "zhHans": "新增了喜欢的味道显示和临时住所模拟器。", "zhHant": "新增了喜歡的味道顯示和臨時住所模擬器。"},
+    {"ja": "キット6種のデータを追加しました。", "en": "We've added data for 6 kit items.", "ko": "키트 6종의 데이터를 추가했습니다.", "zhHans": "新增了6种套组的数据。", "zhHant": "新增了6種套組的數據。"},
     {"ja": "このツールは非公式のファンツールです。", "en": "Unofficial fan tool", "ko": "비공식 팬 도구", "zhHans": "非官方粉丝工具", "zhHant": "非官方粉絲工具"},
     {"ja": "改善要望・不具合報告は作成者までお願いします。", "en": "Please send feature requests and bug reports to the creator.", "ko": "개선 요청 및 오류 신고는 제작자에게 문의해 주세요.", "zhHans": "改进建议及问题反馈，请联系作者。", "zhHant": "改善建議及問題回報，請聯絡作者。"},
     {"ja": "家具属性の共同検証者様", "en": "Co-verifier", "ko": "공동 검증자", "zhHans": "共同验证者", "zhHant": "共同驗證者"},

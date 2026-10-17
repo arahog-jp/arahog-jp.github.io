@@ -838,7 +838,7 @@ const LANG = {
     {"ja": "おかしバケツ", "en": "Candy bucket", "ko": "간식 바구니", "zhHans": "糖果桶", "zhHant": "糖果桶"},
     {"ja": "にぎやかふうせん", "en": "Fun balloons", "ko": "명랑쾌활 풍선", "zhHans": "热闹气球", "zhHant": "熱鬧氣球"},
     {"ja": "ゆうれいスモーク", "en": "Ghost smoke projector", "ko": "유령 스모크", "zhHans": "幽灵烟雾", "zhHant": "幽靈煙霧"},
-    {"ja": "ブキミなぞう", "en": "Eerie statue", "ko": "기이한 석 상", "zhHans": "诡异石像", "zhHant": "詭異雕塑"},
+    {"ja": "ブキミなぞう", "en": "Eerie statue", "ko": "기이한 석상", "zhHans": "诡异石像", "zhHant": "詭異雕塑"},
     {"ja": "オーロットがいとう", "en": "Trevenant streetlight", "ko": "대로트 가로등", "zhHans": "朽木妖路灯", "zhHant": "朽木妖路燈"},
     {"ja": "かぼちゃランタン", "en": "Pumpkin lantern", "ko": "후박 랜턴", "zhHans": "南瓜提灯", "zhHant": "南瓜提燈"},
     {"ja": "かぼちゃランタンタワー", "en": "Pumpkin lantern tower", "ko": "후박 랜턴 타워", "zhHans": "南瓜提灯塔", "zhHant": "南瓜提燈堆"}

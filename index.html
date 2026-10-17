@@ -1162,6 +1162,7 @@
             <tr><td>1.0.0</td><td>ヨシオ<span data-only-ja>様</span></td></tr>
             <tr><td>1.1.0</td><td>新乃ほぐす<span class="name-sep">、</span>ヨシオ<span data-only-ja>様</span></td></tr>
             <tr><td>2.0.0</td><td>新乃ほぐす<span class="name-sep">、</span>ヨシオ<span data-only-ja>様</span></td></tr>
+            <tr><td>2.0.1</td><td>新乃ほぐす<span class="name-sep">、</span>ヨシオ<span data-only-ja>様</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -1646,6 +1647,8 @@
   // ・ENV_CONFLICTS：同じ住処で、同時には成り立たない環境の組み合わせ(「環境の共存」シートの×)。
   const ENV_ORDER = ["あかるい","くらい","すずしい","あたたかい","うるおっている","乾そうしている"];
   const ENV_AVOID = { "くらい": ["照明"], "乾そうしている": ["潤い"], "すずしい": ["暖房"], "あたたかい": ["冷房"] };
+  // (「うるおっている」→「乾燥」は、入れていない。2026年10月17日時点で、乾燥の家具は、切り替えられるてるてるポワルンだけで、⚠を付けないため。
+  //  乾燥だけの家具が増えたときは、Excelの「環境」シートのC列とあわせて、ここに足す)
   // 「乾そうしている」→「潤い」は2026年9月27日に追加。「すずしい」→「暖房」と「あたたかい」→「冷房」は2026年10月11日に追加
   // (暖房・冷房も、環境数値が基準〔ENV_SHOW_MIN。暖房+60以上・冷房-60以下〕に届く家具だけが対象。キャンドル+10・かきごおり-10などには付けない)
   //   (2026年9月24日のゲームでの確認で、「あたたかい」と「うるおっている」は、同居してもポケモンが何も言わなかったため、両立できる(○)に変えました。
@@ -1660,6 +1663,9 @@
     let fe = (f && f.env) || [];
     // エアコン(暖房と冷房の両方)は、設定で切り替えられるので、気温の⚠は付けない(2026年10月11日)
     if (fe.includes("暖房") && fe.includes("冷房")) fe = fe.filter(c => c !== "暖房" && c !== "冷房");
+    // てるてるポワルン(潤いと乾燥の両方。あまみずのすがた＝潤い、たいようのすがた＝乾燥)も、すがたで切り替えられるので、
+    // 潤い・乾燥の⚠は付けない(2026年10月17日)
+    if (fe.includes("潤い") && fe.includes("乾燥")) fe = fe.filter(c => c !== "潤い" && c !== "乾燥");
     if (!fe.length) return [];
     return picks.filter(p => (ENV_AVOID[p.env] || []).some(c => fe.includes(c)));
   }
@@ -2601,11 +2607,15 @@
   //   数値がまだ入っていない暖房・冷房の家具は、+60・-60として数える。
   // ・エアコン(data.js の env が「暖房」「冷房」の両方)は、冷房・暖房を切り替えられるので、どちらの設定でも
   //   同じ結果になるときだけ、その気温を「決まった環境」として扱う(設定しだいで変わるときは、気温は出さない)。
+  // ・潤いの家具(てるてるポワルンをのぞく)があれば「うるおっている」。潤いの家具がなく、乾燥の家具(てるてるポワルンをのぞく)があれば「乾そうしている」。
+  //   てるてるポワルン(潤いと乾燥の両方)は、すがたで切り替えられるので、それだけでは、どちらにも決めない(2026年10月17日に追加)。
   // 家具の分類(data.js の家具の "env")と、その家具が作る環境の対応
   // 「庇」(ひさし。ビーチパラソルなど、環境を暗くする家具。2026年10月2日に追加)は、家具名の横に「くらい」と出すだけにしている。
   // 庇があっても、照明や立地(屋外かどうか)で「あかるい」環境は作れるので、「あかるい」が好きなポケモンに⚠を付けたり、
   // 並び順を下げたりはしない(下の computeFurnEnv では、庇は何も数えない)。
-  const FURN_CAT_ENV = { "照明": "あかるい", "冷房": "すずしい", "暖房": "あたたかい", "潤い": "うるおっている", "庇": "くらい" };
+  // 「乾燥」(てるてるポワルンの、たいようのすがた。2026年10月17日に追加)は「乾そうしている」。
+  // てるてるポワルンは「潤い」と「乾燥」の両方をもつので、家具名の横には「うるおっている・乾そうしている」と出る(エアコンの「あたたかい・すずしい」と同じ)。
+  const FURN_CAT_ENV = { "照明": "あかるい", "冷房": "すずしい", "暖房": "あたたかい", "潤い": "うるおっている", "乾燥": "乾そうしている", "庇": "くらい" };
   const TEMP_WARM_MIN = 60;   // 気温の合計がこの数以上で「あたたかい」
   const TEMP_COOL_MAX = -60;  // 気温の合計がこの数以下で「すずしい」
   function computeFurnEnv(picks){
@@ -2619,7 +2629,11 @@
     const isSwitch = f => rawVal(f, "暖房") !== null && rawVal(f, "冷房") !== null;
     const tempOf = f => (rawVal(f, "暖房") || 0) + (rawVal(f, "冷房") || 0);
     const lights = picks.filter(f => has(f, "照明"));
-    const humid = picks.filter(f => has(f, "潤い"));
+    // てるてるポワルン(潤いと乾燥の両方)は、すがたで切り替えられるので、エアコンと同じように、
+    // それだけでは「うるおっている」「乾そうしている」のどちらにも決めない(2026年10月17日)
+    const isHumSwitch = f => has(f, "潤い") && has(f, "乾燥");
+    const humid = picks.filter(f => has(f, "潤い") && !isHumSwitch(f));
+    const dry = picks.filter(f => has(f, "乾燥") && !isHumSwitch(f));
     const heaters = picks.filter(f => !isSwitch(f) && tempOf(f) > 0);
     const coolers = picks.filter(f => !isSwitch(f) && tempOf(f) < 0);
     const switches = picks.filter(isSwitch);
@@ -2632,6 +2646,7 @@
     if (tMin >= TEMP_WARM_MIN) { envs.push("あたたかい"); causes["あたたかい"] = { cat: "暖房", items: heaters.concat(switches) }; }
     else if (tMax <= TEMP_COOL_MAX) { envs.push("すずしい"); causes["すずしい"] = { cat: "冷房", items: coolers.concat(switches) }; }
     if (humid.length) { envs.push("うるおっている"); causes["うるおっている"] = { cat: "潤い", items: humid }; }
+    else if (dry.length) { envs.push("乾そうしている"); causes["乾そうしている"] = { cat: "乾燥", items: dry }; }
     return { envs: ENV_ORDER.filter(e => envs.includes(e)), causes, hasSwitch: switches.length > 0 };
   }
   // 同じ家具を2個以上選んだときは「エアコン×2」のようにまとめて、家具名を並べる
@@ -2892,7 +2907,12 @@
   // その家に置いてよい家具か(だれかの苦手な属性がない・好きな環境と両立しない環境を作らない・きゅうけいは全員が使えるサイズ)
   function kariFurnOk(f, members, envs){
     if (members.some(p => p.dislike && f.attrs.includes(p.dislike))) return false;
-    if ((f.env || []).some(cat => { const e = FURN_CAT_ENV[cat]; return e && envs.some(x => envConflict(x, e)); })) return false;
+    const conflictCat = cat => { const e = FURN_CAT_ENV[cat]; return !!e && envs.some(x => envConflict(x, e)); };
+    let badCats = (f.env || []).filter(conflictCat);
+    // てるてるポワルン(潤いと乾燥の両方)は、すがたで切り替えられるので、どちらかのすがたで家の環境と両立できれば、置いてよい(2026年10月17日)
+    // (エアコン〔暖房と冷房の両方〕は、これまでどおり、どちらかが両立しなければ外す)
+    if ((f.env || []).includes("潤い") && (f.env || []).includes("乾燥") &&!(conflictCat("潤い") && conflictCat("乾燥"))) badCats = badCats.filter(c => c !== "潤い" && c !== "乾燥");
+    if (badCats.length) return false;
     if (f.usage === "きゅうけい" && members.some(p => !kariFits(p, f))) return false;
     return true;
   }
@@ -3314,6 +3334,7 @@
   // お知らせのほかに、見出し・文・すきまの行も入れられる(Excelの「お知らせ」シートで、種類を「見出し」「文」「すきま」にした行。一覧にだけ出て、バナーには出ない)。
   //   { kind:"h", text:"見出しの文" } / { kind:"p", text:"文" } / { kind:"gap" }   ※ id・date は付けない。並べた順に、一覧に出る。
   const NEWS = [
+    { id:"20261017-1", date:"2026.10.17", text:"ハロウィン家具に対応しました。" },
     { id:"20261014-1", date:"2026.10.14", text:"キット6種のデータを追加しました。" },
     { id:"20261011-1", date:"2026.10.11", text:"好きな味の表示と、仮住まいシミュレータを追加しました。" },
     { id:"20261002-score-tuning", date:"2026.10.2", text:"各施設への得点配分メカニズムを微調整しました。" },

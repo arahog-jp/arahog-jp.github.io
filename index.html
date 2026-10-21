@@ -1310,7 +1310,7 @@
       <div class="qa-item">
         <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="仮住まいシミュレータの家具はどうやって選んでいるの？">仮住まいシミュレータの家具はどうやって選んでいるの？</span><span class="qa-pm" aria-hidden="true"></span></button>
         <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><div class="qa-text qa-body">
-          <span class="qa-para"><span data-i18n="仮住まいごとに、おもちゃ・かざりつけ・きゅうけいを1つずつ選びます。おもちゃを欲しがらないポケモンだけの仮住まいには、おもちゃの代わりにかざりつけを2つ置きます。">仮住まいごとに、おもちゃ・かざりつけ・きゅうけいを1つずつ選びます。おもちゃを欲しがらないポケモンだけの仮住まいには、おもちゃの代わりにかざりつけを2つ置きます。</span><br><span data-i18n="隣の仮住まいに、その属性が苦手なポケモンが住むこともあるため、いずれかのポケモンの苦手な属性がある家具は選びません。">隣の仮住まいに、その属性が苦手なポケモンが住むこともあるため、いずれかのポケモンの苦手な属性がある家具は選びません。</span><br><span data-i18n="別の仮住まいで使った家具を使いまわせるように、多くのポケモンが好む家具を10種類厳選し、条件が同じときは、その中から優先的に選ぶようにしています。">別の仮住まいで使った家具を使いまわせるように、多くのポケモンが好む家具を10種類厳選し、条件が同じときは、その中から優先的に選ぶようにしています。</span><br><span data-i18n="これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)">これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)</span><br><span data-i18n="条件が同じときは、レシピがあって、作りやすい家具を優先します。">条件が同じときは、レシピがあって、作りやすい家具を優先します。</span></span>
+          <span class="qa-para"><span data-i18n="仮住まいごとに、おもちゃ・かざりつけ・きゅうけいを1つずつ選びます。おもちゃを欲しがらないポケモンだけの仮住まいには、おもちゃの代わりにかざりつけを2つ置きます。">仮住まいごとに、おもちゃ・かざりつけ・きゅうけいを1つずつ選びます。おもちゃを欲しがらないポケモンだけの仮住まいには、おもちゃの代わりにかざりつけを2つ置きます。</span><br><span data-i18n="隣の仮住まいに、その属性が苦手なポケモンが住むこともあるため、いずれかのポケモンの苦手な属性がある家具は選びません。">隣の仮住まいに、その属性が苦手なポケモンが住むこともあるため、いずれかのポケモンの苦手な属性がある家具は選びません。</span><br><span data-i18n="別の仮住まいで使った家具を使いまわせるように、多くのポケモンが好む家具を10種類厳選し、条件が同じときは、その中から優先的に選ぶようにしています。">別の仮住まいで使った家具を使いまわせるように、多くのポケモンが好む家具を10種類厳選し、条件が同じときは、その中から優先的に選ぶようにしています。</span><br><span data-i18n="これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)">これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)</span><br><span data-i18n="レシピがある家具の中から選びます。条件が同じときは、作りやすい家具を優先します。">レシピがある家具の中から選びます。条件が同じときは、作りやすい家具を優先します。</span></span>
           <button type="button" class="formula-toggle fold-btn" aria-expanded="false" aria-controls="qaFold2" data-fold-label="厳選家具一覧">＋厳選家具一覧</button>
           <div class="formula-panel fold-panel" id="qaFold2" hidden>
             <div class="fm-step">
@@ -2890,11 +2890,14 @@
     const el = document.getElementById("kariSampleHint");
     if (el) el.hidden = !showKariSampleHint;
   }
+  // 仮住まいシミュレータで選ぶ家具は、レシピありの家具(data.js の recipe が true)だけにする(2026年10月21日に変更。私の指示)。
+  // きゅうけい家具の⚠(好きな属性で、使えるサイズのきゅうけい家具がない)も、レシピありの家具の中で調べる。
   const kariFurnByCat = {};
-  KARI_CATS.forEach(c => { kariFurnByCat[c] = furniture.filter(f => f.usage === c); });
+  KARI_CATS.forEach(c => { kariFurnByCat[c] = furniture.filter(f => f.usage === c && f.recipe === true); });
   // 厳選家具の名前が data.js から消えたり、名前が変わったりしたときに、気づけるようにする
   KARI_CATS.forEach(c => KARI_PICKS[c].forEach(n => {
     if (!furnByName.has(n)) console.warn("[仮住まい] 厳選家具が data.js に見つかりません: " + n);
+    else if (furnByName.get(n).recipe !== true) console.warn("[仮住まい] 厳選家具が、レシピありではありません(選ばれません): " + n);
   }));
   // 厳選家具が、だれかの「苦手」に当たるようになったら(新しいポケモンが増えたときなど)、気づけるようにする(候補からは、家ごとに自動で外す)
   KARI_CATS.forEach(c => KARI_PICKS[c].forEach(n => {

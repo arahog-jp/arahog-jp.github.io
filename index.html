@@ -1305,7 +1305,7 @@
       </div>
       <div class="qa-item">
         <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="家具からポケモン診断はどうやってポケモンを選出してるの？">家具からポケモン診断はどうやってポケモンを選出してるの？</span><span class="qa-pm" aria-hidden="true"></span></button>
-        <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text" data-i18n="えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。">えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。</span></div>
+        <div class="qa-row qa-a" hidden><span class="qa-mark">A.</span><span class="qa-text" data-i18n="えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。家具の数が同じときは、好物の属性が多く一致しているポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。">えらんだ家具のうち、好物の属性がついた家具の数が多いポケモンほど、上に表示しています。家具の数が同じときは、好物の属性が多く一致しているポケモンほど、上に表示しています。苦手な属性の家具が1つでもあるポケモンは、表示されません。好きな環境に合わない家具があるポケモンは、⚠を付けて順位を下げています。上位3位までが表示されます。</span></div>
       </div>
       <div class="qa-item">
         <button type="button" class="qa-row qa-q" aria-expanded="false"><span class="qa-mark">Q.</span><span class="qa-text" data-i18n="仮住まいシミュレータの家具はどうやって選んでいるの？">仮住まいシミュレータの家具はどうやって選んでいるの？</span><span class="qa-pm" aria-hidden="true"></span></button>
@@ -2582,19 +2582,23 @@
     const likeSet = new Set(likes);
     const matchedAttrs = new Set();
     let coveredCount = 0; // 好物のいずれかを含む家具の個数(1個の家具は何度好物と一致しても1個ぶんのまま)
+    // matchCount：好物の属性の一致の数(家具ごとに、一致した好物の属性の数を足したもの。2026年10月22日に追加)。
+    // 家具の個数(coveredCount)が同じポケモンどうしの順位を分けるときに使う(renderFurnResults)。
+    let matchCount = 0;
     picks.forEach(f => {
       let matchedHere = false;
       f.attrs.forEach(a => {
         if (likeSet.has(a)) {
           matchedHere = true;
           matchedAttrs.add(a);
+          matchCount++;
         }
       });
       if (matchedHere) coveredCount++;
     });
     let dupTotal = 0;
     matchedAttrs.forEach(a => { dupTotal += Math.sqrt(attrCounts[a] || 0); });
-    return { score: coveredCount, weight: dupTotal, hits: matchedAttrs.size };
+    return { score: coveredCount, weight: dupTotal, hits: matchedAttrs.size, matchCount };
   }
 
   // ===== 家具からポケモン診断：選んだ家具で、住処がどんな環境になるか =====
@@ -2682,21 +2686,25 @@
     const scored = selectablePokemons.map(p => {
       // 苦手な属性が、選んだ家具の中に1つでもあれば、住みたがらないと考えて0点にする
       const dislikeHit = !!(p.dislike && attrCounts[p.dislike] > 0);
-      if (dislikeHit) return { p, score: 0, weight: 0, hits: 0, rankScore: 0, warns: [] };
+      if (dislikeHit) return { p, score: 0, weight: 0, hits: 0, matchCount: 0, rankScore: 0, warns: [] };
       const best = bestLikeMatchWeighted(p.likes, picks, attrCounts);
       // ⚠：選んだ家具で作られる環境が、このポケモンの好きな環境と両立しない(ENV_CONFLICTS)とき。候補からは外さない。
       const warns = furnEnvWarns(p, furnEnv);
       const warnCount = warns.reduce((n, w) => n + w.items.length, 0);
       // 並び順用の点数：⚠の原因になっている家具1つごとに ENV_WARN_PENALTY(0.85)倍する(施設診断と同じ考え方)
       const rankScore = best.score * Math.pow(ENV_WARN_PENALTY, warnCount);
-      return { p, score: best.score, weight: best.weight, hits: best.hits, rankScore, warns };
+      return { p, score: best.score, weight: best.weight, hits: best.hits, matchCount: best.matchCount, rankScore, warns };
     });
 
     let matched = scored.filter(r => r.score > 0);
     const sameScore = (x, y) => Math.abs(x - y) < 1e-9;
+    // 同じ順位かどうか：rankScore と、好物の属性の一致の数(matchCount)の、両方が同じとき(2026年10月22日に変更。それまでは rankScore だけ)
+    const sameRank = (x, y) => sameScore(x.rankScore, y.rankScore) && x.matchCount === y.matchCount;
     matched.sort((a, b) => {
       // 1. 好みが合っている家具の個数(score)に、⚠による下げ(0.85倍)をかけた点数(rankScore)が高いものを上に
       if (!sameScore(b.rankScore, a.rankScore)) return b.rankScore - a.rankScore;
+      // 1-2. 個数が同じなら、好物の属性の一致の数(matchCount)が多いものを上に(2026年10月22日に追加。順位も分ける)
+      if (b.matchCount !== a.matchCount) return b.matchCount - a.matchCount;
       // 2. 個数が同じなら、選んだ家具群の中で重複している属性を好んでいる度合い(weight)が高いものを上に
       if (b.weight !== a.weight) return b.weight - a.weight;
       // 3. それも同じなら、一致した属性の種類数(hits)が多いものを上に
@@ -2714,14 +2722,15 @@
     // 「好みが合っている家具の個数(score)」が同じものを同じ順位とみなし、1位・2位・3位ぶんの
     // 順位グループを作る(matchedはすでにscore降順で並んでいるので、値が変わるたびに次の順位に進む)。
     // 同じ順位の中に何匹いても(同点タイでも)、全員をそのまま表示し、8匹などに絞り込まない。
+    // (2026年10月22日から、家具の個数が同じでも、好物の属性の一致の数がちがえば、別の順位にする〔sameRank〕)
     const rankGroups = [];
-    let currentScore = null;
+    let currentTop = null;
     // (⚠のあるポケモンは rankScore が下がるので、同じ個数のポケモンより1つ下の順位になることがある)
     for (const r of matched) {
-      if (currentScore === null || !sameScore(r.rankScore, currentScore)) {
+      if (currentTop === null || !sameRank(r, currentTop)) {
         if (rankGroups.length === 3) break; // すでに3位ぶんそろっていたら、4位以降は表示しない
         rankGroups.push({ rank: rankGroups.length + 1, items: [] });
-        currentScore = r.rankScore;
+        currentTop = r;
       }
       rankGroups[rankGroups.length - 1].items.push(r);
     }
@@ -2860,7 +2869,10 @@
   //  きゅうけい3種類〔クッションベッド・ポップなベッド・モンスターボールベッド〕。
   //  動画とまったく同じ家具にするのではなく、使いまわせるように、条件が同じときに優先するだけ。家具は、その都度、家ごとにいちばん合うものを選ぶ)
   // 住み心地の決まり(2026年10月21日に取り入れた。検証の結果)：
-  //  一致の数＝おもちゃの好物の属性の一致(おもちゃ上限まで)＋好物のかざりつけの数(かざりつけ上限まで)＋きゅうけいが好物なら1。
+  //  一致の数＝おもちゃの好物の属性の一致(おもちゃ上限まで)＋かざりつけの好物の属性の一致(かざりつけ上限まで)＋きゅうけいが好物なら1。
+  //  (2026年10月22日に変更：かざりつけも、家具の数ではなく、好物の属性の一致の数で数える。
+  //   【246】メタングが、環境なし＋共通セット＋モンスターボールベッド＋スタンドかんばん〔フシギ・メタリック・難しそうなものの3つが一致〕で「最高」になったため。
+  //   それまでは、好物のかざりつけの「家具の数」で数えていた)
   //  好きな環境を整えたときは、一致1以上で「めちゃイイ感じ」、3以上で「最高」。整えないときは、一致2以上で「めちゃイイ感じ」、4で「最高」。
   const KARI_MAX = 20;
   const KARI_CATS = ["おもちゃ", "かざりつけ", "きゅうけい"];
@@ -2979,7 +2991,13 @@
     members.forEach((p, i) => { if (kariToyMax(p) >= 2 && kariMatchN(p, f) >= 2) m |= (1 << i); });
     return m;
   }
-  // 家具を、「好きなポケモンの印」「2つ一致の印(おもちゃだけ)」「厳選家具かどうか」が同じものどうしでまとめ、まとまりごとに、作りやすい家具(同じなら名前順)を keep 個まで残す
+  // かざりつけの、ポケモンごとの一致の数(好物の属性の一致を、かざりつけ上限まで。2026年10月22日に追加)。かざりつけ以外は空
+  function kariDecoNs(f, members){
+    if (f.usage !== "かざりつけ") return [];
+    return members.map(p => Math.min(kariDecoMax(p), kariMatchN(p, f)));
+  }
+  // 家具を、「好きなポケモンの印」「2つ一致の印(おもちゃだけ)」「ポケモンごとの一致の数(かざりつけだけ)」「厳選家具かどうか」が同じものどうしでまとめ、
+  // まとまりごとに、作りやすい家具(同じなら名前順)を keep 個まで残す
   // (選び方の結果は変わらず、組み合わせを調べる数が、ぐっと減る。かざりつけを2つ置く家では、同じまとまりから2つ選べるよう、keep を2にする)
   function kariGroupCands(list, members, keep){
     keep = keep || 1;
@@ -2993,9 +3011,10 @@
     const useMask2 = members.some(p => kariToyMax(p) >= 2);
     list.forEach(f => {
       const mask = kariLikeMask(f, members), mask2 = useMask2 ? kariMask2(f, members) : 0, cur = kariIsCurated(f);
-      const key = mask * 64 + mask2 * 2 + (cur ? 1 : 0);
+      const dn = kariDecoNs(f, members);
+      const key = (mask * 64 + mask2 * 2 + (cur ? 1 : 0)) + ":" + dn.join(",");
       const e = kariEaseKey(f);
-      const o = { f, mask, mask2, cur, e0: e[0], e1: e[1], bits: kariBits(mask) };
+      const o = { f, mask, mask2, dn, cur, e0: e[0], e1: e[1], bits: kariBits(mask) };
       const arr = g.get(key);
       if (!arr) { g.set(key, [o]); return; }
       // 先頭から keep 個だけを、よい順に残す
@@ -3061,12 +3080,13 @@
       let noToyOk = 0, sat = 0, pts = 0, top = 0, pref = 0, fill = 0;
       for (let i = 0; i < members.length; i++) {
         const bedLiked = (b.mask >> i & 1);
-        let decoN = 0;
-        for (let k = 0; k < ds.length; k++) decoN += (ds[k].mask >> i & 1);
+        // decoN：好物のかざりつけの家具の数(④⑤の比べ方に使う)、decoU：かざりつけの好物の属性の一致の数(一致の数に使う。2026年10月22日に追加)
+        let decoN = 0, decoU = 0;
+        for (let k = 0; k < ds.length; k++) { decoN += (ds[k].mask >> i & 1); decoU += (ds[k].dn[i] || 0); }
         const tm = tms[i], dm = dms[i];
-        // 一致の数(上限まで。おもちゃは好物の属性の一致の数、かざりつけは好物の家具の数、きゅうけいは好物なら1)
+        // 一致の数(上限まで。おもちゃ・かざりつけは好物の属性の一致の数、きゅうけいは好物なら1)
         const toyN = (!t || tm === 0) ? 0 : Math.min(tm, (t.mask2 >> i & 1) ? 2 : (t.mask >> i & 1));
-        const u = toyN + Math.min(dm, decoN) + bedLiked;
+        const u = toyN + Math.min(dm, decoU) + bedLiked;
         fill += u;
         if (u >= needU) sat++;
         pts += Math.min(needU, u);

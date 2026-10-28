@@ -347,7 +347,7 @@ const DATA = {
     {"name": "ネオラント", "likes": ["水を感じる", "カラフル", "キラキラしてる", "ガラス入り", "みんなで使う"], "dislike": null, "size": 2, "env": "くらい", "types": ["みず"], "livable": true, "taste": "しぶい", "toyMax": 1, "decoMax": 2},
     {"name": "プルリル(メス)", "likes": ["水を感じる", "ブキミ", "海を感じる", "見て楽しむ", "布仕立て"], "dislike": null, "size": 2, "env": "くらい", "types": ["みず", "ゴースト"], "livable": true, "taste": "すっぱい", "toyMax": 1, "decoMax": 2},
     {"name": "プルリル(オス)", "likes": ["水を感じる", "ブキミ", "海を感じる", "見て楽しむ", "布仕立て"], "dislike": null, "size": 2, "env": "くらい", "types": ["みず", "ゴースト"], "livable": true, "taste": "からい", "toyMax": 1, "decoMax": 2},
-    {"name": "ブルンゲル(メス)", "likes": ["水を感じる", "ブキミ", "海を感じる", "乗りもの", "ゴージャス"], "dislike": null, "size": 4, "env": "くらい", "types": ["みず", "ゴースト"], "livable": true, "taste": "あまい", "toyMax": 1, "decoMax": 2},
+    {"name": "ブルンゲル(メス)", "likes": ["水を感じる", "ブキミ", "海を感じる", "乗りもの", "ゴージャス"], "dislike": null, "size": 4, "env": "くらい", "types": ["みず", "ゴースト"], "livable": true, "taste": "からい", "toyMax": 1, "decoMax": 2},
     {"name": "ブルンゲル(オス)", "likes": ["水を感じる", "ブキミ", "海を感じる", "乗りもの", "ゴージャス"], "dislike": null, "size": 4, "env": "くらい", "types": ["みず", "ゴースト"], "livable": true, "taste": "すっぱい", "toyMax": 1, "decoMax": 2},
     {"name": "ママンボウ", "likes": ["水を感じる", "キュート", "キズをいやす", "カラフル", "せいけつ"], "dislike": null, "size": 1, "env": "あたたかい", "types": ["みず"], "livable": true, "taste": "すっぱい", "toyMax": 1, "decoMax": 2},
     {"name": "マッギョ", "likes": ["土を感じる", "電気で動く", "四角い", "やわらかい", "見て楽しむ"], "dislike": null, "size": 1, "env": "うるおっている", "types": ["じめん", "でんき"], "livable": true, "taste": "しぶい", "toyMax": 1, "decoMax": 2},

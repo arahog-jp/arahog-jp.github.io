@@ -196,6 +196,7 @@ const LANG = {
     {"ja": "好きな味の表示と、仮住まいシミュレータを追加しました。", "en": "We've added favorite flavor display and the Temporary Home Simulator.", "ko": "좋아하는 맛 표시와 임시 거처 시뮬레이터를 추가했습니다.", "zhHans": "新增了喜欢的味道显示和临时住所模拟器。", "zhHant": "新增了喜歡的味道顯示和臨時住所模擬器。"},
     {"ja": "キット6種のデータを追加しました。", "en": "We've added data for 6 kit items.", "ko": "키트 6종의 데이터를 추가했습니다.", "zhHans": "新增了6种套组的数据。", "zhHant": "新增了6種套組的數據。"},
     {"ja": "ハロウィン家具に対応しました。", "en": "We've added support for Halloween furniture.", "ko": "할로윈 가구 지원을 추가했습니다.", "zhHans": "新增了对万圣节家具的支持。", "zhHant": "新增了對萬聖節家具的支援。"},
+    {"ja": "カミッチュイベントに対応しました。", "en": "We've added support for the Applin event.", "ko": "과사삭벌레 이벤트에 대응했습니다.", "zhHans": "已支持啃果虫活动。", "zhHant": "已支援啃果蟲活動。"},
     {"ja": "このツールは非公式のファンツールです。", "en": "Unofficial fan tool", "ko": "비공식 팬 도구", "zhHans": "非官方粉丝工具", "zhHant": "非官方粉絲工具"},
     {"ja": "改善要望・不具合報告は作成者までお願いします。", "en": "Please send feature requests and bug reports to the creator.", "ko": "개선 요청 및 오류 신고는 제작자에게 문의해 주세요.", "zhHans": "改进建议及问题反馈，请联系作者。", "zhHant": "改善建議及問題回報，請聯絡作者。"},
     {"ja": "家具属性の共同検証者様", "en": "Co-verifier", "ko": "공동 검증자", "zhHans": "共同验证者", "zhHant": "共同驗證者"},
@@ -250,11 +251,11 @@ const LANG = {
     {"ja": "仮住まいシミュレータの家具はどうやって選んでいるの？", "en": "How does the Temporary Home Simulator choose furniture?", "ko": "임시 거처 시뮬레이터의 가구는 어떻게 고르나요?", "zhHans": "临时住所模拟器的家具是怎么选的？", "zhHant": "臨時住所模擬器的家具是怎麼選的？"},
     {"ja": "仮住まいごとに、おもちゃ・かざりつけ・きゅうけいを1つずつ選びます。おもちゃを欲しがらないポケモンだけの仮住まいには、おもちゃの代わりにかざりつけを2つ置きます。", "en": "For each temporary home, one piece each of Toy, Decoration, and Relaxation furniture is chosen. A temporary home with only Pokémon that don't want toys gets two pieces of Decoration furniture instead of Toy furniture.", "ko": "임시 거처마다 장난감·장식·휴식 가구를 1개씩 고릅니다. 장난감을 원하지 않는 포켓몬만 사는 임시 거처에는 장난감 대신 장식을 2개 놓습니다.", "zhHans": "每个临时住所会各选1件玩具、装饰、休息家具。只住着不想要玩具的宝可梦的临时住所，会放2件装饰来代替玩具。", "zhHant": "每個臨時住所會各選1件玩具、裝飾、休息家具。只住著不想要玩具的寶可夢的臨時住所，會放2件裝飾來代替玩具。"},
     {"ja": "隣の仮住まいに、その属性が苦手なポケモンが住むこともあるため、いずれかのポケモンの苦手な属性がある家具は選びません。", "en": "Since a Pokémon that dislikes an attribute may live in a neighboring temporary home, furniture with an attribute that any Pokémon dislikes is not chosen.", "ko": "이웃한 임시 거처에 그 속성을 싫어하는 포켓몬이 살 수도 있으므로, 어느 포켓몬이든 싫어하는 속성이 있는 가구는 고르지 않습니다.", "zhHans": "由于相邻的临时住所可能住着讨厌该属性的宝可梦，因此不会选择带有任何宝可梦讨厌属性的家具。", "zhHant": "由於相鄰的臨時住所可能住著討厭該屬性的寶可夢，因此不會選擇帶有任何寶可夢討厭屬性的家具。"},
-    {"ja": "別の仮住まいで使った家具を使いまわせるように、多くのポケモンが好む家具を10種類厳選し、条件が同じときは、その中から優先的に選ぶようにしています。", "en": "So that furniture can be reused across temporary homes, we have selected 10 pieces of furniture that many Pokémon like, and these are chosen first when the conditions are otherwise equal.", "ko": "다른 임시 거처에서 쓴 가구를 돌려 쓸 수 있도록, 많은 포켓몬이 좋아하는 가구를 10종류 엄선하고, 조건이 같을 때는 그중에서 우선해서 고르도록 하고 있습니다.", "zhHans": "为了能在不同的临时住所之间重复使用家具，我们精选了10种许多宝可梦喜欢的家具，在条件相同时，会优先从中选择。", "zhHant": "為了能在不同的臨時住所之間重複使用家具，我們精選了10種許多寶可夢喜歡的家具，在條件相同時，會優先從中選擇。"},
+    {"ja": "別の仮住まいで使った家具を使いまわせるように、多くのポケモンが好む家具を5種類厳選し、条件が同じときは、その中から優先的に選ぶようにしています。", "en": "So that furniture can be reused across temporary homes, we have selected 5 pieces of furniture that many Pokémon like, and these are chosen first when the conditions are otherwise equal.", "ko": "다른 임시 거처에서 쓴 가구를 돌려 쓸 수 있도록, 많은 포켓몬이 좋아하는 가구를 5종류 엄선하고, 조건이 같을 때는 그중에서 우선해서 고르도록 하고 있습니다.", "zhHans": "为了能在不同的临时住所之间重复使用家具，我们精选了5种许多宝可梦喜欢的家具，在条件相同时，会优先从中选择。", "zhHant": "為了能在不同的臨時住所之間重複使用家具，我們精選了5種許多寶可夢喜歡的家具，在條件相同時，會優先從中選擇。"},
     {"ja": "これらの家具はポケモンの苦手な属性の家具にはあたりません。(Ver.2.0.0時点)", "en": "None of these pieces of furniture has an attribute that any Pokémon dislikes. (As of Ver. 2.0.0)", "ko": "이 가구들은 포켓몬이 싫어하는 속성의 가구에 해당하지 않습니다. (Ver.2.0.0 기준)", "zhHans": "这些家具都不属于宝可梦讨厌属性的家具。（Ver.2.0.0时）", "zhHant": "這些家具都不屬於寶可夢討厭屬性的家具。（Ver.2.0.0時）"},
     {"ja": "レシピがある家具の中から選びます。条件が同じときは、作りやすい家具を優先します。", "en": "Furniture is chosen only from items that have a recipe. When the conditions are equal, furniture that is easy to craft is preferred.", "ko": "레시피가 있는 가구 중에서 고릅니다. 조건이 같을 때는 만들기 쉬운 가구를 우선합니다.", "zhHans": "只会从有配方的家具中选择。条件相同时，会优先选择容易制作的家具。", "zhHant": "只會從有配方的家具中選擇。條件相同時，會優先選擇容易製作的家具。"},
     {"ja": "厳選家具一覧", "en": "Selected furniture list", "ko": "엄선 가구 목록", "zhHans": "精选家具一览", "zhHant": "精選家具一覽"},
-    {"ja": "・おもちゃ・かざりつけ・きゅうけいの、厳選家具10種類です。", "en": "• These are the 10 selected pieces of Toy, Decoration, and Relaxation furniture.", "ko": "• 장난감·장식·휴식의 엄선 가구 10종류입니다.", "zhHans": "• 这是玩具、装饰、休息的10种精选家具。", "zhHant": "• 這是玩具、裝飾、休息的10種精選家具。"},
+    {"ja": "・おもちゃ・かざりつけ・きゅうけいの、厳選家具5種類です。", "en": "• These are the 5 selected pieces of Toy, Decoration, and Relaxation furniture.", "ko": "• 장난감·장식·휴식의 엄선 가구 5종류입니다.", "zhHans": "• 这是玩具、装饰、休息的5种精选家具。", "zhHant": "• 這是玩具、裝飾、休息的5種精選家具。"},
     {"ja": "仮住まいシミュレータで住み心地はどのくらい上がるの？", "en": "How much does the Temporary Home Simulator raise the comfort level?", "ko": "임시 거처 시뮬레이터로 주거 만족도는 얼마나 올라가나요?", "zhHans": "用临时住所模拟器，居住舒适度能提高多少？", "zhHant": "用臨時住所模擬器，居住舒適度能提高多少？"},
     {"ja": "環境を整えて、好きな味の食べものをあげたときに、全員が「めちゃイイ感じ」以上になることをめざした組み合わせです。", "en": "These combinations aim for every Pokémon's comfort level to be \"great\" or better, once the habitat is set up and they have been given food in their favorite flavor.", "ko": "환경을 갖추고 좋아하는 맛의 음식을 주었을 때, 모두가 「엄청 좋은 느낌」 이상이 되는 것을 목표로 한 조합입니다.", "zhHans": "这是以整理好环境、并给予喜欢口味的食物后，全员都达到「很不错」以上为目标的组合。", "zhHant": "這是以整理好環境、並給予喜歡口味的食物後，全員都達到「很棒」以上為目標的組合。"}
   ],
@@ -840,7 +841,12 @@ const LANG = {
     {"ja": "ブキミなぞう", "en": "Eerie statue", "ko": "기이한 석상", "zhHans": "诡异石像", "zhHant": "詭異雕塑"},
     {"ja": "オーロットがいとう", "en": "Trevenant streetlight", "ko": "대로트 가로등", "zhHans": "朽木妖路灯", "zhHant": "朽木妖路燈"},
     {"ja": "かぼちゃランタン", "en": "Pumpkin lantern", "ko": "후박 랜턴", "zhHans": "南瓜提灯", "zhHant": "南瓜提燈"},
-    {"ja": "かぼちゃランタンタワー", "en": "Pumpkin lantern tower", "ko": "후박 랜턴 타워", "zhHans": "南瓜提灯塔", "zhHant": "南瓜提燈堆"}
+    {"ja": "かぼちゃランタンタワー", "en": "Pumpkin lantern tower", "ko": "후박 랜턴 타워", "zhHans": "南瓜提灯塔", "zhHant": "南瓜提燈堆"},
+    {"ja": "アップルパイ", "en": "Apple pie", "ko": "애플파이", "zhHans": "苹果派", "zhHant": "蘋果派"},
+    {"ja": "しゅうかくカゴ", "en": "Harvest basket", "ko": "수확물 바구니", "zhHans": "收获篮", "zhHant": "收穫籃"},
+    {"ja": "カミッチュボウル", "en": "Dipplin mixing bowl", "ko": "과미르 볼", "zhHans": "裹蜜虫圆盆", "zhHant": "裹蜜蟲圓盆"},
+    {"ja": "りんごジューサー", "en": "Appley blender", "ko": "사과 착즙기", "zhHans": "苹果榨汁机", "zhHant": "蘋果榨汁機"},
+    {"ja": "キッチンようぐセット", "en": "Cooking utensils", "ko": "주방 도구 세트", "zhHans": "厨具套组", "zhHant": "厨具套组"}
   ],
   "pokemon": [
     {"ja": "フシギダネ", "en": "Bulbasaur", "ko": "이상해씨", "zhHans": "妙蛙种子", "zhHant": "妙蛙種子"},
@@ -1175,6 +1181,9 @@ const LANG = {
     {"ja": "タンドン", "en": "Rolycoly", "ko": "탄동", "zhHans": "小炭仔", "zhHant": "小炭仔"},
     {"ja": "トロッゴン", "en": "Carkol", "ko": "탄차곤", "zhHans": "大炭车", "zhHant": "大炭車"},
     {"ja": "セキタンザン", "en": "Coalossal", "ko": "석탄산", "zhHans": "巨炭山", "zhHant": "巨炭山"},
+    {"ja": "カジッチュ", "en": "Applin", "ko": "과사삭벌레", "zhHans": "啃果虫", "zhHant": "啃果蟲"},
+    {"ja": "アップリュー", "en": "Flapple", "ko": "애프룡", "zhHans": "苹裹龙", "zhHant": "蘋裹龍"},
+    {"ja": "タルップル", "en": "Appletun", "ko": "단지래플", "zhHans": "丰蜜龙", "zhHant": "豐蜜龍"},
     {"ja": "ウッウ", "en": "Cramorant", "ko": "윽우지", "zhHans": "古月鸟", "zhHant": "古月鳥"},
     {"ja": "エレズン", "en": "Toxel", "ko": "일레즌", "zhHans": "电音婴", "zhHant": "毒電嬰"},
     {"ja": "ストリンダー(ハイ)", "en": "Toxtricity (Amped Form)", "ko": "스트린더 (하이한 모습)", "zhHans": "颤弦蝾螈 (高调样子)", "zhHant": "顫弦蠑螈 (高調樣子)"},
@@ -1210,6 +1219,8 @@ const LANG = {
     {"ja": "ドオー", "en": "Clodsire", "ko": "토오", "zhHans": "土王", "zhHant": "土王"},
     {"ja": "リキキリン", "en": "Farigiraf", "ko": "키키링", "zhHans": "奇麒麟", "zhHant": "奇麒麟"},
     {"ja": "コレクレー", "en": "Gimmighoul", "ko": "모으령", "zhHans": "索财灵", "zhHant": "索財靈"},
-    {"ja": "サーフゴー", "en": "Gholdengo", "ko": "타부자고", "zhHans": "赛富豪", "zhHant": "賽富豪"}
+    {"ja": "サーフゴー", "en": "Gholdengo", "ko": "타부자고", "zhHans": "赛富豪", "zhHant": "賽富豪"},
+    {"ja": "カミッチュ", "en": "Dipplin", "ko": "과미르", "zhHans": "裹蜜虫", "zhHant": "裹蜜蟲"},
+    {"ja": "カミツオロチ", "en": "Hydrapple", "ko": "과미드라", "zhHans": "蜜集大蛇", "zhHant": "蜜集大蛇"}
   ]
 };
